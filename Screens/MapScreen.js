@@ -2,38 +2,24 @@ import React from 'react';
 import {
   Text, View
 } from 'react-native';
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Marker, Circle } from "react-native-maps";
                                                     //      Imports: "css-alike-ish" styling                            
 import styles from '../Styles/styles'
-import { throwStatement } from '@babel/types';
 
-// TODO: Zoom map
-// TODO: Current location
-// TODO: Marked locations
-
-const LATITUDE_DELTA = 0.01;
-const LONGITUDE_DELTA = 0.01;
+const LATITUDE_DELTA = 0.08;
+const LONGITUDE_DELTA = 0.08;
 
 const initialRegion = {
   latitude: 57.504518,
   longitude: 14.710427,
-  latitudeDelta: 1,
-  longitudeDelta: 1
+  latitudeDelta: LATITUDE_DELTA,
+  longitudeDelta: LONGITUDE_DELTA
 }
 
 export default class MapScreen extends React.Component {
   static navigationOptions = {
     title: 'Map'
   };
-  // constructor(props) {
-  //   super(props);
-
-  //   this.state = {
-  //     latitude: null,
-  //     longitude: null,
-  //     error: null
-  //   };
-  // }
 
   map = null;
 
@@ -41,11 +27,48 @@ export default class MapScreen extends React.Component {
     region: {
       latitude: 57.504518,
       longitude: 14.710427,
-      latitudeDelta: 1,
-      longitudeDelta: 1
+      latitudeDelta: 0.5,
+      longitudeDelta: 0.5
     },
+    markers: [{
+      title: 'Bodafors Östra',
+      coordinates: {
+        latitude: 57.507871,
+        longitude: 14.716175
+      }
+    }, {
+      title: 'Bodafors Södra',
+      coordinates: {
+        latitude: 57.499588,
+        longitude: 14.710423
+      }
+    }, {
+      title: 'Bodafors Norra',
+      coordinates: {
+        latitude: 57.507499,
+        longitude: 14.682058
+      }
+    }],
+    circles: [{
+      // Bodafors Östra
+      center: {
+        latitude: 57.507871,
+        longitude: 14.716175
+      },
+    }, {
+      // Bodafors Södra
+      center: {
+        latitude: 57.499588,
+        longitude: 14.710423
+      },
+    }, {
+      // Bodafors Norra
+      center: {
+        latitude: 57.507499,
+        longitude: 14.682058
+      },
+    }],
     ready: true,
-    filteredMarkers: []
   };
 
   setRegion(region) {
@@ -58,19 +81,6 @@ export default class MapScreen extends React.Component {
   componentDidMount() {
     this.getCurrentposition();
   }
-  // componentDidMount() {
-  //   navigator.geolocation.getCurrentPosition(
-  //     (position) => {
-  //       this.setState({
-  //         latitude: position.coords.latitude,
-  //         longitude: position.coords.longitude,
-  //         error: null,
-  //       });
-  //     },
-  //     (error) => this.setState({ error: error.message }),
-  //     { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 },
-  //   )
-  // }
 
   getCurrentposition() {
     try {
@@ -118,6 +128,7 @@ export default class MapScreen extends React.Component {
 
     const { region } = this.state;
     const { children, renderMarker, markers } = this.props;
+    let me = this;
 
     return (
       <View style={styles.container}>
@@ -134,44 +145,36 @@ export default class MapScreen extends React.Component {
           style={styles.map}
           textStyle={{ color: '#bc8b00' }}
           containerStyle={{ backgroundColor: 'white', borderColor: '#bc8b00' }}
-
-          // { markers.map(renderMarker) }
-
-          // { children && children || null }
-        />
+        >
+          {this.state.markers.map((marker, i) => (
+            <MapView.Marker
+              key={i}
+              coordinate={marker.coordinates}
+              title={marker.title}
+            />
+          ))}
+          {this.state.circles.map((cirle, i) => (
+            <MapView.Circle
+              key={i}
+              center={cirle.center}
+              radius={ 100 }
+              strokeWidth = { 1 }
+              strokeColor={ '#20bf6b' }
+            />
+          ))}
+        </MapView>
+        <View style={styles.bottomDetailsContainer}>
+          <View style={styles.bottomDetailsKeys}>
+            <Text style={styles.bottomDetailsKeyText}>Name of gantry</Text>
+            <Text style={styles.bottomDetailsKeyText}>Distance to gantry</Text>
+          </View>
+          <View style={styles.bottomDetailsValues}>
+          <Text style={styles.bottomDetailsText}>Öresund</Text>
+          <Text style={styles.bottomDetailsText}>10km</Text>
+          
+          </View>
+        </View>
       </View>
     );
   }
 }
-
-
-
-
-{/* <View style={styles.container}>
-  <MapView
-    style={styles.map}
-    provider={PROVIDER_GOOGLE} // when you didnt add this line, you get apple maps
-    initialRegion={{ // initial region set to Bileto
-        latitude: 57.504518,
-        longitude: 14.710427,
-        latitudeDelta: 1,
-        longitudeDelta: 1
-    }}>
-    
-    {!!this.state.latitude && !!this.state.longitude && <MapView.Marker
-        coordinate={{"latitude:":this.state.latitude, "longitude":this.state.longitude}}
-        title={"Your location"}
-    />}
-  </MapView>
-  <View style={styles.bottomDetailsContainer}>
-    <View style={styles.bottomDetailsKeys}>
-      <Text style={styles.bottomDetailsKeyText}>Name of gantry</Text>
-      <Text style={styles.bottomDetailsKeyText}>Distance to gantry</Text>
-    </View>
-    <View style={styles.bottomDetailsValues}>
-    <Text style={styles.bottomDetailsText}>Öresund</Text>
-    <Text style={styles.bottomDetailsText}>10km</Text>
-    
-    </View>
-  </View>
-</View> */}
