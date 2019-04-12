@@ -13,6 +13,7 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'stretch',
+    marginTop: 55
   },
   text: {
     fontSize: 30,
