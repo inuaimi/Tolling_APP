@@ -1200,7 +1200,7 @@ babel-plugin-syntax-trailing-function-commas@^7.0.0-beta.0:
   resolved "https://registry.yarnpkg.com/babel-plugin-syntax-trailing-function-commas/-/babel-plugin-syntax-trailing-function-commas-7.0.0-beta.0.tgz#aa213c1435e2bffeb6fca842287ef534ad05d5cf"
   integrity sha512-Xj9XuRuz3nTSbaTXWv3itLOcxyF4oPD8douBBmj7U9BBC6nEBYfyOJYQMf/8PJAFotC62UY5dFfIGEPr7WswzQ==
 
-babel-preset-fbjs@^3.0.1, babel-preset-fbjs@^3.2.0:
+babel-preset-fbjs@^3.0.1, babel-preset-fbjs@^3.1.2, babel-preset-fbjs@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/babel-preset-fbjs/-/babel-preset-fbjs-3.2.0.tgz#c0e6347d3e0379ed84b3c2434d3467567aa05297"
   integrity sha512-5Jo+JeWiVz2wHUUyAlvb/sSYnXNig9r+HqGAOSfh5Fzxp7SnAaR/tEGRJ1ZX7C77kfk82658w6R5Z+uPATTD9g==
@@ -3740,6 +3740,13 @@ metro-babel-register@^0.49.1:
     core-js "^2.2.2"
     escape-string-regexp "^1.0.5"
 
+metro-babel-transformer@0.53.1:
+  version "0.53.1"
+  resolved "https://registry.yarnpkg.com/metro-babel-transformer/-/metro-babel-transformer-0.53.1.tgz#a076fd77a9a7aef8004706edf537dcd1fec4a79e"
+  integrity sha512-cgZj9KK/SLxsO/rAmrlnZpaBlLhxuWxGrQkkiWxV/OjfbW8nvodozfZ3Euxvh4Ytf0e8qgTFG3JpQf8EGSDp7w==
+  dependencies:
+    "@babel/core" "^7.0.0"
+
 metro-babel7-plugin-react-transform@0.49.2:
   version "0.49.2"
   resolved "https://registry.yarnpkg.com/metro-babel7-plugin-react-transform/-/metro-babel7-plugin-react-transform-0.49.2.tgz#d4c43faa6f2b91cc1b244a36a5d708ae8d39dbb2"
@@ -3838,7 +3845,7 @@ metro-react-native-babel-preset@0.49.2:
     metro-babel7-plugin-react-transform "0.49.2"
     react-transform-hmr "^1.0.4"
 
-metro-react-native-babel-preset@^0.53.1:
+metro-react-native-babel-preset@0.53.1, metro-react-native-babel-preset@^0.53.1:
   version "0.53.1"
   resolved "https://registry.yarnpkg.com/metro-react-native-babel-preset/-/metro-react-native-babel-preset-0.53.1.tgz#6cd9e41a1b9a6e210e71ef2adf114219b4eaf2ec"
   integrity sha512-Uf8EGL8kIPhDkoSdAAysNPxPQclUS2R1QC4cwnc8bkk2f6yqGn+1CorfiY9AaqlLEth5mKQqdtRYFDTFfB9QyA==
@@ -3879,6 +3886,16 @@ metro-react-native-babel-preset@^0.53.1:
     "@babel/template" "^7.0.0"
     metro-babel7-plugin-react-transform "0.53.1"
     react-transform-hmr "^1.0.4"
+
+metro-react-native-babel-transformer@^0.53.1:
+  version "0.53.1"
+  resolved "https://registry.yarnpkg.com/metro-react-native-babel-transformer/-/metro-react-native-babel-transformer-0.53.1.tgz#addf31b3a9b5fc512b9ff6967d923dcfcda56394"
+  integrity sha512-UB64jN/akuTdDmoQlw+yLBifJhQzJr7QPP3cwitwM5XD4d9M+12pZreeFn66oMakTy4pNx4jkaYEJ5rLyh/b0Q==
+  dependencies:
+    "@babel/core" "^7.0.0"
+    babel-preset-fbjs "^3.1.2"
+    metro-babel-transformer "0.53.1"
+    metro-react-native-babel-preset "0.53.1"
 
 metro-resolver@0.49.2:
   version "0.49.2"
