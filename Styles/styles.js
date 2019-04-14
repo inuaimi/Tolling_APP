@@ -25,4 +25,15 @@ export default StyleSheet.create({
     textAlign: 'center',
     margin: 45,
   },
+  profileText: {
+    fontWeight: 'bold', 
+    fontSize: 18,
+    marginLeft: '15%', 
+  },
+  profileTextMargin: {
+    fontWeight: 'bold', 
+    fontSize: 18, 
+    marginLeft: '15%', 
+    marginTop: 25
+  }
 });
