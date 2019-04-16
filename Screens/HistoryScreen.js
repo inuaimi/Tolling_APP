@@ -47,17 +47,17 @@ export default class SecondScreen extends React.Component {
   }
 
   componentDidMount() {
-    let gantry1 = { name: "Gantry1", date: "24/7", cost: 20, id: "0" };
-    let gantry2 = { name: "Gantry2", date: "21/4", cost: 38, id: "1" };
-    let gantry3 = { name: "Gantry3", date: "21/4", cost: 38, id: "2" };
-    let gantry4 = { name: "Gantry4", date: "21/4", cost: 38, id: "3" };
-    let gantry5 = { name: "Gantry5", date: "21/4", cost: 38, id: "4" };
-    let gantry6 = { name: "Gantry6", date: "21/4", cost: 38, id: "5" };
-    let gantry7 = { name: "Gantry7", date: "21/4", cost: 38, id: "6" };
-    let gantry8 = { name: "Gantry8", date: "21/4", cost: 38, id: "7" };
-    let gantry9 = { name: "Gantry9", date: "21/4", cost: 38, id: "8" };
-    let gantry10 = { name: "Gantry10", date: "21/4", cost: 38, id: "9" };
-    let gantry11 = { name: "Gantry11", date: "21/4", cost: 40, id: "10" };
+    let gantry1 = { name: "Gantry1", date: "2019-02-11", cost: 20, id: "0" };
+    let gantry2 = { name: "Gantry2", date: "2019-02-11", cost: 38, id: "1" };
+    let gantry3 = { name: "Gantry3", date: "2019-02-11", cost: 38, id: "2" };
+    let gantry4 = { name: "Gantry4", date: "2019-02-11", cost: 38, id: "3" };
+    let gantry5 = { name: "Gantry5", date: "2019-02-11", cost: 38, id: "4" };
+    let gantry6 = { name: "Gantry6", date: "2019-02-11", cost: 38, id: "5" };
+    let gantry7 = { name: "Gantry7", date: "2019-02-11", cost: 38, id: "6" };
+    let gantry8 = { name: "Gantry8", date: "2019-02-11", cost: 38, id: "7" };
+    let gantry9 = { name: "Gantry9", date: "2019-02-11", cost: 38, id: "8" };
+    let gantry10 = { name: "Gantry10", date: "2019-02-17", cost: 38, id: "9" };
+    let gantry11 = { name: "Gantry11", date: "2019-02-17", cost: 40, id: "10" };
     this.setState({
       gantrys: [
         gantry1,
@@ -94,10 +94,12 @@ export default class SecondScreen extends React.Component {
       <Card title="Passed gantrys">
         {this.state.gantrys.map(x => {
           return (
-            <View>
+            <View key={x.id}>
               <ListItem
-                key={x.id}
-                title={x.name + ", " + x.date + ", -" + x.cost + "kr"}
+                title={x.name}
+                subtitle={x.date}
+                rightSubtitle={"-" + x.cost + "kr"}
+                subtitleStyle={{ color: "#707070" }}
               />
               <Divider />
             </View>
@@ -106,32 +108,6 @@ export default class SecondScreen extends React.Component {
       </Card>
     );
   }
-
-  // renderPassedGantrys() {
-  //   return (
-  //     <FlatList
-  //       containerStyle={{ flexgrow: 1 }}
-  //       data={this.state.gantrys}
-  //       renderItem={({ item }) => <ListItem title={item.name} id={item.id} />}
-  //       keyExtractor={item => item.id}
-  //     />
-  //   );
-  // }
-
-  // renderPassedGantrys() {
-  //   console.log("gantrys:", this.state.gantrys);
-  //   //Listan är för lång
-  //   return (
-  //     <Card title="Passed gantrys" containerStyle={{}}>
-  //       <FlatList
-  //         contentContainerStyle={{ flexGrow: 1 }}
-  //         data={this.state.gantrys}
-  //         renderItem={({ item }) => <ListItem title={item.name} id={item.id} />}
-  //         keyExtractor={item => item.id}
-  //       />
-  //     </Card>
-  //   );
-  // }
 
   //Not used atm
   calculateMoneySpent() {
