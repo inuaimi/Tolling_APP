@@ -2,7 +2,15 @@ import React from "react";
 import { Text, View, StyleSheet, FlatList } from "react-native";
 //      Imports: "css-alike-ish" styling
 import styles from "../Styles/styles";
-import { Header, Button, Card, ListItem, List } from "react-native-elements";
+import {
+  Header,
+  Button,
+  Card,
+  ListItem,
+  List,
+  Divider
+} from "react-native-elements";
+import { ScrollView } from "react-native-gesture-handler";
 // import { FlatList } from "react-native-gesture-handler";
 
 export default class SecondScreen extends React.Component {
@@ -25,29 +33,31 @@ export default class SecondScreen extends React.Component {
             style: { color: "#fff", fontSize: 26 }
           }}
         />
-        <View style={localStyles.moneyContainer}>
-          {this.renderMoneyBalance()}
-        </View>
+        <ScrollView>
+          <View style={localStyles.moneyContainer}>
+            {this.renderMoneyBalance()}
+          </View>
 
-        <View style={localStyles.gantrysContainer}>
-          {/* <Text style={localStyles.headerText}>{"Passed Gantrys: "}</Text> */}
-          {this.renderPassedGantrys()}
-        </View>
+          <View style={localStyles.gantrysContainer}>
+            {this.renderPassedGantrys()}
+          </View>
+        </ScrollView>
       </View>
     );
   }
 
   componentDidMount() {
-    let gantry1 = { name: "Gantry1", date: "24/7", cost: 20, id: 0 };
-    let gantry2 = { name: "Gantry2", date: "21/4", cost: 38, id: 1 };
-    let gantry3 = { name: "Gantry3", date: "21/4", cost: 38, id: 2 };
-    let gantry4 = { name: "Gantry4", date: "21/4", cost: 38, id: 3 };
-    let gantry5 = { name: "Gantry5", date: "21/4", cost: 38, id: 4 };
-    let gantry6 = { name: "Gantry6", date: "21/4", cost: 38, id: 5 };
-    let gantry7 = { name: "Gantry7", date: "21/4", cost: 38, id: 6 };
-    let gantry8 = { name: "Gantry8", date: "21/4", cost: 38, id: 7 };
-    let gantry9 = { name: "Gantry9", date: "21/4", cost: 38, id: 8 };
-    let gantry10 = { name: "Gantry10", date: "21/4", cost: 38, id: 9 };
+    let gantry1 = { name: "Gantry1", date: "24/7", cost: 20, id: "0" };
+    let gantry2 = { name: "Gantry2", date: "21/4", cost: 38, id: "1" };
+    let gantry3 = { name: "Gantry3", date: "21/4", cost: 38, id: "2" };
+    let gantry4 = { name: "Gantry4", date: "21/4", cost: 38, id: "3" };
+    let gantry5 = { name: "Gantry5", date: "21/4", cost: 38, id: "4" };
+    let gantry6 = { name: "Gantry6", date: "21/4", cost: 38, id: "5" };
+    let gantry7 = { name: "Gantry7", date: "21/4", cost: 38, id: "6" };
+    let gantry8 = { name: "Gantry8", date: "21/4", cost: 38, id: "7" };
+    let gantry9 = { name: "Gantry9", date: "21/4", cost: 38, id: "8" };
+    let gantry10 = { name: "Gantry10", date: "21/4", cost: 38, id: "9" };
+    let gantry11 = { name: "Gantry11", date: "21/4", cost: 40, id: "10" };
     this.setState({
       gantrys: [
         gantry1,
@@ -59,7 +69,8 @@ export default class SecondScreen extends React.Component {
         gantry7,
         gantry8,
         gantry9,
-        gantry10
+        gantry10,
+        gantry11
       ]
     });
     this.setState({ balance: 319 });
@@ -77,39 +88,50 @@ export default class SecondScreen extends React.Component {
     );
   }
 
-  // renderPassedGantrys() {
-  //   console.log("gantrys:", this.state.gantrys);
-  //   return (
-  //     <Card title="wiee">
-  //       {this.state.gantrys.map(x => {
-  //         return (
-  //           <View key={x.id}>
-  //             <Text style={localStyles.infoText}>{x.date + " " + x.name}</Text>
-  //           </View>
-  //         );
-  //       })}
-  //     </Card>
-  //   );
-  // }
-
   renderPassedGantrys() {
     console.log("gantrys:", this.state.gantrys);
-    //Id fungerar inte riktigt som det ska
-    //Listan är för lång
     return (
       <Card title="Passed gantrys">
-        {
-          <FlatList
-            data={this.state.gantrys}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) => (
-              <ListItem title={item.name} id={item.id} />
-            )}
-          />
-        }
+        {this.state.gantrys.map(x => {
+          return (
+            <View>
+              <ListItem
+                key={x.id}
+                title={x.name + ", " + x.date + ", -" + x.cost + "kr"}
+              />
+              <Divider />
+            </View>
+          );
+        })}
       </Card>
     );
   }
+
+  // renderPassedGantrys() {
+  //   return (
+  //     <FlatList
+  //       containerStyle={{ flexgrow: 1 }}
+  //       data={this.state.gantrys}
+  //       renderItem={({ item }) => <ListItem title={item.name} id={item.id} />}
+  //       keyExtractor={item => item.id}
+  //     />
+  //   );
+  // }
+
+  // renderPassedGantrys() {
+  //   console.log("gantrys:", this.state.gantrys);
+  //   //Listan är för lång
+  //   return (
+  //     <Card title="Passed gantrys" containerStyle={{}}>
+  //       <FlatList
+  //         contentContainerStyle={{ flexGrow: 1 }}
+  //         data={this.state.gantrys}
+  //         renderItem={({ item }) => <ListItem title={item.name} id={item.id} />}
+  //         keyExtractor={item => item.id}
+  //       />
+  //     </Card>
+  //   );
+  // }
 
   //Not used atm
   calculateMoneySpent() {
@@ -140,10 +162,11 @@ const localStyles = StyleSheet.create({
     backgroundColor: "#eeeeee"
   },
   gantrysContainer: {
-    flex: 9
+    flex: 1,
+    marginBottom: 10
   },
   moneyContainer: {
-    flex: 3
+    // flex: 3
   },
   headerText: {
     fontSize: 30,
@@ -151,7 +174,7 @@ const localStyles = StyleSheet.create({
     margin: 10
   },
   infoText: {
-    fontSize: 20,
+    fontSize: 15,
     margin: 10
   },
   moneyButton: {
