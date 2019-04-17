@@ -11,7 +11,7 @@ import {
   Divider
 } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
-// import { FlatList } from "react-native-gesture-handler";
+import DeviceInfo from "react-native-device-info";
 
 export default class SecondScreen extends React.Component {
   static navigationOptions = {
@@ -24,6 +24,7 @@ export default class SecondScreen extends React.Component {
       balance: Number
     };
   }
+
   render() {
     return (
       <View style={localStyles.mainContainer}>
@@ -47,6 +48,9 @@ export default class SecondScreen extends React.Component {
   }
 
   componentDidMount() {
+    DeviceInfo.getMACAddress().then(val => {
+      console.log("MacAdress: " + val);
+    });
     let gantry1 = { name: "Gantry1", date: "2019-02-11", cost: 20, id: "0" };
     let gantry2 = { name: "Gantry2", date: "2019-02-11", cost: 38, id: "1" };
     let gantry3 = { name: "Gantry3", date: "2019-02-11", cost: 38, id: "2" };

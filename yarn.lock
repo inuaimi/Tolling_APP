@@ -5006,6 +5006,11 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
+react-native-device-info@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-1.5.0.tgz#09e17c8199ac51082d72193f17eb445e9c83e68d"
+  integrity sha512-TiZxPkiuKR1GLS9wWAqjKzk37viBLt64EGzjn0IoySosXJpa7E4XKOwAvNR9xcSZ4iSlsVMtRM2QnA8wHe5M2g==
+
 react-native-elements@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-1.1.0.tgz#f99bcda4459a886f3ab4591c684c099d37aedf2b"
