@@ -13,11 +13,17 @@
 #import <Firebase.h>
 @import Firebase;
 
+@import GoogleMaps;
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+<<<<<<< HEAD
   [FIRApp configure];
+=======
+  [GMSServices provideAPIKey:@"AIzaSyACiQ8fl8T-he7pfmV4lzb9aN_eupdsNCI"];
+>>>>>>> app-start_design
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"Tolling_APP"

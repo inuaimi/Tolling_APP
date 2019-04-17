@@ -44,6 +44,7 @@
 		DBD5EF39D00F09C2D3EB6C10 /* libPods-Tolling_APP-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 44660F5BA2536B5B52C94CF1 /* libPods-Tolling_APP-tvOSTests.a */; };
 		DC12321CA95D5EB806AF6536 /* libPods-Tolling_APP.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CFC19767745B35F79D49184E /* libPods-Tolling_APP.a */; };
 		DF1E1918DBAB4A179ECDA844 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F67510486FF474AB4197942 /* libRNFirebase.a */; };
+		CA798E0B7AA61423E9FDEFAF /* libPods-Tolling_APP.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86507D3A5581D90B65A8A293 /* libPods-Tolling_APP.a */; };
 		ECE41272C7AB4CF28C7A11F9 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86EF3988762B4658B70A76EB /* libRNGestureHandler.a */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
@@ -94,6 +95,7 @@
 			remoteInfo = Tolling_APP;
 		};
 		0E4A0B4A225E272A0038A4E9 /* PBXContainerItemProxy */ = {
+		0EE46378225F41B700497017 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 			proxyType = 2;
@@ -101,6 +103,7 @@
 			remoteInfo = jsi;
 		};
 		0E4A0B4C225E272A0038A4E9 /* PBXContainerItemProxy */ = {
+		0EE4637A225F41B700497017 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 			proxyType = 2;
@@ -108,6 +111,7 @@
 			remoteInfo = jsiexecutor;
 		};
 		0E4A0B4E225E272A0038A4E9 /* PBXContainerItemProxy */ = {
+		0EE4637C225F41B700497017 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 			proxyType = 2;
@@ -115,6 +119,7 @@
 			remoteInfo = "jsi-tvOS";
 		};
 		0E4A0B50225E272A0038A4E9 /* PBXContainerItemProxy */ = {
+		0EE4637E225F41B700497017 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 			proxyType = 2;
@@ -122,6 +127,7 @@
 			remoteInfo = "jsiexecutor-tvOS";
 		};
 		0E4A0B56225E272C0038A4E9 /* PBXContainerItemProxy */ = {
+		0EE46384225F41B800497017 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F4AF54D3E19D4F65B93633CC /* RNGestureHandler.xcodeproj */;
 			proxyType = 2;
@@ -129,6 +135,7 @@
 			remoteInfo = RNGestureHandler;
 		};
 		0E4A0B58225E272C0038A4E9 /* PBXContainerItemProxy */ = {
+		0EE46386225F41B800497017 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F4AF54D3E19D4F65B93633CC /* RNGestureHandler.xcodeproj */;
 			proxyType = 2;
@@ -379,6 +386,7 @@
 		5FAC8C1D304EA607E7FBF27F /* Pods-Tolling_APPTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tolling_APPTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tolling_APPTests/Pods-Tolling_APPTests.release.xcconfig"; sourceTree = "<group>"; };
 		70FF1710E3BD16857E876E19 /* Pods-Tolling_APPTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tolling_APPTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tolling_APPTests/Pods-Tolling_APPTests.debug.xcconfig"; sourceTree = "<group>"; };
 		763FB57DA64BD8181899DF01 /* Pods-Tolling_APP-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tolling_APP-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tolling_APP-tvOSTests/Pods-Tolling_APP-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6B3F2510EE49DAEAC85C18A4 /* Pods-Tolling_APP.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tolling_APP.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tolling_APP/Pods-Tolling_APP.release.xcconfig"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7D6289C8A65A43829CC808EF /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
 		80A74B99C5E430358115D5FE /* Pods-Tolling_APP.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tolling_APP.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tolling_APP/Pods-Tolling_APP.release.xcconfig"; sourceTree = "<group>"; };
@@ -394,6 +402,14 @@
 		F4AF54D3E19D4F65B93633CC /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
 		F757D1435DF5391471AEEDC9 /* Pods-Tolling_APP.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tolling_APP.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tolling_APP/Pods-Tolling_APP.debug.xcconfig"; sourceTree = "<group>"; };
 		F939B0979223EA0936A667CC /* libPods-Tolling_APP-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tolling_APP-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		86507D3A5581D90B65A8A293 /* libPods-Tolling_APP.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tolling_APP.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		86EF3988762B4658B70A76EB /* libRNGestureHandler.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGestureHandler.a; sourceTree = "<group>"; };
+		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
+		C292C0356056406FBC346D60 /* libRNGestureHandler-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNGestureHandler-tvOS.a"; sourceTree = "<group>"; };
+		C8DEF7E15EB057E0407320DA /* Pods-Tolling_APP.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tolling_APP.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tolling_APP/Pods-Tolling_APP.debug.xcconfig"; sourceTree = "<group>"; };
+		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		F4AF54D3E19D4F65B93633CC /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -426,6 +442,7 @@
 				ECE41272C7AB4CF28C7A11F9 /* libRNGestureHandler.a in Frameworks */,
 				DC12321CA95D5EB806AF6536 /* libPods-Tolling_APP.a in Frameworks */,
 				DF1E1918DBAB4A179ECDA844 /* libRNFirebase.a in Frameworks */,
+				CA798E0B7AA61423E9FDEFAF /* libPods-Tolling_APP.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -519,6 +536,7 @@
 			sourceTree = "<group>";
 		};
 		0E4A0B24225E27290038A4E9 /* Recovered References */ = {
+		0EE46352225F41B700497017 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
 				86EF3988762B4658B70A76EB /* libRNGestureHandler.a */,
@@ -541,6 +559,11 @@
 			isa = PBXGroup;
 			children = (
 				0EE46337225E444600497017 /* libRNFirebase.a */,
+		0EE46380225F41B800497017 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0EE46385225F41B800497017 /* libRNGestureHandler.a */,
+				0EE46387225F41B800497017 /* libRNGestureHandler-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -599,6 +622,10 @@
 				0E4A0B4D225E272A0038A4E9 /* libjsiexecutor.a */,
 				0E4A0B4F225E272A0038A4E9 /* libjsi-tvOS.a */,
 				0E4A0B51225E272A0038A4E9 /* libjsiexecutor-tvOS.a */,
+				0EE46379225F41B700497017 /* libjsi.a */,
+				0EE4637B225F41B700497017 /* libjsiexecutor.a */,
+				0EE4637D225F41B700497017 /* libjsi-tvOS.a */,
+				0EE4637F225F41B700497017 /* libjsiexecutor-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -613,6 +640,7 @@
 				F939B0979223EA0936A667CC /* libPods-Tolling_APP-tvOS.a */,
 				44660F5BA2536B5B52C94CF1 /* libPods-Tolling_APP-tvOSTests.a */,
 				03D7D64D7F1AE906778EAC7E /* libPods-Tolling_APPTests.a */,
+				86507D3A5581D90B65A8A293 /* libPods-Tolling_APP.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -690,6 +718,8 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				0E4A0B24225E27290038A4E9 /* Recovered References */,
 				56D77590CE849974EF770A8C /* Pods */,
+				0EE46352225F41B700497017 /* Recovered References */,
+				D93C6FBFE1E2692BFA3A64F5 /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -714,6 +744,15 @@
 				2D16E6721FA4F8DC00B85C8A /* libRCTBlob-tvOS.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		D93C6FBFE1E2692BFA3A64F5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C8DEF7E15EB057E0407320DA /* Pods-Tolling_APP.debug.xcconfig */,
+				6B3F2510EE49DAEAC85C18A4 /* Pods-Tolling_APP.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -743,10 +782,12 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Tolling_APP" */;
 			buildPhases = (
 				2E9C9074333081381D31B27B /* [CP] Check Pods Manifest.lock */,
+				FB01AEA4337472D724231442 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				F64DD648F441C8EDDA426F00 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -806,7 +847,11 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = UC7XX3UNRQ;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = UC7XX3UNRQ;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -886,6 +931,7 @@
 				},
 				{
 					ProductGroup = 0E4A0B52225E272C0038A4E9 /* Products */;
+					ProductGroup = 0EE46380225F41B800497017 /* Products */;
 					ProjectRef = F4AF54D3E19D4F65B93633CC /* RNGestureHandler.xcodeproj */;
 				},
 			);
@@ -982,6 +1028,46 @@
 			fileType = archive.ar;
 			path = libRNFirebase.a;
 			remoteRef = 0EE46336225E444600497017 /* PBXContainerItemProxy */;
+		0EE46379225F41B700497017 /* libjsi.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libjsi.a;
+			remoteRef = 0EE46378225F41B700497017 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0EE4637B225F41B700497017 /* libjsiexecutor.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libjsiexecutor.a;
+			remoteRef = 0EE4637A225F41B700497017 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0EE4637D225F41B700497017 /* libjsi-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libjsi-tvOS.a";
+			remoteRef = 0EE4637C225F41B700497017 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0EE4637F225F41B700497017 /* libjsiexecutor-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libjsiexecutor-tvOS.a";
+			remoteRef = 0EE4637E225F41B700497017 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0EE46385225F41B800497017 /* libRNGestureHandler.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNGestureHandler.a;
+			remoteRef = 0EE46384225F41B800497017 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0EE46387225F41B800497017 /* libRNGestureHandler-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRNGestureHandler-tvOS.a";
+			remoteRef = 0EE46386225F41B800497017 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		139105C11AF99BAD00B5F7CC /* libRCTSettings.a */ = {
@@ -1291,6 +1377,7 @@
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
 		2E9C9074333081381D31B27B /* [CP] Check Pods Manifest.lock */ = {
+		F64DD648F441C8EDDA426F00 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1313,6 +1400,21 @@
 			showEnvVarsInLog = 0;
 		};
 		8016388EF06684C27A582CC1 /* [CP] Check Pods Manifest.lock */ = {
+				"${SRCROOT}/Pods/Target Support Files/Pods-Tolling_APP/Pods-Tolling_APP-resources.sh",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tolling_APP/Pods-Tolling_APP-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FB01AEA4337472D724231442 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1328,6 +1430,7 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Tolling_APP-tvOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Tolling_APP-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1404,6 +1507,7 @@
 			baseConfigurationReference = 70FF1710E3BD16857E876E19 /* Pods-Tolling_APPTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = UC7XX3UNRQ;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1442,6 +1546,10 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+				DEVELOPMENT_TEAM = UC7XX3UNRQ;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 				);
 				INFOPLIST_FILE = Tolling_APPTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1465,6 +1573,7 @@
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F757D1435DF5391471AEEDC9 /* Pods-Tolling_APP.debug.xcconfig */;
+			baseConfigurationReference = C8DEF7E15EB057E0407320DA /* Pods-Tolling_APP.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1473,6 +1582,10 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+				DEVELOPMENT_TEAM = UC7XX3UNRQ;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 				);
 				INFOPLIST_FILE = Tolling_APP/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1497,6 +1610,14 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+			baseConfigurationReference = 6B3F2510EE49DAEAC85C18A4 /* Pods-Tolling_APP.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UC7XX3UNRQ;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 				);
 				INFOPLIST_FILE = Tolling_APP/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
