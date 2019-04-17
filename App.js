@@ -12,9 +12,6 @@ import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import { Input } from './Components/Input';
 import { Button } from './Components/Button';
 
-//      Import TabNavigator configs.
-//import TabNavigator from './Navigation/TabNavigator';
-
 export default class App extends React.Component {
 
   //ref = firebase.firestore.collection('Users');
