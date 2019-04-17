@@ -4,11 +4,14 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "run-ios": "react-native run-ios"
   },
   "dependencies": {
+    "firebase": "^5.9.3",
     "react": "16.8.3",
     "react-native": "0.59.4",
+    "react-native-firebase": "^5.3.1",
     "react-native-gesture-handler": "^1.1.0",
     "react-navigation": "^3.6.1"
   },
