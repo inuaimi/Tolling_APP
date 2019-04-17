@@ -9,9 +9,12 @@
   "dependencies": {
     "metro-react-native-babel-transformer": "^0.53.1",
     "react": "16.8.3",
-    "react-native": "0.58.0",
     "react-native-firebase": "^5.3.1",
+    "react-native": "0.59.4",
+    "react-native-device-info": "^1.5.0",
+    "react-native-elements": "^1.1.0",
     "react-native-gesture-handler": "^1.1.0",
+    "react-native-vector-icons": "^6.4.2",
     "react-navigation": "^3.6.1"
   },
   "devDependencies": {
