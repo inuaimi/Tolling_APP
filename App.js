@@ -8,7 +8,7 @@
 
 import React from 'react';
 import { StyleSheet, Text, View, ImageBackground } from 'react-native';
-import { Firebase } from './Components/Firebase';
+//import { Firebase } from './Components/Firebase';
 import { Input } from './Components/Input';
 import { Button } from './Components/Button';
 
@@ -28,7 +28,7 @@ export default class App extends React.Component {
     error: '',
   }
 
-  componentWillMount() {
+  /*componentWillMount() {
     Firebase.init();
   }
 
@@ -42,10 +42,10 @@ export default class App extends React.Component {
         user,
         error: '',
       }),
-      /*this.ref.add({
+      this.ref.add({
         name: this.state.name,
         email: this.state.email,
-      })*/
+      })
       )
       .catch(() => this.setState({
         authenticating: false,
@@ -84,8 +84,9 @@ export default class App extends React.Component {
           <Button onPress={() => this.onPressLogOut()}>Log Out</Button>
         </View>
       )
-    }
+    }*/
 
+    render(){
     return (
       <ImageBackground
         source={require('./Images/signup.jpg')}
@@ -111,22 +112,23 @@ export default class App extends React.Component {
           onChangeText={password => this.setState({ password })}
           value={this.state.password}
         />
-        <Button onPress={() => this.onPressSignUp()}>Sign up</Button>
+        <Button onPress={() => console.log('Sign up pressed')}>Sign up</Button>
           <Text style={styles.login}>Already have an account? <Text onPress={() => console.log('Log in pressed')} style = {{ color: '#fff' }}>Log in</Text></Text>
           <Text style = {{ color: '#ff0000', marginTop: 20, fontSize: 20 }}>{this.state.error}</Text>
       </View>
       </ImageBackground>
       );
     }
+  }
 
-  render() {
+  /*render() {
     return (
       <View style={styles.imgContainer}>
         {this.renderCurrentState()}
       </View>
     );
   }
-}
+}*/
 
   const styles = StyleSheet.create({
     container: {
