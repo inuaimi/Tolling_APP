@@ -13,4 +13,12 @@ export default StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
+  backgroundContainer:{
+    alignItems:'center'
+  },
+  backgroundImage: {
+    flex: 1,
+    width: null,
+    height: null
+  }
 });

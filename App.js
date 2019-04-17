@@ -9,9 +9,11 @@
 import React from 'react';
                                                     //      Import TabNavigator configs.
 import TabNavigator from './Navigation/TabNavigator';
+import LoginScreen from './Screens/LoginScreen';
 
 export default class App extends React.Component {
   render() {
-    return <TabNavigator />;
+    return <LoginScreen />;
+    //return <TabNavigator />;
   }
 }
