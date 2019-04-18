@@ -1,7 +1,8 @@
 import {
   createAppContainer,
   createStackNavigator,
-  createSwitchNavigator
+  createSwitchNavigator,
+  SwitchNavigator
 } from "react-navigation";
 
 import LoginScreen from "../Screens/LoginScreen";
@@ -13,9 +14,23 @@ const LoginStack = createStackNavigator({
   SignUp: SignUpScreen
 });
 
-const MainNavigator = createSwitchNavigator({
-  Login: LoginStack,
-  Tabs: TabNavigator
-});
+// const MainNavigator = createSwitchNavigator({
+//   Login: LoginStack,
+//   Tabs: TabNavigator
+// });
 
-export default createAppContainer(MainNavigator);
+// export default createAppContainer(MainNavigator);
+
+export const createMainNavigator = (isLoggedIn = false) => {
+  return createAppContainer(
+    createSwitchNavigator(
+      {
+        LoggedOut: LoginStack,
+        LoggedIn: TabNavigator
+      },
+      {
+        initialRouteName: isLoggedIn ? "LoggedIn" : "LoggedOut"
+      }
+    )
+  );
+};

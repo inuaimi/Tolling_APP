@@ -8,10 +8,19 @@
 
 import React from "react";
 //Main navigation system
-import MainNavigator from "./Navigation/MainNavigator";
+// import MainNavigator from "./Navigation/MainNavigator";
+import { createMainNavigator } from "./Navigation/MainNavigator";
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoggedIn: false
+    };
+  }
+
   render() {
-    return <MainNavigator />;
+    const Layout = createMainNavigator(this.state.isLoggedIn);
+    return <Layout />;
   }
 }

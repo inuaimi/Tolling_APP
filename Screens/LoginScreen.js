@@ -32,7 +32,7 @@ export default class SecondScreen extends React.Component {
           <TouchableOpacity
             style={styles.loginBtnContainer}
             onPress={() => {
-              this.props.navigation.navigate("Map");
+              this.props.navigation.navigate("LoggedIn");
             }}
           >
             <Text style={styles.buttonText}>LOG IN</Text>
