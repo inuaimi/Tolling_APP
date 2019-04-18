@@ -7,12 +7,8 @@
  */
 
 import React from "react";
-//      Import TabNavigator configs.
-import TabNavigator from "./Navigation/TabNavigator";
-import MainNavigator, { createMainNavigator } from "./Navigation/MainNavigator";
-import LoginScreen from "./Screens/LoginScreen";
-import SignUpScreen from "./Screens/SignUpScreen";
-import ProfileScreen from "./Screens/ProfileScreen";
+//Main navigation system
+import MainNavigator from "./Navigation/MainNavigator";
 
 export default class App extends React.Component {
   render() {
