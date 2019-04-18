@@ -14,13 +14,6 @@ const LoginStack = createStackNavigator({
   SignUp: SignUpScreen
 });
 
-// const MainNavigator = createSwitchNavigator({
-//   Login: LoginStack,
-//   Tabs: TabNavigator
-// });
-
-// export default createAppContainer(MainNavigator);
-
 export const createMainNavigator = (isLoggedIn = false) => {
   return createAppContainer(
     createSwitchNavigator(

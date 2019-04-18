@@ -1,11 +1,5 @@
-import {
-  createAppContainer,
-  createBottomTabNavigator,
-  createStackNavigator
-} from "react-navigation";
+import { createAppContainer, createBottomTabNavigator } from "react-navigation";
 
-import LoginScreen from "../Screens/LoginScreen";
-import SignUpScreen from "../Screens/SignUpScreen";
 import MapScreen from "../Screens/MapScreen";
 import HistoryScreen from "../Screens/HistoryScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
