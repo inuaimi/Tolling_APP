@@ -3,8 +3,24 @@ import { createAppContainer, createBottomTabNavigator, createStackNavigator } fr
 import MapScreen from '../Screens/MapScreen'
 import HistoryScreen from '../Screens/HistoryScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
+//import TestScreen from '../Screens/TestScreen';
+import TestHomeScreen from '../Screens/TestHomeScreen';
+import AddScreen from '../Screens/AddScreen';
+import ListScreen from '../Screens/ListScreen';
 
 //        CONFIG's for the TabNavigator
+
+const StackNavigator = createStackNavigator(
+  {
+    Home: TestHomeScreen,
+    Add: AddScreen,
+    List: ListScreen
+  },
+  {
+    initialRouteName: 'Home'
+  }
+);
+
 const TabNavigator = createBottomTabNavigator(
   {
     Map: {
@@ -14,7 +30,10 @@ const TabNavigator = createBottomTabNavigator(
       screen: HistoryScreen
     },
     Profile: {
-      screen: ProfileScreen,
+      screen: ProfileScreen
+    },
+    Test: {
+      screen: StackNavigator
     }
   },
 );
