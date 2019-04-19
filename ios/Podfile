@@ -44,6 +44,7 @@ target 'Tolling_APP' do
   pod 'Google-Maps-iOS-Utils' # Uncomment this line if you want to support GoogleMaps on iOS
   pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
+
 end
 
 post_install do |installer|

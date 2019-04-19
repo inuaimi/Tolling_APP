@@ -5,6 +5,8 @@ import {
 import MapView, { PROVIDER_GOOGLE, Marker, Circle } from "react-native-maps";
                                                     //      Imports: "css-alike-ish" styling                            
 import styles from '../Styles/styles'
+import NofifService from '../Components/NotificationService';
+import NotifService from '../Components/NotificationService';
 
 const LATITUDE_DELTA = 0.03;
 const LONGITUDE_DELTA = 0.03;
@@ -20,6 +22,13 @@ export default class MapScreen extends React.Component {
   static navigationOptions = {
     title: 'Map'
   };
+
+  constructor(props) {
+    super(props);
+
+    this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
+  }
+
 
   map = null;
 
@@ -74,6 +83,7 @@ export default class MapScreen extends React.Component {
 
   componentDidMount() {
     this.getCurrentposition();
+    this.notif.localNotif();
   }
 
   getCurrentposition() {
@@ -170,5 +180,20 @@ export default class MapScreen extends React.Component {
         </View>
       </View>
     );
+  }
+
+  onRegister(token) {
+    alert("Registered !", JSON.stringify(token));
+    console.log(token);
+    this.setState({ registerToken: token.token, gcmRegistered: true });
+  }
+
+  onNotif(notif) {
+    console.log(notif);
+    alert(notif.message);
+  }
+
+  handlePerm(perms) {
+    alert("Permissions", JSON.stringify(perms));
   }
 }
