@@ -5,8 +5,8 @@ import {
 import MapView, { PROVIDER_GOOGLE, Marker, Circle } from "react-native-maps";
                                                     //      Imports: "css-alike-ish" styling                            
 import styles from '../Styles/styles'
-import NofifService from '../Components/NotificationService';
 import NotifService from '../Components/NotificationService';
+import geolib from 'geolib';
 
 const LATITUDE_DELTA = 0.03;
 const LONGITUDE_DELTA = 0.03;
@@ -28,7 +28,6 @@ export default class MapScreen extends React.Component {
 
     this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
   }
-
 
   map = null;
 
@@ -70,6 +69,12 @@ export default class MapScreen extends React.Component {
         latitude: 57.782522,
         longitude: 14.165725
       },
+    }, {
+      //Casa de Lajne
+      center: {
+        latitude: 57.777741,
+        longitude: 14.157403
+      }
     }],
     ready: true,
   };
@@ -81,9 +86,34 @@ export default class MapScreen extends React.Component {
     //this.setState({ region });
   }
 
+  clearWatch() {
+    navigator.geolocation.clearWatch(id);
+  }
+
+  isDeviceInGeofence() {
+    return geolib.isPointInCircle({ latitude: coordinates.latitude, longitude: coordinates.longitude }, this.state.circles.map(cirle => (cirle.center)), 50 )
+  }
+
   componentDidMount() {
     this.getCurrentposition();
-    this.notif.localNotif();
+
+    id = navigator.geolocation.watchPosition(
+      position => {
+        let coordinates = position.coords;
+        console.log("moving!")
+  
+        if(this.isDeviceInGeofence) {
+          this.notif.localNotif();
+          this.clearWatch();
+          // navigator.geolocation.clearWatch(id);
+        } else {
+          console.log("Not in geofence..")
+        }
+      }, 
+      error => alert(error.message),
+      { enableHighAccuracy: false, timeout: 5000, maximumAge: 0 }
+    );
+    // this.notif.localNotif();
   }
 
   getCurrentposition() {
@@ -113,6 +143,28 @@ export default class MapScreen extends React.Component {
       alert(e.message || "");
     }
   };
+  
+  // success(position) {
+  //   let coordinates = position.coords;
+
+  //   if(geolib.isPointInCircle(
+  //     { latitude: coordinates.latitude, longitude: coordinates.longitude },
+  //     this.state.circles.map(cirle => (cirle.center)), 50 )
+  //   ) {
+  //     this.notif.localNotif();
+  //     navigator.geolocation.clearWatch(id);
+  //   }
+  // }
+
+  // error(err) {
+  //   alert(err.message)
+  // }
+
+  // options = {
+  //   enableHighAccuracy: false,
+  //   timeout: 5000,
+  //   maximumAge: 0
+  // };
 
   onMapReady = (e) => {
     if(!this.state.ready) {
