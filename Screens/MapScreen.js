@@ -6,12 +6,12 @@ import MapView, { PROVIDER_GOOGLE, Marker, Circle } from "react-native-maps";
                                                     //      Imports: "css-alike-ish" styling                            
 import styles from '../Styles/styles'
 
-const LATITUDE_DELTA = 0.08;
-const LONGITUDE_DELTA = 0.08;
+const LATITUDE_DELTA = 0.03;
+const LONGITUDE_DELTA = 0.03;
 
 const initialRegion = {
-  latitude: 57.504518,
-  longitude: 14.710427,
+  latitude: 57.782522,
+  longitude: 14.165725,
   latitudeDelta: LATITUDE_DELTA,
   longitudeDelta: LONGITUDE_DELTA
 }
@@ -24,48 +24,42 @@ export default class MapScreen extends React.Component {
   map = null;
 
   state = {
-    region: {
-      latitude: 57.504518,
-      longitude: 14.710427,
-      latitudeDelta: 0.5,
-      longitudeDelta: 0.5
-    },
     markers: [{
-      title: 'Bodafors Östra',
+      title: 'JKPG Lasarettsparken',
       coordinates: {
-        latitude: 57.507871,
-        longitude: 14.716175
+        latitude: 57.779732,
+        longitude: 14.157731
       }
     }, {
-      title: 'Bodafors Södra',
+      title: 'JKPG Jönköpings Tekniska Högskola',
       coordinates: {
-        latitude: 57.499588,
-        longitude: 14.710423
+        latitude: 57.778782,
+        longitude: 14.163407
       }
     }, {
-      title: 'Bodafors Norra',
+      title: 'JKPG Rådhusparken',
       coordinates: {
-        latitude: 57.507499,
-        longitude: 14.682058
+        latitude: 57.782522,
+        longitude: 14.165725
       }
     }],
     circles: [{
-      // Bodafors Östra
+      // JKPG Lasarettsparken
       center: {
-        latitude: 57.507871,
-        longitude: 14.716175
+        latitude: 57.779732,
+        longitude: 14.157731
       },
     }, {
-      // Bodafors Södra
+      // JKPG Jönköpings Tekniska Högskola 
       center: {
-        latitude: 57.499588,
-        longitude: 14.710423
+        latitude: 57.778782,
+        longitude: 14.163407
       },
     }, {
-      // Bodafors Norra
+      // JKPG Rådhusparken
       center: {
-        latitude: 57.507499,
-        longitude: 14.682058
+        latitude: 57.782522,
+        longitude: 14.165725
       },
     }],
     ready: true,
@@ -157,7 +151,7 @@ export default class MapScreen extends React.Component {
             <MapView.Circle
               key={i}
               center={cirle.center}
-              radius={ 100 }
+              radius={ 50 }
               strokeWidth = { 1 }
               strokeColor={ '#20bf6b' }
             />

@@ -1,9 +1,10 @@
 import React from 'react';
 import {
-  Text, View, ImageBackground, TouchableOpacity 
+  Text, View, ImageBackground, TouchableOpacity, TouchableHighlight 
 } from 'react-native';
                                                     //      Imports: "css-alike-ish" styling                            
 import styles from '../Styles/profileStyles'
+import DeviceInfo from "react-native-device-info";
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
@@ -16,13 +17,19 @@ export default class ProfileScreen extends React.Component {
       name: 'Sven Svensson',
       macAdress: '50:BC:95:B5:35:F1',
       regNmr: 'ABC 123',
-      email: 'React@native.com'
+      email: 'React@native.com',
+      deviceId: ''
     }
   }
 
   updateText = () => {
     this.setState({name: 'Bengt Bengtsson'})
   }
+
+  getDeviceId = () => {
+    let id = DeviceInfo.getUniqueID();
+    this.setState({ deviceId: id });
+  };
 
   render() {
     return (
@@ -42,6 +49,10 @@ export default class ProfileScreen extends React.Component {
             <Text style={styles.profileText}>{this.state.regNmr}</Text>
             <Text style={styles.profileTextMargin}>Email: </Text>
             <Text style={styles.profileText}>{this.state.email}</Text>
+            <TouchableHighlight  onPress={this.getDeviceId}>
+              <Text style={styles.profileTextMargin}>Device ID: </Text>
+            </TouchableHighlight>
+            <Text style={styles.profileText}>{this.state.deviceId}</Text>
           </View>
         </View>
         
