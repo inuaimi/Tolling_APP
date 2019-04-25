@@ -25,9 +25,8 @@ export default class NotifService {
   
   localNotif() {
     PushNotification.localNotificationSchedule({
-      //... You can use all the options from localNotifications
       message: "You are inside a geofence!", // (required)
-      date: new Date(Date.now() + (1 * 1000)) // in 60 secs
+      date: new Date(Date.now() + (1 * 1000))
     });
   }
 
