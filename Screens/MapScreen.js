@@ -5,9 +5,11 @@ import {
 import MapView, { PROVIDER_GOOGLE, Marker, Circle } from "react-native-maps";
                                                     //      Imports: "css-alike-ish" styling                            
 import styles from '../Styles/styles'
+import NotifService from '../Components/NotificationService';
+import geolib from 'geolib';
 
-const LATITUDE_DELTA = 0.03;
-const LONGITUDE_DELTA = 0.03;
+const LATITUDE_DELTA = 0.005;
+const LONGITUDE_DELTA = 0.005;
 
 const initialRegion = {
   latitude: 57.782522,
@@ -21,7 +23,15 @@ export default class MapScreen extends React.Component {
     title: 'Map'
   };
 
+  constructor(props) {
+    super(props);
+
+    this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
+  }
+
   map = null;
+  watchId = null;
+  isReadyForNotif = true;
 
   state = {
     markers: [{
@@ -42,6 +52,12 @@ export default class MapScreen extends React.Component {
         latitude: 57.782522,
         longitude: 14.165725
       }
+    }, {
+      title: "Casa de Lajne",
+      coordinates: {
+        latitude: 57.777813,
+        longitude: 14.157513
+      }
     }],
     circles: [{
       // JKPG Lasarettsparken
@@ -61,6 +77,12 @@ export default class MapScreen extends React.Component {
         latitude: 57.782522,
         longitude: 14.165725
       },
+    }, {
+      //Casa de Lajne
+      center: {
+        latitude: 57.777813,
+        longitude: 14.157513
+      }
     }],
     ready: true,
   };
@@ -69,11 +91,46 @@ export default class MapScreen extends React.Component {
     if(!this.state.ready) {
       setTimeout(() => this.map.animateToRegion(region), 10);
     }
-    //this.setState({ region });
+  }
+
+  clearWatch(id) {
+    navigator.geolocation.clearWatch(id);
+  }
+
+  isDeviceInGeofence(coordinates) {
+    let isInsideCirle = false;
+    let index = null;
+    this.state.circles.forEach(function(circle) {
+      if(geolib.isPointInCircle({ latitude: coordinates.latitude, longitude: coordinates.longitude }, circle.center, 10 )) {
+        isInsideCirle = true;
+      }
+    })
+    return isInsideCirle;
   }
 
   componentDidMount() {
     this.getCurrentposition();
+
+    this.watchId = navigator.geolocation.watchPosition(
+      position => {
+        let coordinates = position.coords;
+  
+        if(this.isDeviceInGeofence(coordinates)) {
+          if(this.isReadyForNotif) {
+            this.notif.localNotif();
+            this.isReadyForNotif = false;
+          }
+        } else {
+          this.isReadyForNotif = true;
+        }
+      }, 
+      error => alert(error.message),
+      { enableHighAccuracy: true, timeout: 5000, maximumAge: 0, distanceFilter: 5 }
+    );
+  }
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID);
   }
 
   getCurrentposition() {
@@ -111,11 +168,11 @@ export default class MapScreen extends React.Component {
   };
 
   onRegionChange = (region) => {
-    console.log('onRegionChange', region);
+    //console.log('onRegionChange', region);
   };
 
   onRegionChangeComplete = (region) => {
-    console.log('onRegionChangeComplete', region);
+    //console.log('onRegionChangeComplete', region);
   };
 
   render() {
@@ -133,6 +190,7 @@ export default class MapScreen extends React.Component {
           initialRegion={initialRegion}
           renderMarker={renderMarker}
           onMapReady={this.onMapReady}
+          followsUserLocation
           showsMyLocationButton={false}
           onRegionChange={this.onRegionChange}
           onRegionChangeComplete={this.onRegionChangeComplete}
@@ -151,7 +209,7 @@ export default class MapScreen extends React.Component {
             <MapView.Circle
               key={i}
               center={cirle.center}
-              radius={ 50 }
+              radius={ 10 }
               strokeWidth = { 1 }
               strokeColor={ '#20bf6b' }
             />
@@ -170,5 +228,20 @@ export default class MapScreen extends React.Component {
         </View>
       </View>
     );
+  }
+
+  onRegister(token) {
+    alert("Registered !", JSON.stringify(token));
+    console.log(token);
+    this.setState({ registerToken: token.token, gcmRegistered: true });
+  }
+
+  onNotif(notif) {
+    console.log(notif);
+    alert(notif.message);
+  }
+
+  handlePerm(perms) {
+    alert("Permissions", JSON.stringify(perms));
   }
 }
