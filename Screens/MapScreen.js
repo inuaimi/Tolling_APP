@@ -8,8 +8,8 @@ import styles from '../Styles/styles'
 import NotifService from '../Components/NotificationService';
 import geolib from 'geolib';
 
-const LATITUDE_DELTA = 0.03;
-const LONGITUDE_DELTA = 0.03;
+const LATITUDE_DELTA = 0.005;
+const LONGITUDE_DELTA = 0.005;
 
 const initialRegion = {
   latitude: 57.782522,
@@ -30,6 +30,8 @@ export default class MapScreen extends React.Component {
   }
 
   map = null;
+  watchId = null;
+  isReadyForNotif = true;
 
   state = {
     markers: [{
@@ -49,6 +51,12 @@ export default class MapScreen extends React.Component {
       coordinates: {
         latitude: 57.782522,
         longitude: 14.165725
+      }
+    }, {
+      title: "Casa de Lajne",
+      coordinates: {
+        latitude: 57.777813,
+        longitude: 14.157513
       }
     }],
     circles: [{
@@ -72,8 +80,8 @@ export default class MapScreen extends React.Component {
     }, {
       //Casa de Lajne
       center: {
-        latitude: 57.777741,
-        longitude: 14.157403
+        latitude: 57.777813,
+        longitude: 14.157513
       }
     }],
     ready: true,
@@ -83,37 +91,46 @@ export default class MapScreen extends React.Component {
     if(!this.state.ready) {
       setTimeout(() => this.map.animateToRegion(region), 10);
     }
-    //this.setState({ region });
   }
 
-  clearWatch() {
+  clearWatch(id) {
     navigator.geolocation.clearWatch(id);
   }
 
-  isDeviceInGeofence() {
-    return geolib.isPointInCircle({ latitude: coordinates.latitude, longitude: coordinates.longitude }, this.state.circles.map(cirle => (cirle.center)), 50 )
+  isDeviceInGeofence(coordinates) {
+    let isInsideCirle = false;
+    let index = null;
+    this.state.circles.forEach(function(circle) {
+      if(geolib.isPointInCircle({ latitude: coordinates.latitude, longitude: coordinates.longitude }, circle.center, 10 )) {
+        isInsideCirle = true;
+      }
+    })
+    return isInsideCirle;
   }
 
   componentDidMount() {
     this.getCurrentposition();
 
-    id = navigator.geolocation.watchPosition(
+    this.watchId = navigator.geolocation.watchPosition(
       position => {
         let coordinates = position.coords;
-        console.log("moving!")
   
-        if(this.isDeviceInGeofence) {
-          this.notif.localNotif();
-          this.clearWatch();
-          // navigator.geolocation.clearWatch(id);
+        if(this.isDeviceInGeofence(coordinates)) {
+          if(this.isReadyForNotif) {
+            this.notif.localNotif();
+            this.isReadyForNotif = false;
+          }
         } else {
-          console.log("Not in geofence..")
+          this.isReadyForNotif = true;
         }
       }, 
       error => alert(error.message),
-      { enableHighAccuracy: false, timeout: 5000, maximumAge: 0 }
+      { enableHighAccuracy: true, timeout: 5000, maximumAge: 0, distanceFilter: 5 }
     );
-    // this.notif.localNotif();
+  }
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID);
   }
 
   getCurrentposition() {
@@ -143,28 +160,6 @@ export default class MapScreen extends React.Component {
       alert(e.message || "");
     }
   };
-  
-  // success(position) {
-  //   let coordinates = position.coords;
-
-  //   if(geolib.isPointInCircle(
-  //     { latitude: coordinates.latitude, longitude: coordinates.longitude },
-  //     this.state.circles.map(cirle => (cirle.center)), 50 )
-  //   ) {
-  //     this.notif.localNotif();
-  //     navigator.geolocation.clearWatch(id);
-  //   }
-  // }
-
-  // error(err) {
-  //   alert(err.message)
-  // }
-
-  // options = {
-  //   enableHighAccuracy: false,
-  //   timeout: 5000,
-  //   maximumAge: 0
-  // };
 
   onMapReady = (e) => {
     if(!this.state.ready) {
@@ -173,11 +168,11 @@ export default class MapScreen extends React.Component {
   };
 
   onRegionChange = (region) => {
-    console.log('onRegionChange', region);
+    //console.log('onRegionChange', region);
   };
 
   onRegionChangeComplete = (region) => {
-    console.log('onRegionChangeComplete', region);
+    //console.log('onRegionChangeComplete', region);
   };
 
   render() {
@@ -195,6 +190,7 @@ export default class MapScreen extends React.Component {
           initialRegion={initialRegion}
           renderMarker={renderMarker}
           onMapReady={this.onMapReady}
+          followsUserLocation
           showsMyLocationButton={false}
           onRegionChange={this.onRegionChange}
           onRegionChangeComplete={this.onRegionChangeComplete}
@@ -213,7 +209,7 @@ export default class MapScreen extends React.Component {
             <MapView.Circle
               key={i}
               center={cirle.center}
-              radius={ 50 }
+              radius={ 10 }
               strokeWidth = { 1 }
               strokeColor={ '#20bf6b' }
             />
