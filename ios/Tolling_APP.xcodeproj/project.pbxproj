@@ -1277,7 +1277,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tolling_APP/Pods-Tolling_APP-resources.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-Tolling_APP/Pods-Tolling_APP-resources.sh",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/gRPC-C++/gRPCCertificates.bundle",
 			);
@@ -1290,7 +1290,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tolling_APP/Pods-Tolling_APP-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tolling_APP/Pods-Tolling_APP-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FB01AEA4337472D724231442 /* [CP] Check Pods Manifest.lock */ = {
