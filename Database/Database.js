@@ -1,9 +1,9 @@
 import firebase from 'react-native-firebase';
 
-export const db = firebase.database()
+export const db = firebase.firestore()
 
 export const addItem = (item) => {
-  db.ref('/test').push({
+  db.collection('test').add({
     name: item
   });
 }
