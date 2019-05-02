@@ -10,13 +10,15 @@ import ProfileScreen from "../Screens/ProfileScreen";
 import TestHomeScreen from "../Screens/TestHomeScreen";
 import AddScreen from "../Screens/AddScreen";
 import ListScreen from "../Screens/ListScreen";
+import BeaconsScreen from "../Screens/BeaconsScreen";
 
 //        CONFIG's for the TabNavigator
 const StackNavigator = createStackNavigator(
   {
     Home: TestHomeScreen,
     Add: AddScreen,
-    List: ListScreen
+    List: ListScreen,
+    Beacons: BeaconsScreen
   },
   {
     initialRouteName: "Home"

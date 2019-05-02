@@ -16,7 +16,14 @@ export default class Home extends React.Component {
           color="green"
           onPress={() => this.props.navigation.navigate('List')}
         />
+        <Button
+          title="Beacons"
+          color="blue"
+          onPress={() => this.props.navigation.navigate('Beacons')}
+          />
       </View>
     );
   }
 }
+
+
