@@ -138,6 +138,9 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-vector-icons')
+    implementation project(':react-native-maps')
+    implementation project(':react-native-beacons-manager')
     implementation project(':react-native-push-notification')
     implementation project(':react-native-firebase')
     implementation project(':react-native-device-info')
