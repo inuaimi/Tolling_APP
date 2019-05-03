@@ -5,8 +5,6 @@ import ListComponent from '../Components/ListComponent';
 
 import { db } from '../Database/Database';
 
-//let itemsCollection = db.collection('test');
-
 export default class List extends React.Component {
 
   constructor() {
@@ -20,18 +18,8 @@ export default class List extends React.Component {
     }
   }
 
-  // state = {
-  //     items: []
-  // }
-
   componentDidMount() {
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
-    // itemsCollection.on('value', (snapshot) => {
-    //       let data = snapshot.val();
-    //       let items = Object.values(data);
-    //       this.setState({items});
-    //    });
-
   }
 
   componentWillUnmount() {
@@ -54,9 +42,7 @@ export default class List extends React.Component {
       loading: false
     });
   }
-  // render() {
-  //   return null;
-  // }
+
   render() {
     if(this.state.loading) {
       return null;
