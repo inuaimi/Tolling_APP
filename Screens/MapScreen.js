@@ -6,6 +6,7 @@ import MapView, { PROVIDER_GOOGLE, Marker, Circle } from "react-native-maps";
                                                     //      Imports: "css-alike-ish" styling                            
 import styles from '../Styles/styles'
 import NotifService from '../Components/NotificationService';
+//import { getItem } from '../Database/Database';
 import geolib from 'geolib';
 
 const LATITUDE_DELTA = 0.005;
@@ -27,6 +28,8 @@ export default class MapScreen extends React.Component {
     super(props);
 
     this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
+
+    //this.state.items = getItem('Gantries');
   }
 
   map = null;
@@ -84,6 +87,7 @@ export default class MapScreen extends React.Component {
         longitude: 14.157513
       }
     }],
+    items: {},
     ready: true,
   };
 
