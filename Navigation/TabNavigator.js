@@ -1,3 +1,6 @@
+import React from "react";
+import { Icon } from "react-native-elements";
+
 import {
   createAppContainer,
   createBottomTabNavigator,
@@ -11,6 +14,7 @@ import TestHomeScreen from "../Screens/TestHomeScreen";
 import AddScreen from "../Screens/AddScreen";
 import ListScreen from "../Screens/ListScreen";
 import BeaconsScreen from "../Screens/BeaconsScreen";
+import theme from "../Styles/theme";
 
 //        CONFIG's for the TabNavigator
 const StackNavigator = createStackNavigator(
@@ -24,15 +28,36 @@ const StackNavigator = createStackNavigator(
     initialRouteName: "Home"
   }
 );
+
+const historyStack = createStackNavigator({
+  History: {
+    screen: HistoryScreen,
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: theme.PRIMARY_COLOR
+      }
+    }
+  }
+});
+
 const TabNavigator = createBottomTabNavigator({
   Map: {
-    screen: MapScreen
+    screen: MapScreen,
+    navigationOptions: {
+      tabBarIcon: <Icon name="map-marker" type="font-awesome" />
+    }
   },
   History: {
-    screen: HistoryScreen
+    screen: historyStack,
+    navigationOptions: {
+      tabBarIcon: <Icon name="history" type="font-awesome" />
+    }
   },
   Profile: {
-    screen: ProfileScreen
+    screen: ProfileScreen,
+    navigationOptions: {
+      tabBarIcon: <Icon name="user-circle" type="font-awesome" />
+    }
   },
   Test: {
     screen: StackNavigator
