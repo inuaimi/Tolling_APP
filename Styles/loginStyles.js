@@ -82,8 +82,15 @@ export default StyleSheet.create({
     
     },
     signupText: {
-
         color: 'black'
+    },
+    
+    errorTextStyle: {
+        color: '#E64A19',
+        alignSelf: 'center',
+        paddingTop: 10,
+        paddingBottom: 10
     }
+
     
 });
