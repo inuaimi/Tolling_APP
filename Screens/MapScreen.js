@@ -39,6 +39,7 @@ export default class MapScreen extends React.Component {
 
   state = {
     gantries: [],
+    grantryMarker: [],
     ready: true,
     loading: true
   };
@@ -93,6 +94,7 @@ export default class MapScreen extends React.Component {
 
   onCollectionUpdate = (querySnapshot) => {
     const gantries = [];
+    const gantryMarkers = [];
     querySnapshot.forEach((doc) => {
       const gantry = doc.data();
       //console.log(JSON.stringify(doc.data(), null, 2));
@@ -103,10 +105,18 @@ export default class MapScreen extends React.Component {
           longitude: gantry.Longitude
         }
       });
+      gantryMarkers.push({
+        title: gantry.Title,
+        coordinates: {
+          latitude: gantry.Latitude,
+          longitude: gantry.Longitude
+        }
+      })
     });
 
     this.setState({
       gantries,
+      gantryMarkers,
       loading: false
     });
   }
@@ -179,7 +189,14 @@ export default class MapScreen extends React.Component {
           style={styles.map}
           textStyle={{ color: '#bc8b00' }}
           containerStyle={{ backgroundColor: 'white', borderColor: '#bc8b00' }}
-        >
+        > 
+          {this.state.gantryMarkers.map((marker, i) => (
+            <MapView.Marker
+              key={i}
+              coordinate={marker.coordinates}
+              title={marker.title}
+            />
+          ))}
           {this.state.gantries.map((gantry, i) => (
             <MapView.Circle
               key={i}

@@ -11,6 +11,7 @@ import TestHomeScreen from "../Screens/TestHomeScreen";
 import AddScreen from "../Screens/AddScreen";
 import ListScreen from "../Screens/ListScreen";
 import BeaconsScreen from "../Screens/BeaconsScreen";
+import VehicleScreen from "../Screens/VehicleScreen";
 
 //        CONFIG's for the TabNavigator
 const StackNavigator = createStackNavigator(
@@ -18,12 +19,27 @@ const StackNavigator = createStackNavigator(
     Home: TestHomeScreen,
     Add: AddScreen,
     List: ListScreen,
-    Beacons: BeaconsScreen
+    Beacons: BeaconsScreen,
   },
   {
     initialRouteName: "Home"
   }
 );
+
+const ProfileStackNavigator = createStackNavigator(
+  {
+    Home: ProfileScreen,
+    Vehicle: VehicleScreen
+  },
+  {
+    initialRouteName: "Home",
+    // headerMode: 'none',
+    navigationOptions: {
+        headerVisible: false,
+    }
+  }
+)
+
 const TabNavigator = createBottomTabNavigator({
   Map: {
     screen: MapScreen
@@ -32,7 +48,7 @@ const TabNavigator = createBottomTabNavigator({
     screen: HistoryScreen
   },
   Profile: {
-    screen: ProfileScreen
+    screen: ProfileStackNavigator
   },
   Test: {
     screen: StackNavigator

@@ -1,62 +1,130 @@
 import React from 'react';
 import {
-  Text, View, ImageBackground, TouchableOpacity, TouchableHighlight 
+  Text,
+  View,
+  ImageBackground,
+  TouchableOpacity,
+  TouchableHighlight,
+  StyleSheet,
+  ScrollView
 } from 'react-native';
-                                                    //      Imports: "css-alike-ish" styling                            
+import {
+  Header, Card, ListItem, Divider
+} from "react-native-elements";
 import styles from '../Styles/profileStyles'
-import DeviceInfo from "react-native-device-info";
+import { db } from '../Database/Database';
 
 export default class ProfileScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Profile'
-  };
 
   constructor() {
     super()
+    this.ref = db.collection('Users').doc("XO5lwKAyI3PaEpGQ2bZ4");
+    this.unsubscribe = null;
+
     this.state = {
-      name: 'Sven Svensson',
-      macAdress: '50:BC:95:B5:35:F1',
-      regNmr: 'ABC 123',
-      email: 'React@native.com',
-      deviceId: ''
+      vehicles: [],
+      loading: true,
     }
   }
 
-  updateText = () => {
-    this.setState({name: 'Bengt Bengtsson'})
+  componentDidMount() {
+    this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
   }
 
-  getDeviceId = () => {
-    let id = DeviceInfo.getUniqueID();
-    this.setState({ deviceId: id });
-  };
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  onCollectionUpdate = (doc) => {
+    console.log("document: " + JSON.stringify(doc.data(), null, 2));
+    const vehicles = doc.data().vehicles;
+    console.log("vehicles: " + JSON.stringify(vehicles, null, 2));
+    
+    this.setState({
+      vehicles: vehicles
+    })
+  }
 
   render() {
     return (
-      <ImageBackground style={{width: '100%', height: '100%'}} source={require('../Src/Images/profileBG.jpg')}>
-        <Text style={styles.header}>Profile</Text>
-        <TouchableOpacity style={{borderRadius: 4, borderWidth: 1, width: '10%', alignSelf: 'flex-end', marginTop: -80, marginRight: 15}}>
-          <Text style={{fontWeight: 'bold', textAlign: 'center'}}>Log out</Text>
-        </TouchableOpacity >
-        <View style={styles.profileBody}>
-        {/* klickar man på Name: så ändras namnet, kanske användbart någonstans? typ när infon om gantrys ska ändras om man klickar på en */}
-          <Text style={{fontWeight: 'bold', fontSize: 18, marginLeft: '15%'}} onPress={this.updateText}>Name: </Text>
-          <Text style={{fontWeight: 'bold', fontSize: 18, marginLeft: '15%'}}>{this.state.name}</Text>
-          <View>
-            <Text style={styles.profileTextMargin}>MAC-adress: </Text>
-            <Text style={styles.profileText}>{this.state.macAdress}</Text>
-            <Text style={styles.profileTextMargin}>Reg. Number: </Text>
-            <Text style={styles.profileText}>{this.state.regNmr}</Text>
-            <Text style={styles.profileTextMargin}>Email: </Text>
-            <Text style={styles.profileText}>{this.state.email}</Text>
-            <TouchableHighlight  onPress={this.getDeviceId}>
-              <Text style={styles.profileTextMargin}>Device ID: </Text>
-            </TouchableHighlight>
-            <Text style={styles.profileText}>{this.state.deviceId}</Text>
+      <View style={localStyles.mainContainer}>
+        <Header
+          centerComponent={{
+            text: "Profile",
+            style: { color: "#fff", fontSize: 26 }
+          }}
+        />
+        <ScrollView>
+          <View style={localStyles.moneyContainer}>
+            <Card title="Name">
+              <Text style={localStyles.balanceText}>Anders Andersson</Text>
+            </Card>
           </View>
-        </View>
-        
-      </ImageBackground>
-    );
+
+          <View style={localStyles.moneyContainer}>
+            <Card title="Email">
+              <Text style={localStyles.balanceText}>mail.mail@mail.com</Text>
+            </Card>
+          </View>
+
+          <View style={localStyles.moneyContainer}>
+            {this.renderVehicles()}
+          </View>
+        </ScrollView>
+      </View>
+    )
   }
+
+  renderVehicles() {
+    return (
+      <Card title="Vehicles">
+        {this.state.vehicles.map((vehicle, key) => {
+          return (
+            <View key={key}>
+              <ListItem
+                title={vehicle.regnumber}
+                onPress={() => this.props.navigation.navigate('Vehicle', { 
+                  regnumber: vehicle.regnumber,
+                  type: vehicle.type
+                })}
+                chevron
+              />
+              <Divider />
+            </View>
+          )
+        })}
+      </Card>
+    )
+  }
+
 }
+
+const localStyles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    backgroundColor: "#eeeeee"
+  },
+  gantrysContainer: {
+    flex: 1,
+    marginBottom: 10
+  },
+  moneyContainer: {
+    // flex: 3
+  },
+  headerText: {
+    fontSize: 30,
+    textAlign: "center",
+    margin: 10
+  },
+  infoText: {
+    fontSize: 15,
+    margin: 10
+  },
+  moneyButton: {
+    width: 350
+  },
+  balanceText: {
+    fontSize: 14,
+    textAlign: "center"
+  }
+});
