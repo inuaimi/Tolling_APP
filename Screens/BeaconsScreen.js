@@ -36,6 +36,9 @@ export default class RNbeaconArticle extends React.Component {
     //
     // Request for authorization while the app is open
     Beacons.requestWhenInUseAuthorization();
+
+    // Android start iBeacon detection
+    //Beacons.detectIBeacons();
     // Define a region which can be identifier + uuid,
     // identifier + uuid + major or identifier + uuid + major + minor
     // (minor and major properties are numbers)

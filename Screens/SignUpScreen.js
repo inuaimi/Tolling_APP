@@ -22,18 +22,6 @@ export default class SignUpScreen extends React.Component {
     verified: false,
   }
 
-  componentWillMount() {
-    const config = {
-      apiKey: "AIzaSyBidTQWLb2V9YekKSrn_iXpr5UqWgAybcQ",
-      authDomain: "tolling-app.firebaseapp.com",
-      databaseURL: "https://tolling-app.firebaseio.com",
-      projectId: "tolling-app",
-      storageBucket: "tolling-app.appspot.com",
-      messagingSenderId: "671174856452"
-    };
-    firebase.initializeApp(config);
-  }
-
   onPressSignUp() {
     const { name, email, password, vehicle, license } = this.state;
     
@@ -77,7 +65,7 @@ export default class SignUpScreen extends React.Component {
     }
 
     if (this.state.verified) {
-      firebase.auth().createUserWithEmailAndPassword(email, password)
+      firebase.app().auth().createUserWithEmailAndPassword(email, password)
         .then(user => this.setState({
           name: this.state,
           user,

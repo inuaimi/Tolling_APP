@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Text, View, ImageBackground, TouchableOpacity, TouchableHighlight 
 } from 'react-native';
+import firebase from 'react-native-firebase';
                                                     //      Imports: "css-alike-ish" styling                            
 import styles from '../Styles/profileStyles'
 import DeviceInfo from "react-native-device-info";
@@ -31,12 +32,21 @@ export default class ProfileScreen extends React.Component {
     this.setState({ deviceId: id });
   };
 
+  signOutUser = async () => {
+    try {
+        await firebase.app().auth().signOut();
+        this.props.navigation.navigate("Login");
+    } catch (e) {
+        console.log(e);
+    }
+  }   
+
   render() {
     return (
       <ImageBackground style={{width: '100%', height: '100%'}} source={require('../Src/Images/profileBG.jpg')}>
         <Text style={styles.header}>Profile</Text>
         <TouchableOpacity style={{borderRadius: 4, borderWidth: 1, width: '10%', alignSelf: 'flex-end', marginTop: -80, marginRight: 15}}>
-          <Text style={{fontWeight: 'bold', textAlign: 'center'}}>Log out</Text>
+        <Text onPress={() => this.signOutUser()} style={{fontWeight: 'bold', textAlign: 'center'}}>Log out</Text>
         </TouchableOpacity >
         <View style={styles.profileBody}>
         {/* klickar man på Name: så ändras namnet, kanske användbart någonstans? typ när infon om gantrys ska ändras om man klickar på en */}

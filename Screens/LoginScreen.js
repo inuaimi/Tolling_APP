@@ -12,18 +12,6 @@ export default class SecondScreen extends React.Component {
     header: null
   };
 
-  componentWillMount() {
-    const config = {
-      apiKey: "AIzaSyBidTQWLb2V9YekKSrn_iXpr5UqWgAybcQ",
-      authDomain: "tolling-app.firebaseapp.com",
-      databaseURL: "https://tolling-app.firebaseio.com",
-      projectId: "tolling-app",
-      storageBucket: "tolling-app.appspot.com",
-      messagingSenderId: "671174856452"
-    };
-    firebase.initializeApp(config);
-  }
-
   state = {
     email: '',
     password: '',
@@ -49,7 +37,7 @@ export default class SecondScreen extends React.Component {
       })
     } 
 
-    firebase.auth().signInWithEmailAndPassword(email, password)
+    firebase.app().auth().signInWithEmailAndPassword(email, password)
       .then(() => { this.setState({ error: '', loading: false });
       this.props.navigation.navigate("Map") })
       .catch(() => {
@@ -63,7 +51,7 @@ export default class SecondScreen extends React.Component {
     if (this.state.loading) {
       return <Text>Loading...</Text>
     }
-    return <Buttons onPress={this.onSignInPressed.bind(this)}>Log in!</Buttons>;
+    return <Buttons onPress={this.onSignInPressed.bind(this)}>Log in</Buttons>;
   }
 
 
