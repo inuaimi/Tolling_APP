@@ -86,10 +86,11 @@ export default StyleSheet.create({
     },
     
     errorTextStyle: {
-        color: '#E64A19',
+        color: '#ff0000',
         alignSelf: 'center',
         paddingTop: 10,
-        paddingBottom: 10
+        paddingBottom: 10,
+        fontSize: 16,
     }
 
     

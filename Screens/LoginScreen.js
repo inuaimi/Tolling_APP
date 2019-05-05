@@ -36,6 +36,19 @@ export default class SecondScreen extends React.Component {
     this.setState({ error: '', loading: true });
     const { email, password } = this.state;
 
+    if (email === ''){
+      this.setState({
+        error: 'Email can not be empty',
+        loading: false
+      })
+    } 
+    else if (password === ''){
+      this.setState({
+        error: 'Please enter your password',
+        loading: false
+      })
+    } 
+
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(() => { this.setState({ error: '', loading: false });
       this.props.navigation.navigate("Map") })

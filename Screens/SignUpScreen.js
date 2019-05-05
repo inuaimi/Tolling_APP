@@ -136,8 +136,8 @@ export default class SignUpScreen extends React.Component {
           value={this.state.license}
         />
         <Buttons onPress={() => this.onPressSignUp()}>Sign up</Buttons>
+          <Text style = {{ color: '#ff0000', marginTop: 10, marginBottom: 10, fontSize: 16 }}>{this.state.error}</Text>
           <Text style={styles.login}>Already have an account? <Text onPress={() => this.props.navigation.navigate("Login")} style = {{ color: '#fff' }}>Log in</Text></Text>
-          <Text style = {{ color: '#ff0000', marginTop: 20, fontSize: 20 }}>{this.state.error}</Text>
       </View>
       </ImageBackground>
       );
