@@ -8,7 +8,7 @@ import DeviceInfo from "react-native-device-info";
 
 export default class SecondScreen extends React.Component {
   static navigationOptions = {
-    title: "History"
+    title: "Transactions"
   };
   constructor(props) {
     super(props);
@@ -21,12 +21,6 @@ export default class SecondScreen extends React.Component {
   render() {
     return (
       <View style={localStyles.mainContainer}>
-        {/* <Header
-          centerComponent={{
-            text: "History",
-            style: { color: "#fff", fontSize: 26 }
-          }}
-        /> */}
         <ScrollView>
           <View style={localStyles.moneyContainer}>
             {this.renderMoneyBalance()}

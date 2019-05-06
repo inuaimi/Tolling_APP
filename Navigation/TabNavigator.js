@@ -8,7 +8,7 @@ import {
 } from "react-navigation";
 
 import MapScreen from "../Screens/MapScreen";
-import HistoryScreen from "../Screens/HistoryScreen";
+import transactionsScreen from "../Screens/TransactionsScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
 import TestHomeScreen from "../Screens/TestHomeScreen";
 import AddScreen from "../Screens/AddScreen";
@@ -29,39 +29,53 @@ const StackNavigator = createStackNavigator(
   }
 );
 
-const historyStack = createStackNavigator({
-  History: {
-    screen: HistoryScreen,
+const transactionsStack = createStackNavigator({
+  Transactions: {
+    screen: transactionsScreen,
     navigationOptions: {
       headerStyle: {
         backgroundColor: theme.PRIMARY_COLOR
-      }
+      },
+      headerTintColor: "#fff"
     }
   }
 });
 
-const TabNavigator = createBottomTabNavigator({
-  Map: {
-    screen: MapScreen,
-    navigationOptions: {
-      tabBarIcon: <Icon name="map-marker" type="font-awesome" />
+const TabNavigator = createBottomTabNavigator(
+  {
+    Map: {
+      screen: MapScreen,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => (
+          <Icon name="map-marker" type="font-awesome" color={tintColor} />
+        )
+      }
+    },
+    Transactions: {
+      screen: transactionsStack,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => (
+          <Icon name="history" type="font-awesome" color={tintColor} />
+        )
+      }
+    },
+    Profile: {
+      screen: ProfileScreen,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => (
+          <Icon name="user-circle" type="font-awesome" color={tintColor} />
+        )
+      }
+    },
+    Test: {
+      screen: StackNavigator
     }
   },
-  History: {
-    screen: historyStack,
-    navigationOptions: {
-      tabBarIcon: <Icon name="history" type="font-awesome" />
+  {
+    tabBarOptions: {
+      activeTintColor: theme.PRIMARY_COLOR
     }
-  },
-  Profile: {
-    screen: ProfileScreen,
-    navigationOptions: {
-      tabBarIcon: <Icon name="user-circle" type="font-awesome" />
-    }
-  },
-  Test: {
-    screen: StackNavigator
   }
-});
+);
 
 export default createAppContainer(TabNavigator);
