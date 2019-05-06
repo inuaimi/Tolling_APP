@@ -12,6 +12,7 @@ import AddScreen from "../Screens/AddScreen";
 import ListScreen from "../Screens/ListScreen";
 import BeaconsScreen from "../Screens/BeaconsScreen";
 import VehicleScreen from "../Screens/VehicleScreen";
+import AddVehicleScreen from "../Screens/AddVehicleScreen";
 
 //        CONFIG's for the TabNavigator
 const StackNavigator = createStackNavigator(
@@ -29,7 +30,8 @@ const StackNavigator = createStackNavigator(
 const ProfileStackNavigator = createStackNavigator(
   {
     Home: ProfileScreen,
-    Vehicle: VehicleScreen
+    Vehicle: VehicleScreen,
+    AddVehicle: AddVehicleScreen
   },
   {
     initialRouteName: "Home",

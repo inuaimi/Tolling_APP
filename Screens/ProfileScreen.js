@@ -9,10 +9,11 @@ import {
   ScrollView
 } from 'react-native';
 import {
-  Header, Card, ListItem, Divider
+  Header, Card, ListItem, Divider, CheckBox, Button
 } from "react-native-elements";
 import styles from '../Styles/profileStyles'
 import { db } from '../Database/Database';
+import { MarkerAnimated } from 'react-native-maps';
 
 export default class ProfileScreen extends React.Component {
 
@@ -24,6 +25,8 @@ export default class ProfileScreen extends React.Component {
     this.state = {
       vehicles: [],
       loading: true,
+      checked: false,
+      checkedList: []
     }
   }
 
@@ -36,12 +39,15 @@ export default class ProfileScreen extends React.Component {
   }
 
   onCollectionUpdate = (doc) => {
-    console.log("document: " + JSON.stringify(doc.data(), null, 2));
-    const vehicles = doc.data().vehicles;
-    console.log("vehicles: " + JSON.stringify(vehicles, null, 2));
+    //console.log("document: " + JSON.stringify(doc.data(), null, 2));
+    const user = doc.data();
+
+    //console.log("vehicles: " + JSON.stringify(vehicles, null, 2));
     
     this.setState({
-      vehicles: vehicles
+      email: user.email,
+      name: user.name,
+      vehicles: user.vehicles
     })
   }
 
@@ -49,6 +55,7 @@ export default class ProfileScreen extends React.Component {
     return (
       <View style={localStyles.mainContainer}>
         <Header
+          containerStyle={{ backgroundColor: '#ff7f50' }}
           centerComponent={{
             text: "Profile",
             style: { color: "#fff", fontSize: 26 }
@@ -57,19 +64,22 @@ export default class ProfileScreen extends React.Component {
         <ScrollView>
           <View style={localStyles.moneyContainer}>
             <Card title="Name">
-              <Text style={localStyles.balanceText}>Anders Andersson</Text>
+              <Text style={localStyles.balanceText}> {this.state.name} </Text>
             </Card>
           </View>
 
           <View style={localStyles.moneyContainer}>
             <Card title="Email">
-              <Text style={localStyles.balanceText}>mail.mail@mail.com</Text>
+              <Text style={localStyles.balanceText}> {this.state.email} </Text>
             </Card>
           </View>
 
           <View style={localStyles.moneyContainer}>
             {this.renderVehicles()}
           </View>
+          <TouchableOpacity style={localStyles.addVehicleButton} onPress={() => this.props.navigation.navigate('AddVehicle')}>
+            <Text style={localStyles.btnText}>Add vehicle</Text>
+          </TouchableOpacity>
         </ScrollView>
       </View>
     )
@@ -96,7 +106,6 @@ export default class ProfileScreen extends React.Component {
       </Card>
     )
   }
-
 }
 
 const localStyles = StyleSheet.create({
@@ -126,5 +135,17 @@ const localStyles = StyleSheet.create({
   balanceText: {
     fontSize: 14,
     textAlign: "center"
+  },
+  addVehicleButton: {
+    paddingVertical: 15,
+    borderRadius: 25,
+    marginHorizontal: 15,
+    marginTop: 15,
+    backgroundColor: '#ff7f50'
+  },
+  btnText: {
+    alignSelf: 'center',
+    color: 'white',
+    fontWeight: 'bold'
   }
 });
