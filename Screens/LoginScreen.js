@@ -38,10 +38,16 @@ export default class SecondScreen extends React.Component {
     } 
 
     firebase.app().auth().signInWithEmailAndPassword(email, password)
-      .then(() => { this.setState({ error: '', loading: false });
+      .then(() => { this.setState({
+        error: '',
+        loading: false
+      });
       this.props.navigation.navigate("Map") })
       .catch(() => {
-        this.setState({ error: 'Authentication failed.', loading: false });
+        this.setState({
+          error: 'Authentication failed.',
+          loading: false
+        });
       });
       
       
@@ -53,9 +59,6 @@ export default class SecondScreen extends React.Component {
     }
     return <Buttons onPress={this.onSignInPressed.bind(this)}>Log in</Buttons>;
   }
-
-
-
 
   render() {
     return (
