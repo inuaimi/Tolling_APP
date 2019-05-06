@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import { Inputs } from '../Components/Inputs';
 import { Buttons } from '../Components/Buttons';
-import { Firebase, createUser } from '../Database/Database';
+import { createUser } from '../Database/Database';
 import firebase from 'react-native-firebase';
 
 export default class SignUpScreen extends React.Component {
@@ -63,7 +63,7 @@ export default class SignUpScreen extends React.Component {
         verified: true
       })
     }
-
+    console.log(this.state.verified)
     if (this.state.verified) {
       firebase.app().auth().createUserWithEmailAndPassword(email, password)
         .then(user => this.setState({
