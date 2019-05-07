@@ -18,28 +18,13 @@ export default class AddVehicleScreen extends React.Component {
 
   static navigationOptions = {
     title: "Add Vehicle",
-    headerVisible: true,
   };
 
   constructor() {
     super()
 
-    this.state = {
-      ready: false,
-      disabled: true
-    }
+    this.state = {}
   }
-
-  // componentDidMount = () => {
-  //   const vehicle = this.props.navigation.state.params;
-  //   console.log("vehicle: " + JSON.stringify(vehicle, null, 2));
-  //   this.setState({ 
-  //     vehicle: vehicle,
-  //     regnumber: vehicle.regnumber,
-  //     type: vehicle.type 
-  //   });
-  //   this.state.ready = true;
-  // }
 
   addUserVehicle = () => {
     const { regnumber, type } = this.state;
@@ -50,12 +35,6 @@ export default class AddVehicleScreen extends React.Component {
   
 
   render() {
-
-    // if(!this.state.ready) {
-    //   return null;
-    // }
-    // const { vehicle, regnumber, type } = this.state;
-
     return (
       <View style={localStyles.mainContainer}>
         <View>
@@ -70,7 +49,6 @@ export default class AddVehicleScreen extends React.Component {
             <View>
               <Picker
                 selectedValue={this.state.type}
-                
                 onValueChange={(itemValue, itemIndex) =>
                   this.setState({type: itemValue})
               }>
@@ -88,12 +66,6 @@ export default class AddVehicleScreen extends React.Component {
       </View>
     )
   }
-
-  // deleteVehicle = (vehicle) => {
-  //   deleteUserVehicle(vehicle);
-  //   this.props.navigation.goBack();
-  // }
-
 }
 
 const localStyles = StyleSheet.create({

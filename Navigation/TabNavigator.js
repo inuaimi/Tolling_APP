@@ -23,7 +23,7 @@ const StackNavigator = createStackNavigator(
     Beacons: BeaconsScreen,
   },
   {
-    initialRouteName: "Home"
+    initialRouteName: "Home",
   }
 );
 
@@ -35,12 +35,14 @@ const ProfileStackNavigator = createStackNavigator(
   },
   {
     initialRouteName: "Home",
-    // headerMode: 'none',
-    navigationOptions: {
-        headerVisible: false,
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: "#ff7f50"
+      },
+      headerTintColor: "#fff",
     }
   }
-)
+);
 
 const TabNavigator = createBottomTabNavigator({
   Map: {

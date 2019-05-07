@@ -13,9 +13,12 @@ import {
 } from "react-native-elements";
 import styles from '../Styles/profileStyles'
 import { db } from '../Database/Database';
-import { MarkerAnimated } from 'react-native-maps';
 
 export default class ProfileScreen extends React.Component {
+
+  static navigationOptions = {
+    title: "Profile"
+  };
 
   constructor() {
     super()
@@ -24,9 +27,6 @@ export default class ProfileScreen extends React.Component {
 
     this.state = {
       vehicles: [],
-      loading: true,
-      checked: false,
-      checkedList: []
     }
   }
 
@@ -39,10 +39,7 @@ export default class ProfileScreen extends React.Component {
   }
 
   onCollectionUpdate = (doc) => {
-    //console.log("document: " + JSON.stringify(doc.data(), null, 2));
     const user = doc.data();
-
-    //console.log("vehicles: " + JSON.stringify(vehicles, null, 2));
     
     this.setState({
       email: user.email,
@@ -54,13 +51,6 @@ export default class ProfileScreen extends React.Component {
   render() {
     return (
       <View style={localStyles.mainContainer}>
-        <Header
-          containerStyle={{ backgroundColor: '#ff7f50' }}
-          centerComponent={{
-            text: "Profile",
-            style: { color: "#fff", fontSize: 26 }
-          }}
-        />
         <ScrollView>
           <View style={localStyles.moneyContainer}>
             <Card title="Name">
@@ -112,25 +102,6 @@ const localStyles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: "#eeeeee"
-  },
-  gantrysContainer: {
-    flex: 1,
-    marginBottom: 10
-  },
-  moneyContainer: {
-    // flex: 3
-  },
-  headerText: {
-    fontSize: 30,
-    textAlign: "center",
-    margin: 10
-  },
-  infoText: {
-    fontSize: 15,
-    margin: 10
-  },
-  moneyButton: {
-    width: 350
   },
   balanceText: {
     fontSize: 14,

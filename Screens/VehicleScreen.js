@@ -17,7 +17,6 @@ export default class VehicleScreen extends React.Component {
 
   static navigationOptions = {
     title: "Vehicle Info",
-    headerVisible: true,
   };
 
   constructor() {
@@ -25,7 +24,6 @@ export default class VehicleScreen extends React.Component {
 
     this.state = {
       ready: false,
-      disabled: true
     }
   }
 
@@ -39,8 +37,6 @@ export default class VehicleScreen extends React.Component {
     });
     this.state.ready = true;
   }
-
-  
 
   render() {
 
