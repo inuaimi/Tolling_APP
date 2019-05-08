@@ -18,8 +18,26 @@ export const addItem = (item) => {
   });
 }
 
-export const createUser = (name, email, vehicle, license) => {
-  db.collection('Users').add({
+// Should be 2 params, user and vehicle to delete. User will be signed in.
+export const deleteUserVehicle = (vehicle, uid) => {
+  db.collection('Users').doc(uid).update({
+    vehicles: firebase.firestore.FieldValue.arrayRemove(vehicle)
+  });
+}
+
+export const addUserVehicle = (licensePlate, type, uid) => {
+  db.collection('Users').doc(uid).update({
+    vehicles: firebase.firestore.FieldValue.arrayUnion({
+      licensePlate: licensePlate,
+      type: type
+     })
+  });
+}
+
+export const createUser = (uid, name, email, vehicle, license) => {
+  var userIdRef = db.collection("Users").doc(uid);
+  userIdRef.set({
+    uid: uid,
     name: name,
     email: email,
     vehicles: [

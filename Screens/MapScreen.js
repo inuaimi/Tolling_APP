@@ -6,6 +6,7 @@ import MapView, { PROVIDER_GOOGLE, Marker, Circle } from "react-native-maps";
                                                     //      Imports: "css-alike-ish" styling                            
 import styles from '../Styles/styles'
 import NotifService from '../Components/NotificationService';
+import { db } from '../Database/Database';
 import geolib from 'geolib';
 
 const LATITUDE_DELTA = 0.005;
@@ -27,6 +28,9 @@ export default class MapScreen extends React.Component {
     super(props);
 
     this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
+
+    this.ref = db.collection('Gantries');
+    this.unsubscribe = null;
   }
 
   map = null;
@@ -34,57 +38,10 @@ export default class MapScreen extends React.Component {
   isReadyForNotif = true;
 
   state = {
-    markers: [{
-      title: 'JKPG Lasarettsparken',
-      coordinates: {
-        latitude: 57.779732,
-        longitude: 14.157731
-      }
-    }, {
-      title: 'JKPG Jönköpings Tekniska Högskola',
-      coordinates: {
-        latitude: 57.778782,
-        longitude: 14.163407
-      }
-    }, {
-      title: 'JKPG Rådhusparken',
-      coordinates: {
-        latitude: 57.782522,
-        longitude: 14.165725
-      }
-    }, {
-      title: "Casa de Lajne",
-      coordinates: {
-        latitude: 57.777813,
-        longitude: 14.157513
-      }
-    }],
-    circles: [{
-      // JKPG Lasarettsparken
-      center: {
-        latitude: 57.779732,
-        longitude: 14.157731
-      },
-    }, {
-      // JKPG Jönköpings Tekniska Högskola 
-      center: {
-        latitude: 57.778782,
-        longitude: 14.163407
-      },
-    }, {
-      // JKPG Rådhusparken
-      center: {
-        latitude: 57.782522,
-        longitude: 14.165725
-      },
-    }, {
-      //Casa de Lajne
-      center: {
-        latitude: 57.777813,
-        longitude: 14.157513
-      }
-    }],
+    gantries: [],
+    grantryMarker: [],
     ready: true,
+    loading: true
   };
 
   setRegion(region) {
@@ -100,8 +57,8 @@ export default class MapScreen extends React.Component {
   isDeviceInGeofence(coordinates) {
     let isInsideCirle = false;
     let index = null;
-    this.state.circles.forEach(function(circle) {
-      if(geolib.isPointInCircle({ latitude: coordinates.latitude, longitude: coordinates.longitude }, circle.center, 10 )) {
+    this.state.gantries.forEach(function(gantry) {
+      if(geolib.isPointInCircle({ latitude: coordinates.latitude, longitude: coordinates.longitude }, gantry.center, 10 )) {
         isInsideCirle = true;
       }
     })
@@ -110,6 +67,7 @@ export default class MapScreen extends React.Component {
 
   componentDidMount() {
     this.getCurrentposition();
+    this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
 
     this.watchId = navigator.geolocation.watchPosition(
       position => {
@@ -131,13 +89,43 @@ export default class MapScreen extends React.Component {
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID);
+    this.unsubscribe();
+  }
+
+  onCollectionUpdate = (querySnapshot) => {
+    const gantries = [];
+    const gantryMarkers = [];
+    querySnapshot.forEach((doc) => {
+      const gantry = doc.data();
+      //console.log(JSON.stringify(doc.data(), null, 2));
+
+      gantries.push({ 
+        center: {
+          latitude: gantry.Latitude,
+          longitude: gantry.Longitude
+        }
+      });
+      gantryMarkers.push({
+        title: gantry.Title,
+        coordinates: {
+          latitude: gantry.Latitude,
+          longitude: gantry.Longitude
+        }
+      })
+    });
+
+    this.setState({
+      gantries,
+      gantryMarkers,
+      loading: false
+    });
   }
 
   getCurrentposition() {
     try {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          console.log('currentPos: ', JSON.stringify(position, null, 2))
+          //console.log('currentPos: ', JSON.stringify(position, null, 2))
           const region = {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
@@ -181,6 +169,10 @@ export default class MapScreen extends React.Component {
     const { children, renderMarker, markers } = this.props;
     let me = this;
 
+    if(me.state.loading) {
+      return null;
+    }
+
     return (
       <View style={styles.container}>
         <MapView
@@ -197,19 +189,19 @@ export default class MapScreen extends React.Component {
           style={styles.map}
           textStyle={{ color: '#bc8b00' }}
           containerStyle={{ backgroundColor: 'white', borderColor: '#bc8b00' }}
-        >
-          {this.state.markers.map((marker, i) => (
+        > 
+          {this.state.gantryMarkers.map((marker, i) => (
             <MapView.Marker
               key={i}
               coordinate={marker.coordinates}
               title={marker.title}
             />
           ))}
-          {this.state.circles.map((cirle, i) => (
+          {this.state.gantries.map((gantry, i) => (
             <MapView.Circle
               key={i}
-              center={cirle.center}
-              radius={ 10 }
+              center={gantry.center}
+              radius={ 50 }
               strokeWidth = { 1 }
               strokeColor={ '#20bf6b' }
             />

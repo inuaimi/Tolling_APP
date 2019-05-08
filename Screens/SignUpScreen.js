@@ -1,11 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, ImageBackground, Picker } from 'react-native';
-
-
 import { Inputs } from '../Components/Inputs';
 import { Buttons } from '../Components/Buttons';
 import { createUser } from '../Database/Database';
 import firebase from 'react-native-firebase';
+
 
 export default class SignUpScreen extends React.Component {
   static navigationOptions = {
@@ -22,6 +21,7 @@ export default class SignUpScreen extends React.Component {
       error: '',
       loading: false,
     }
+
 
   onPressSignUp() {
     this.setState({
@@ -64,13 +64,14 @@ export default class SignUpScreen extends React.Component {
       })
     }
  
-    
     firebase.app().auth().createUserWithEmailAndPassword(email, password)
       .then(() => { this.setState({
         error: '',
         loading: false
       });
+      const uid = firebase.app().auth().currentUser.uid;
       createUser(
+        uid,
         this.state.name,
         this.state.email,
         this.state.vehicle,
@@ -78,8 +79,8 @@ export default class SignUpScreen extends React.Component {
       )
       this.props.navigation.navigate("Login")
       })
-      .catch(() => { this.setState({
-        error: 'Failed to sign up. Try again.',
+      .catch((error) => { this.setState({
+        error: error.code,
         loading: false
         })
       })  
@@ -144,8 +145,8 @@ export default class SignUpScreen extends React.Component {
       </View>
       
         {this.renderButtonOrLoading()}
-        <Text style = {{ color: '#ff0000', marginTop: 10, fontSize: 16 }}>{this.state.error}</Text>
-        <Text style={styles.login}>Already have an account? <Text onPress={() => this.props.navigation.navigate("Login")} style = {{ color: '#fff' }}>Log in</Text></Text>
+        <Text style = {{ color: '#ff0000', marginTop: 10, marginBottom: 10, fontSize: 16 }}>{this.state.error}</Text>
+        <Text style={styles.login}>Already have an account? <Text onPress={() => this.props.navigation.navigate("Login")} style = {{ color: '#fff' }}>Sign in</Text></Text>
     </View>
     </ImageBackground>
     );
