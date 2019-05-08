@@ -178,7 +178,6 @@ const styles = StyleSheet.create({
   },
   vehicleText: {
     marginTop: 10,
-    
     width: '100%',
     borderWidth: 1,
     borderColor: '#000',
@@ -205,5 +204,6 @@ const styles = StyleSheet.create({
   pickerItem: {
     color: '#fff',
     height: 130,
+    fontSize: 24,
   },
 })
