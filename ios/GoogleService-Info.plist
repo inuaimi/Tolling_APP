@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>671174856452-o51kc1vls20v671343smtbmo59pq5up4.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.671174856452-o51kc1vls20v671343smtbmo59pq5up4</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAFl1vrmGcfQAtWbAFyKLAbptqbME7wRTI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>671174856452</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.reactjs.native.example.Tolling-APP</string>
+	<key>PROJECT_ID</key>
+	<string>tolling-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tolling-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:671174856452:ios:d0cd558119937707</string>
+	<key>DATABASE_URL</key>
+	<string>https://tolling-app.firebaseio.com</string>
+</dict>
+</plist>

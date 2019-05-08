@@ -8,6 +8,8 @@ import com.airbnb.android.react.maps.MapsPackage;
 import com.mackentoch.beaconsandroid.BeaconsAndroidPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.firestore.RNFirebaseFirestorePackage;
+import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.react.ReactNativeHost;
@@ -35,6 +37,8 @@ public class MainApplication extends Application implements ReactApplication {
             new BeaconsAndroidPackage(),
             new ReactNativePushNotificationPackage(),
             new RNFirebasePackage(),
+            new RNFirebaseFirestorePackage(),
+            new RNFirebaseAuthPackage(),
             new RNDeviceInfo(),
             new RNGestureHandlerPackage()
       );

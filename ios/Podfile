@@ -9,6 +9,7 @@ target 'Tolling_APP' do
   pod 'Firebase/Core'
   pod 'Firebase/Database'
   pod 'Firebase/Firestore'
+  pod 'Firebase/Auth'
 
   # See http://facebook.github.io/react-native/docs/integration-with-existing-apps.html#configuring-cocoapods-dependencies
   pod 'yoga', path: "#{rn_path}/ReactCommon/yoga/yoga.podspec"

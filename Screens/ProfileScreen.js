@@ -8,9 +8,14 @@ import {
   StyleSheet,
   ScrollView
 } from 'react-native';
+<<<<<<< HEAD
 import {
   Header, Card, ListItem, Divider, CheckBox, Button
 } from "react-native-elements";
+=======
+import firebase from 'react-native-firebase';
+                                                    //      Imports: "css-alike-ish" styling                            
+>>>>>>> development
 import styles from '../Styles/profileStyles'
 import { db } from '../Database/Database';
 
@@ -47,6 +52,15 @@ export default class ProfileScreen extends React.Component {
       vehicles: user.vehicles
     })
   }
+
+  signOutUser = async () => {
+    try {
+        await firebase.app().auth().signOut();
+        this.props.navigation.navigate("Login");
+    } catch (e) {
+        console.log(e);
+    }
+  }   
 
   render() {
     return (

@@ -9,7 +9,8 @@ import {
   ListView,
   DeviceEventEmitter,
   FlatList,
-  SectionList
+  SectionList,
+  Platform
 }                             from 'react-native';
 import Beacons                from 'react-native-beacons-manager';
 
@@ -35,7 +36,12 @@ export default class RNbeaconArticle extends React.Component {
     // ONLY non component state aware here in componentWillMount
     //
     // Request for authorization while the app is open
-    Beacons.requestWhenInUseAuthorization();
+    if(Platform.OS === 'ios'){
+      Beacons.requestWhenInUseAuthorization();
+    } else if(Platform.OS === 'android') {
+      Beacons.detectIBeacons();
+    }
+
     // Define a region which can be identifier + uuid,
     // identifier + uuid + major or identifier + uuid + major + minor
     // (minor and major properties are numbers)
@@ -45,7 +51,9 @@ export default class RNbeaconArticle extends React.Component {
     };
     // Range for beacons inside the region
     Beacons.startRangingBeaconsInRegion(region);
-    Beacons.startUpdatingLocation();
+    if(Platform.OS === 'ios'){
+      Beacons.startUpdatingLocation();
+    }
   }
 
   componentDidMount() {

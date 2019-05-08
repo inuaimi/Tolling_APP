@@ -9,16 +9,17 @@ export default StyleSheet.create({
      
     },
     container1: {
-        backgroundColor: 'rgba(160, 204, 242, .4)',
         flex: 1,
+        padding: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(160, 204, 242, .4)'
     },
     title: {
-        marginTop: 150,
-        fontSize: 40,
-        textAlign: 'center',
-        margin: 10,
-
-        color: 'white'
+        marginBottom: 30,
+        color: '#fff',
+        fontWeight: '400',
+        fontSize: 32,
         
     },
     backgroundContainer:{
@@ -81,8 +82,16 @@ export default StyleSheet.create({
     
     },
     signupText: {
-
         color: 'black'
+    },
+    
+    errorTextStyle: {
+        color: '#ff0000',
+        alignSelf: 'center',
+        paddingTop: 10,
+        paddingBottom: 10,
+        fontSize: 16,
     }
+
     
 });
