@@ -15,12 +15,10 @@ export const deleteUserVehicle = (vehicle) => {
   });
 }
 
-// Skall kallas på ifrån profilsidan. Knapp(Add Car) -> AddCarScreen ?
-
-export const addUserVehicle = (regnumber, type) => {
+export const addUserVehicle = (licensePlate, type) => {
   db.collection('Users').doc('XO5lwKAyI3PaEpGQ2bZ4').update({
     vehicles: firebase.firestore.FieldValue.arrayUnion({
-      regnumber: regnumber,
+      licensePlate: licensePlate,
       type: type
      })
   });

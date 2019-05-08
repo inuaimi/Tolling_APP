@@ -32,7 +32,7 @@ export default class VehicleScreen extends React.Component {
     console.log("vehicle: " + JSON.stringify(vehicle, null, 2));
     this.setState({ 
       vehicle: vehicle,
-      regnumber: vehicle.regnumber,
+      licensePlate: vehicle.licensePlate,
       type: vehicle.type 
     });
     this.state.ready = true;
@@ -43,15 +43,15 @@ export default class VehicleScreen extends React.Component {
     if(!this.state.ready) {
       return null;
     }
-    const { vehicle, regnumber, type } = this.state;
+    const { vehicle, licensePlate, type } = this.state;
 
     return (
       <View style={localStyles.mainContainer}>
         <View>
           <Card>
             <ListItem 
-              title={ <Text style={localStyles.leftText}> Regnumber </Text> }
-              rightTitle={ <Text style={styles.rightText}> {regnumber} </Text> }
+              title={ <Text style={localStyles.leftText}> LicensePlate </Text> }
+              rightTitle={ <Text style={styles.rightText}> {licensePlate} </Text> }
               Divider
             />
             <ListItem
@@ -71,7 +71,6 @@ export default class VehicleScreen extends React.Component {
     deleteUserVehicle(vehicle);
     this.props.navigation.goBack();
   }
-
 }
 
 const localStyles = StyleSheet.create({

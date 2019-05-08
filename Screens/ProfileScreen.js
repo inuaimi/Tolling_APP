@@ -82,9 +82,9 @@ export default class ProfileScreen extends React.Component {
           return (
             <View key={key}>
               <ListItem
-                title={vehicle.regnumber}
+                title={vehicle.licensePlate}
                 onPress={() => this.props.navigation.navigate('Vehicle', { 
-                  regnumber: vehicle.regnumber,
+                  licensePlate: vehicle.licensePlate,
                   type: vehicle.type
                 })}
                 chevron

@@ -27,8 +27,8 @@ export default class AddVehicleScreen extends React.Component {
   }
 
   addUserVehicle = () => {
-    const { regnumber, type } = this.state;
-    addUserVehicle(regnumber, type);
+    const { licensePlate, type } = this.state;
+    addUserVehicle(licensePlate, type);
     this.props.navigation.goBack();
   }
 
@@ -38,11 +38,11 @@ export default class AddVehicleScreen extends React.Component {
     return (
       <View style={localStyles.mainContainer}>
         <View>
-          <Card title="Regnumber">
+          <Card title="License plate">
             <TextInput 
               placeholder="ABC123" 
               style={localStyles.text} 
-              onChangeText={(text) => this.setState({ regnumber: text})}>
+              onChangeText={(text) => this.setState({ licensePlate: text})}>
             </TextInput>
           </Card>
           <Card title="Type">
