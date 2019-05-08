@@ -3,7 +3,6 @@ import { Text, View, StyleSheet, ScrollView } from "react-native";
 //      Imports: "css-alike-ish" styling
 import styles from "../Styles/styles";
 import { Header, Card, ListItem, Divider } from "react-native-elements";
-import { ScrollView } from "react-native-gesture-handler";
 import DeviceInfo from "react-native-device-info";
 
 export default class SecondScreen extends React.Component {

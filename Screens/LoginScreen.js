@@ -57,7 +57,7 @@ export default class SecondScreen extends React.Component {
     if (this.state.loading) {
       return <Text>Loading...</Text>
     }
-    return <Buttons onPress={this.onSignInPressed.bind(this)}>Log in</Buttons>;
+    return <Buttons onPress={this.onSignInPressed.bind(this)}>Sign in</Buttons>;
   }
 
   render() {

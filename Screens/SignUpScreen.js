@@ -130,7 +130,7 @@ export default class SignUpScreen extends React.Component {
       />
         {this.renderButtonOrLoading()}
         <Text style = {{ color: '#ff0000', marginTop: 10, marginBottom: 10, fontSize: 16 }}>{this.state.error}</Text>
-        <Text style={styles.login}>Already have an account? <Text onPress={() => this.props.navigation.navigate("Login")} style = {{ color: '#fff' }}>Log in</Text></Text>
+        <Text style={styles.login}>Already have an account? <Text onPress={() => this.props.navigation.navigate("Login")} style = {{ color: '#fff' }}>Sign in</Text></Text>
     </View>
     </ImageBackground>
     );

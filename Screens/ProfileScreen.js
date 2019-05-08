@@ -8,21 +8,25 @@ import {
   StyleSheet,
   ScrollView
 } from 'react-native';
-<<<<<<< HEAD
 import {
-  Header, Card, ListItem, Divider, CheckBox, Button
+  Header, Card, ListItem, Divider, CheckBox, Button, Icon
 } from "react-native-elements";
-=======
 import firebase from 'react-native-firebase';
                                                     //      Imports: "css-alike-ish" styling                            
->>>>>>> development
 import styles from '../Styles/profileStyles'
 import { db } from '../Database/Database';
 
 export default class ProfileScreen extends React.Component {
 
-  static navigationOptions = {
-    title: "Profile"
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "Profile",
+      headerRight: (
+        <TouchableOpacity style={{ marginRight: 15 }} onPress={navigation.getParam('signOutUser')}>
+          <Icon name="logout" type="material-community" color="white" />
+        </TouchableOpacity>
+      )
+    };
   };
 
   constructor() {
@@ -37,6 +41,7 @@ export default class ProfileScreen extends React.Component {
 
   componentDidMount() {
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+    this.props.navigation.setParams({ signOutUser: this._signOutUser });
   }
 
   componentWillUnmount() {
@@ -53,7 +58,7 @@ export default class ProfileScreen extends React.Component {
     })
   }
 
-  signOutUser = async () => {
+  _signOutUser = async () => {
     try {
         await firebase.app().auth().signOut();
         this.props.navigation.navigate("Login");
@@ -127,6 +132,13 @@ const localStyles = StyleSheet.create({
     marginHorizontal: 15,
     marginTop: 15,
     backgroundColor: '#ff7f50'
+  },
+  logoutButton: {
+    paddingVertical: 15,
+    borderRadius: 25,
+    marginHorizontal: 15,
+    marginTop: 15,
+    backgroundColor: '#EA2027'
   },
   btnText: {
     alignSelf: 'center',
