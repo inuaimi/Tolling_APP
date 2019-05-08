@@ -22,7 +22,11 @@ export const createUser = (name, email, vehicle, license) => {
   db.collection('Users').add({
     name: name,
     email: email,
-    vehicle: vehicle,
-    licensePlate: license
+    vehicles: [
+      {
+      type: vehicle,
+      licensePlate: license
+      }
+    ]
   });
 }
