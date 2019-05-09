@@ -1,10 +1,9 @@
 import React from "react";
 import { Text, View, ImageBackground } from "react-native";
 import styles from "../Styles/loginStyles";
-import { Buttons } from '../Components/Buttons';
-import { Inputs } from '../Components/Inputs';
-import firebase from 'react-native-firebase';
-
+import { Buttons } from "../Components/Buttons";
+import { Inputs } from "../Components/Inputs";
+import firebase from "react-native-firebase";
 
 export default class SecondScreen extends React.Component {
   static navigationOptions = {
@@ -13,49 +12,50 @@ export default class SecondScreen extends React.Component {
   };
 
   state = {
-    email: '',
-    password: '',
-    error: '',
+    email: "",
+    password: "",
+    error: "",
     loading: false
   };
 
   onSignInPressed() {
-
-    this.setState({ error: '', loading: true });
+    this.setState({ error: "", loading: true });
     const { email, password } = this.state;
 
-    if (email === ''){
+    if (email === "") {
       this.setState({
-        error: 'Email can not be empty',
-        loading: false
-      })
-    } 
-    else if (password === ''){
-      this.setState({
-        error: 'Please enter your password',
-        loading: false
-      })
-    } 
-
-    firebase.app().auth().signInWithEmailAndPassword(email, password)
-      .then(() => { this.setState({
-        error: '',
+        error: "Email can not be empty",
         loading: false
       });
-      this.props.navigation.navigate("Map") })
+    } else if (password === "") {
+      this.setState({
+        error: "Please enter your password",
+        loading: false
+      });
+    }
+
+    firebase
+      .app()
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        this.setState({
+          error: "",
+          loading: false
+        });
+        this.props.navigation.navigate("Map");
+      })
       .catch(() => {
         this.setState({
-          error: 'Authentication failed.',
+          error: "Authentication failed.",
           loading: false
         });
       });
-      
-      
-  };
+  }
 
   renderButtonOrLoading() {
     if (this.state.loading) {
-      return <Text>Loading...</Text>
+      return <Text>Loading...</Text>;
     }
     return <Buttons onPress={this.onSignInPressed.bind(this)}>Sign in</Buttons>;
   }
@@ -71,34 +71,37 @@ export default class SecondScreen extends React.Component {
           <Inputs
             onChangeText={email => this.setState({ email })}
             value={this.state.email}
-            placeholder='Email'
-            placeholderTextColor='#777777'
+            placeholder="Email"
+            placeholderTextColor="#777777"
           />
           <Inputs
             onChangeText={password => this.setState({ password })}
             value={this.state.password}
             secureTextEntry={true}
-            placeholder='Password'
+            placeholder="Password"
             placeholderTextColor="#777777"
-
           />
           <Text style={styles.errorTextStyle}>{this.state.error}</Text>
           {this.renderButtonOrLoading()}
 
-          <Text style={styles.forgotPw}>
+          <Text
+            onPress={() => {
+              this.props.navigation.navigate("ForgotPw");
+            }}
+            style={styles.forgotPw}
+          >
             Forgot password |{" "}
             <Text
               onPress={() => {
                 this.props.navigation.navigate("SignUp");
               }}
               style={styles.signupText}
-            >Sign Up</Text>
+            >
+              Sign Up
+            </Text>
           </Text>
         </View>
       </ImageBackground>
     );
   }
-
-
-
 }
