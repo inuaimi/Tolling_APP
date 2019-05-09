@@ -42,3 +42,9 @@ export const createUser = (name, email, vehicle, license) => {
     licensePlate: license
   });
 }
+
+export const addUserMoney = (money) => {
+  db.collection('Users').doc('XO5lwKAyI3PaEpGQ2bZ4').update({
+    money: money
+  });
+}

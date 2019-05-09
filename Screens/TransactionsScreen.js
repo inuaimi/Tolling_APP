@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, StyleSheet, ScrollView } from "react-native";
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 //      Imports: "css-alike-ish" styling
 import styles from "../Styles/styles";
 import { Header, Card, ListItem, Divider } from "react-native-elements";
@@ -24,35 +24,6 @@ export default class SecondScreen extends React.Component {
 
   componentDidMount() {
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
-    // DeviceInfo.getMACAddress().then(val => {
-    //   console.log("MacAdress: " + val);
-    // });
-    // let gantry1 = { name: "Gantry1", date: "2019-02-11", cost: 20, id: "0" };
-    // let gantry2 = { name: "Gantry2", date: "2019-02-11", cost: 38, id: "1" };
-    // let gantry3 = { name: "Gantry3", date: "2019-02-11", cost: 38, id: "2" };
-    // let gantry4 = { name: "Gantry4", date: "2019-02-11", cost: 38, id: "3" };
-    // let gantry5 = { name: "Gantry5", date: "2019-02-11", cost: 38, id: "4" };
-    // let gantry6 = { name: "Gantry6", date: "2019-02-11", cost: 38, id: "5" };
-    // let gantry7 = { name: "Gantry7", date: "2019-02-11", cost: 38, id: "6" };
-    // let gantry8 = { name: "Gantry8", date: "2019-02-11", cost: 38, id: "7" };
-    // let gantry9 = { name: "Gantry9", date: "2019-02-11", cost: 38, id: "8" };
-    // let gantry10 = { name: "Gantry10", date: "2019-02-17", cost: 38, id: "9" };
-    // let gantry11 = { name: "Gantry11", date: "2019-02-17", cost: 40, id: "10" };
-    // this.setState({
-    //   gantrys: [
-    //     gantry1,
-    //     gantry2,
-    //     gantry3,
-    //     gantry4,
-    //     gantry5,
-    //     gantry6,
-    //     gantry7,
-    //     gantry8,
-    //     gantry9,
-    //     gantry10,
-    //     gantry11
-    //   ]
-    // });
     this.setState({ balance: 319 });
   }
 
@@ -95,6 +66,9 @@ export default class SecondScreen extends React.Component {
           <Text style={localStyles.balanceText}>
             {this.state.balance + "kr"}
           </Text>
+          <TouchableOpacity style={localStyles.addMoneyButton} onPress={() => this.props.navigation.navigate('AddMoney')} >
+              <Text style={localStyles.btnText}> Add money </Text>
+            </TouchableOpacity>
         </View>
       </Card>
     );
@@ -172,5 +146,17 @@ const localStyles = StyleSheet.create({
   balanceText: {
     fontSize: 30,
     textAlign: "center"
+  },
+  addMoneyButton: {
+    paddingVertical: 15,
+    borderRadius: 25,
+    marginHorizontal: 15,
+    marginTop: 15,
+    backgroundColor: '#2ecc71'
+  },
+  btnText: {
+    alignSelf: 'center',
+    color: 'white',
+    fontWeight: 'bold'
   }
 });
