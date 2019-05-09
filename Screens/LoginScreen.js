@@ -5,7 +5,6 @@ import { Buttons } from "../Components/Buttons";
 import { Inputs } from "../Components/Inputs";
 import firebase from "react-native-firebase";
 
-
 export default class SecondScreen extends React.Component {
   static navigationOptions = {
     //To hide the NavigationBar from current Screen
@@ -41,22 +40,20 @@ export default class SecondScreen extends React.Component {
       .signInWithEmailAndPassword(email, password)
       .then(() => {
         const user = firebase.app().auth().currentUser;
-        console.log(user)
-        if(user
-          .emailVerified){
-            this.setState({
-              error: "",
-              loading: false
-            });
-            this.props.navigation.navigate("Map");
-          }
-          else {
-            alert("Please verify email to sign in.");
-            this.setState({
-              error: error.code,
-              loading: false
-            });
-          }
+        console.log(user);
+        if (user.emailVerified) {
+          this.setState({
+            error: "",
+            loading: false
+          });
+          this.props.navigation.navigate("Map");
+        } else {
+          alert("Please verify email to sign in.");
+          this.setState({
+            error: error.code,
+            loading: false
+          });
+        }
       })
       .catch(() => {
         this.setState({

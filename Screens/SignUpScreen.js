@@ -69,7 +69,8 @@ export default class SignUpScreen extends React.Component {
         });
         const uid = firebase.app().auth().currentUser.uid;
         const user = firebase.app().auth().currentUser;
-        user.sendEmailVerification()
+        user
+          .sendEmailVerification()
           .then(() => {
             alert(
               "Email successfully sent to " + email + ". Verify it to sign in."
