@@ -36,6 +36,7 @@ export default class SecondScreen extends React.Component {
 
     this.setState({
       transactions: user.transactions,
+      balance: user.balance,
       ready: true
     });
   }
@@ -64,7 +65,7 @@ export default class SecondScreen extends React.Component {
       <Card title="Balance">
         <View>
           <Text style={localStyles.balanceText}>
-            {this.state.balance + "kr"}
+            { this.state.balance ? this.state.balance + " kr" : "0 kr"}
           </Text>
           <TouchableOpacity style={localStyles.addMoneyButton} onPress={() => this.props.navigation.navigate('AddMoney')} >
               <Text style={localStyles.btnText}> Add money </Text>
