@@ -2,8 +2,16 @@ import React from "react";
 import { Text, View, StyleSheet, ScrollView } from "react-native";
 //      Imports: "css-alike-ish" styling
 import styles from "../Styles/styles";
-import { Header, Card, ListItem, Divider } from "react-native-elements";
+import {
+  Header,
+  Card,
+  ListItem,
+  Divider,
+  Icon,
+  Button
+} from "react-native-elements";
 import DeviceInfo from "react-native-device-info";
+import ActionButton from "react-native-action-button";
 
 export default class SecondScreen extends React.Component {
   static navigationOptions = {
@@ -24,7 +32,9 @@ export default class SecondScreen extends React.Component {
           <View style={localStyles.moneyContainer}>
             {this.renderMoneyBalance()}
           </View>
-
+          <View style={localStyles.addMoneyButton}>
+            {this.renderAddMoney2()}
+          </View>
           <View style={localStyles.gantrysContainer}>
             {this.renderPassedGantrys()}
           </View>
@@ -99,6 +109,38 @@ export default class SecondScreen extends React.Component {
     );
   }
 
+  renderAddMoney2() {
+    return <Button title="Add money" />;
+  }
+
+  renderAddMoney() {
+    return (
+      <ActionButton buttonColor="rgba(231,76,60,1)">
+        <ActionButton.Item
+          buttonColor="#9b59b6"
+          title="New Task"
+          onPress={() => console.log("notes tapped!")}
+        >
+          <Icon name="md-create" style={styles.actionButtonIcon} />
+        </ActionButton.Item>
+        <ActionButton.Item
+          buttonColor="#3498db"
+          title="Notifications"
+          onPress={() => {}}
+        >
+          <Icon name="md-notifications-off" style={styles.actionButtonIcon} />
+        </ActionButton.Item>
+        <ActionButton.Item
+          buttonColor="#1abc9c"
+          title="All Tasks"
+          onPress={() => {}}
+        >
+          <Icon name="md-done-all" style={styles.actionButtonIcon} />
+        </ActionButton.Item>
+      </ActionButton>
+    );
+  }
+
   //Not used atm
   calculateMoneySpent() {
     let totalMoneySpent = 0;
@@ -149,5 +191,10 @@ const localStyles = StyleSheet.create({
   balanceText: {
     fontSize: 30,
     textAlign: "center"
+  },
+  addMoneyButton: {
+    marginTop: 15,
+    borderRadius: 25,
+    marginHorizontal: 15
   }
 });

@@ -4,6 +4,7 @@ import {
   createSwitchNavigator,
   SwitchNavigator
 } from "react-navigation";
+import { AsyncStorage } from "react-native";
 
 import LoginScreen from "../Screens/LoginScreen";
 import SignUpScreen from "../Screens/SignUpScreen";
@@ -23,6 +24,7 @@ export const createMainNavigator = (isLoggedIn = false) => {
       },
       {
         initialRouteName: isLoggedIn ? "LoggedIn" : "LoggedOut"
+        // initialRouteName: "LoggedOut"
       }
     )
   );
