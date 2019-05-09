@@ -13,8 +13,8 @@ export default class SecondScreen extends React.Component {
   };
 
   state = {
-    email: '',
-    password: '',
+    email: 'jotten@jotten.com',
+    password: 'jotten',
     error: '',
     loading: false
   };

@@ -17,6 +17,8 @@ import BeaconsScreen from "../Screens/BeaconsScreen";
 import VehicleScreen from "../Screens/VehicleScreen";
 import AddVehicleScreen from "../Screens/AddVehicleScreen";
 import theme from "../Styles/theme";
+import EditEmailScreen from "../Screens/EditEmailScreen";
+
 
 //        CONFIG's for the TabNavigator
 const StackNavigator = createStackNavigator(
@@ -35,7 +37,8 @@ const ProfileStackNavigator = createStackNavigator(
   {
     Home: ProfileScreen,
     Vehicle: VehicleScreen,
-    AddVehicle: AddVehicleScreen
+    AddVehicle: AddVehicleScreen,
+    EditEmail: EditEmailScreen
   },
   {
     initialRouteName: "Home",
@@ -46,6 +49,7 @@ const ProfileStackNavigator = createStackNavigator(
       headerTintColor: "#fff",
     }
   }
+
 );
 
 const transactionsStack = createStackNavigator({
