@@ -22,6 +22,7 @@ import firebase from "react-native-firebase";
 //      Imports: "css-alike-ish" styling
 import styles from "../Styles/profileStyles";
 import { db } from "../Database/Database";
+import theme from "../Styles/theme";
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -162,7 +163,7 @@ const localStyles = StyleSheet.create({
     borderRadius: 25,
     marginHorizontal: 15,
     marginTop: 15,
-    backgroundColor: "#ff7f50"
+    backgroundColor: theme.PRIMARY_COLOR
   },
   logoutButton: {
     paddingVertical: 15,

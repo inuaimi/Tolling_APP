@@ -24,10 +24,10 @@ const StackNavigator = createStackNavigator(
     Home: TestHomeScreen,
     Add: AddScreen,
     List: ListScreen,
-    Beacons: BeaconsScreen,
+    Beacons: BeaconsScreen
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "Home"
   }
 );
 
@@ -41,9 +41,9 @@ const ProfileStackNavigator = createStackNavigator(
     initialRouteName: "Home",
     defaultNavigationOptions: {
       headerStyle: {
-        backgroundColor: "#ff7f50"
+        backgroundColor: theme.PRIMARY_COLOR
       },
-      headerTintColor: "#fff",
+      headerTintColor: "#fff"
     }
   }
 );
