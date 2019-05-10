@@ -82,7 +82,8 @@ export default class ProfileScreen extends React.Component {
   };
 
   saveSignedOutState = async () => {
-    //set overwrite login data
+    console.log("_application, Hello from saveSignedOutState");
+    //overwrite login data
     try {
       await AsyncStorage.multiSet([
         ["email", ""],
