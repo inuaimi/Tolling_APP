@@ -71,7 +71,8 @@ export default class EditEmail extends React.Component {
   }
 
   editEmail = (newEmail) => {
-    editUserEmail(newEmail);
+    const uid = firebase.app().auth().currentUser.uid;
+    editUserEmail(newEmail, uid);
     this.props.navigation.goBack();
   }
 }
