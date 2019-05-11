@@ -31,7 +31,8 @@ export default class ProfileScreen extends React.Component {
 
   constructor() {
     super()
-    this.ref = db.collection('Users').doc("XO5lwKAyI3PaEpGQ2bZ4");
+    const uid = firebase.app().auth().currentUser.uid;
+    this.ref = db.collection('Users').doc(uid);
     this.unsubscribe = null;
 
     this.state = {
