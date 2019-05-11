@@ -5,6 +5,7 @@ import styles from "../Styles/styles";
 import { Header, Card, ListItem, Divider } from "react-native-elements";
 import DeviceInfo from "react-native-device-info";
 import { db } from '../Database/Database';
+import firebase from "react-native-firebase";
 
 export default class SecondScreen extends React.Component {
   static navigationOptions = {
@@ -12,7 +13,8 @@ export default class SecondScreen extends React.Component {
   };
   constructor(props) {
     super(props);
-    this.ref = db.collection('Users').doc('XO5lwKAyI3PaEpGQ2bZ4');
+    const uid = firebase.app().auth().currentUser.uid;
+    this.ref = db.collection('Users').doc(uid);
     this.unsubscribe = null;
 
     this.state = {

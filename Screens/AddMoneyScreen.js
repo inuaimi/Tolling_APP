@@ -13,6 +13,7 @@ import {
 } from "react-native-elements";                       
 import styles from '../Styles/profileStyles'
 import { addUserMoney } from '../Database/Database';
+import firebase from "react-native-firebase";
 
 export default class AddMoneyScreen extends React.Component {
 
@@ -23,16 +24,16 @@ export default class AddMoneyScreen extends React.Component {
   constructor() {
     super()
 
-    this.state = {}
+    this.state = {
+      uid: firebase.app().auth().currentUser.uid
+    }
   }
 
   addUserMoney = () => {
     const { money } = this.state;
-    addUserMoney(money);
+    addUserMoney(money, this.state.uid);
     this.props.navigation.goBack();
   }
-
-  
 
   render() {
     return (

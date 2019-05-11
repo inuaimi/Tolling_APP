@@ -13,6 +13,7 @@ import {
 } from "react-native-elements";                       
 import styles from '../Styles/profileStyles'
 import { addUserVehicle } from '../Database/Database';
+import firebase from 'react-native-firebase';
 
 export default class AddVehicleScreen extends React.Component {
 
@@ -22,13 +23,13 @@ export default class AddVehicleScreen extends React.Component {
 
   constructor() {
     super()
-
     this.state = {}
   }
 
   addUserVehicle = () => {
+    var uid = firebase.auth().currentUser.uid;
     const { licensePlate, type } = this.state;
-    addUserVehicle(licensePlate, type);
+    addUserVehicle(licensePlate, type, uid);
     this.props.navigation.goBack();
   }
 
