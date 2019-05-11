@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Text, View
+  Text, View, Platform, DeviceEventEmitter
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker, Circle } from "react-native-maps";
                                                     //      Imports: "css-alike-ish" styling                            
@@ -8,6 +8,7 @@ import styles from '../Styles/styles'
 import NotifService from '../Components/NotificationService';
 import { db } from '../Database/Database';
 import geolib from 'geolib';
+import Beacons                from 'react-native-beacons-manager';
 
 const LATITUDE_DELTA = 0.005;
 const LONGITUDE_DELTA = 0.005;
@@ -30,19 +31,23 @@ export default class MapScreen extends React.Component {
     this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
 
     this.ref = db.collection('Gantries');
+    this.transactionRef = db.collection('TransactionGeofence');
     this.unsubscribe = null;
+
+    this.state = {
+      gantries: [],
+      grantryMarker: [],
+      ready: true,
+      loading: true,
+      // BT region info
+      identifier: 'Estimotes',
+      uuid: 'B9407F30-F5F8-466E-AFF9-25556B57FE6D',
+    };
   }
 
   map = null;
   watchId = null;
   isReadyForNotif = true;
-
-  state = {
-    gantries: [],
-    grantryMarker: [],
-    ready: true,
-    loading: true
-  };
 
   setRegion(region) {
     if(!this.state.ready) {
@@ -65,9 +70,35 @@ export default class MapScreen extends React.Component {
     return isInsideCirle;
   }
 
+  componentWillMount(){ 
+    //
+    // ONLY non component state aware here in componentWillMount
+    //
+    // Request for authorization while the app is open
+    if(Platform.OS === 'ios'){
+      Beacons.requestWhenInUseAuthorization();
+    } else if(Platform.OS === 'android') {
+      Beacons.detectIBeacons();
+    }
+
+    // Define a region which can be identifier + uuid,
+    // identifier + uuid + major or identifier + uuid + major + minor
+    // (minor and major properties are numbers)
+    const region = {
+      identifier: this.state.identifier,
+      uuid: this.state.uuid
+    };
+    // Range for beacons inside the region
+    Beacons.startRangingBeaconsInRegion(region);
+    if(Platform.OS === 'ios'){
+      Beacons.startUpdatingLocation();
+    }
+  }
+
   componentDidMount() {
     this.getCurrentposition();
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+    
 
     this.watchId = navigator.geolocation.watchPosition(
       position => {
@@ -85,11 +116,40 @@ export default class MapScreen extends React.Component {
       error => alert(error.message),
       { enableHighAccuracy: true, timeout: 5000, maximumAge: 0, distanceFilter: 5 }
     );
+    //
+    // component state aware here - attach events
+    //
+    // Ranging: Listen for beacon changes
+    this.beaconsDidRange = DeviceEventEmitter.addListener(
+      'beaconsDidRange',
+      (data) => {
+        // console.log(JSON.stringify(data, null, 2))
+        // console.log(JSON.stringify(data.beacons, null, 2))
+        data.beacons.forEach((beacon) => {
+          if(beacon.accuracy) {
+            const distance = beacon.accuracy.toFixed(2);
+            
+            if(this.isBeaconInRange(distance)) {
+              this.makeTransaction()
+            }
+          }
+        });
+
+
+
+        // this.setState({
+        //   dataSource: this.state.dataSource.cloneWithRows(data.beacons)
+        // });
+
+        //Call makeTransaction() if isBeaconInRange()
+      }
+    );
   }
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID);
     this.unsubscribe();
+    this.beaconsDidRange = null;
   }
 
   onCollectionUpdate = (querySnapshot) => {
@@ -103,7 +163,8 @@ export default class MapScreen extends React.Component {
         center: {
           latitude: gantry.Latitude,
           longitude: gantry.Longitude
-        }
+        },
+        radius: gantry.Radius
       });
       gantryMarkers.push({
         title: gantry.Title,
@@ -163,6 +224,14 @@ export default class MapScreen extends React.Component {
     //console.log('onRegionChangeComplete', region);
   };
 
+  isBeaconInRange = (distance) => {
+     return (distance < 5);
+  }
+
+  makeTransaction = () => {
+    console.log("make transaction!");
+  }
+
   render() {
 
     const { region } = this.state;
@@ -182,8 +251,8 @@ export default class MapScreen extends React.Component {
           initialRegion={initialRegion}
           renderMarker={renderMarker}
           onMapReady={this.onMapReady}
-          followsUserLocation
-          showsMyLocationButton={false}
+          // followsUserLocation
+          showsMyLocationButton={true}
           onRegionChange={this.onRegionChange}
           onRegionChangeComplete={this.onRegionChangeComplete}
           style={styles.map}
@@ -201,7 +270,7 @@ export default class MapScreen extends React.Component {
             <MapView.Circle
               key={i}
               center={gantry.center}
-              radius={ 50 }
+              radius={ gantry.radius }
               strokeWidth = { 1 }
               strokeColor={ '#20bf6b' }
             />

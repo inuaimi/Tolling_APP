@@ -12,8 +12,8 @@ export default class SecondScreen extends React.Component {
   };
 
   state = {
-    email: "",
-    password: "",
+    email: "lajneriet@gmail.com",
+    password: "lajneriet",
     error: "",
     loading: false
   };
