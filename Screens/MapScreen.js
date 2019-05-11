@@ -41,7 +41,10 @@ export default class MapScreen extends React.Component {
     gantries: [],
     grantryMarker: [],
     ready: true,
-    loading: true
+    loading: true,
+    gantryName: "Press a marker",
+    distanceToGantry: "",
+    gantryCost: 0
   };
 
   setRegion(region) {
@@ -110,7 +113,8 @@ export default class MapScreen extends React.Component {
         coordinates: {
           latitude: gantry.Latitude,
           longitude: gantry.Longitude
-        }
+        },
+        gantryCost: gantry.Cost
       })
     });
 
@@ -195,6 +199,7 @@ export default class MapScreen extends React.Component {
               key={i}
               coordinate={marker.coordinates}
               title={marker.title}
+              onPress={() => this.setState({gantryName: marker.title, gantryCost: marker.gantryCost})}
             />
           ))}
           {this.state.gantries.map((gantry, i) => (
@@ -208,14 +213,15 @@ export default class MapScreen extends React.Component {
           ))}
         </MapView>
         <View style={styles.bottomDetailsContainer}>
-          <View style={styles.bottomDetailsKeys}>
-            <Text style={styles.bottomDetailsKeyText}>Name of gantry</Text>
-            <Text style={styles.bottomDetailsKeyText}>Distance to gantry</Text>
-          </View>
-          <View style={styles.bottomDetailsValues}>
-          <Text style={styles.bottomDetailsText}>Öresund</Text>
-          <Text style={styles.bottomDetailsText}>10km</Text>
-          
+          <View style={{flexDirection:"row"}}>
+            <View style={styles.bottomDetailsKeys}>
+              <Text style={styles.bottomDetailsKeyText}>Name of gantry</Text>
+              <Text style={styles.bottomDetailsValueText}>{this.state.gantryName}</Text>
+            </View>
+            <View style={styles.bottomDetailsValues}>
+              <Text style={styles.bottomDetailsKeyText}>Cost of gantry</Text>
+              <Text style={styles.bottomDetailsValueText}>{this.state.gantryCost + "kr"}</Text>
+            </View>
           </View>
         </View>
       </View>

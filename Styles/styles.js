@@ -25,25 +25,31 @@ export default StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-around",
     backgroundColor: "#FFF"
-  },
+    },
   bottomDetailsKeys: {
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
-    justifyContent: "space-around"
+    textAlign: "center",
     // backgroundColor: '#ff7f50'
   },
   bottomDetailsValues: {
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
-    justifyContent: "space-around"
+    textAlign: "center",
     // backgroundColor: '#eccc68'
   },
   bottomDetailsKeyText: {
     fontSize: 14,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    textAlign: "center",
+    marginLeft: 75,
+    marginTop: 25
   },
   bottomDetailsValueText: {
-    fontSize: 14
+    fontSize: 14,
+    textAlign: "center",
+    marginLeft: 75,
+    marginTop: 25
   },
   itemInput: {
     height: 50,
