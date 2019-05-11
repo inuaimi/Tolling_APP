@@ -35,21 +35,37 @@ export default StyleSheet.create({
   bottomDetailsValues: {
     flexDirection: "column",
     alignItems: "center",
-    textAlign: "center",
+    textAlign: "center"
     // backgroundColor: '#eccc68'
+  },
+  bottomDetailsKeyTextLeft: {
+    fontSize: 14,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginLeft: 65,
+    marginTop: 25,
+    marginRight: 65
   },
   bottomDetailsKeyText: {
     fontSize: 14,
     fontWeight: "bold",
     textAlign: "center",
-    marginLeft: 75,
-    marginTop: 25
+    marginRight: 65,
+    marginTop: 25,
+  },
+  bottomDetailsValueTextLeft: {
+    fontSize: 14,
+    textAlign: "center",
+    marginLeft: 65,
+    marginTop: 15,
+    marginRight: 65
+    
   },
   bottomDetailsValueText: {
     fontSize: 14,
     textAlign: "center",
-    marginLeft: 75,
-    marginTop: 25
+    marginRight: 65,
+    marginTop: 15
   },
   itemInput: {
     height: 50,

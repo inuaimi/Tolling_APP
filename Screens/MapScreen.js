@@ -199,7 +199,7 @@ export default class MapScreen extends React.Component {
               key={i}
               coordinate={marker.coordinates}
               title={marker.title}
-              onPress={() => this.setState({gantryName: marker.title, gantryCost: marker.gantryCost})}
+              onPress={() => {this.longNames(marker.title); this.setState({gantryCost: marker.gantryCost})}}
             />
           ))}
           {this.state.gantries.map((gantry, i) => (
@@ -215,8 +215,8 @@ export default class MapScreen extends React.Component {
         <View style={styles.bottomDetailsContainer}>
           <View style={{flexDirection:"row"}}>
             <View style={styles.bottomDetailsKeys}>
-              <Text style={styles.bottomDetailsKeyText}>Name of gantry</Text>
-              <Text style={styles.bottomDetailsValueText}>{this.state.gantryName}</Text>
+              <Text style={styles.bottomDetailsKeyTextLeft}>Name of gantry</Text>
+              <Text style={styles.bottomDetailsValueTextLeft}>{this.state.gantryName}</Text>
             </View>
             <View style={styles.bottomDetailsValues}>
               <Text style={styles.bottomDetailsKeyText}>Cost of gantry</Text>
@@ -226,6 +226,18 @@ export default class MapScreen extends React.Component {
         </View>
       </View>
     );
+  }
+
+  longNames = (name) => {
+    let newName = "";
+
+    if(name.length > 20){
+      newName = name.replace(/\s+/g, "\n");
+    }else{
+      newName = name;
+    }
+
+    this.setState({gantryName: newName})
   }
 
   onRegister(token) {
