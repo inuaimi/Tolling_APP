@@ -16,6 +16,7 @@ import ListScreen from "../Screens/ListScreen";
 import BeaconsScreen from "../Screens/BeaconsScreen";
 import VehicleScreen from "../Screens/VehicleScreen";
 import AddVehicleScreen from "../Screens/AddVehicleScreen";
+import AddMoneyScreen from "../Screens/AddMoneyScreen";
 import theme from "../Styles/theme";
 import EditEmailScreen from "../Screens/EditEmailScreen";
 
@@ -61,6 +62,9 @@ const transactionsStack = createStackNavigator({
       },
       headerTintColor: "#fff"
     }
+  },
+  AddMoney: {
+    screen: AddMoneyScreen
   }
 });
 

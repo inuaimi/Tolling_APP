@@ -37,6 +37,7 @@ export default class ProfileScreen extends React.Component {
 
     this.state = {
       vehicles: [],
+      uid: uid
     }
   }
 

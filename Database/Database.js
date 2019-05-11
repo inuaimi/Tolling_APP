@@ -54,3 +54,9 @@ export const createUser = (uid, name, email, vehicle, license) => {
     ]
   });
 }
+
+export const addUserMoney = (amount, uid) => {
+  db.collection('Users').doc(uid).update({
+    balance: amount
+  });
+}
