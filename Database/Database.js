@@ -60,3 +60,22 @@ export const addUserMoney = (amount, uid) => {
     balance: amount
   });
 }
+
+export const addUserTransaction = (gantry, uid) => {
+  const date = new Date().getDate();
+  const month = new Date().getMonth();
+  const year = new Date().getFullYear();
+  const hours = new Date().getHours();
+  const min = new Date().getMinutes();
+  const sec = new Date().getSeconds();
+  const dateTime = {
+    date: date + "/" + month + "/" + year + " " + hours + ":" + min + ":" + sec
+  }
+  db.collection('Users').doc(uid).update({
+    transactions: firebase.firestore.FieldValue.arrayUnion({
+      cost: gantry.cost,
+      date: dateTime.date,
+      gantry: gantry.title
+    })
+  });
+}

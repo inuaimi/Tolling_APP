@@ -8,7 +8,9 @@ import styles from '../Styles/styles'
 import NotifService from '../Components/NotificationService';
 import { db } from '../Database/Database';
 import geolib from 'geolib';
-import Beacons                from 'react-native-beacons-manager';
+import Beacons from 'react-native-beacons-manager';
+import firebase from 'react-native-firebase';
+import { addUserTransaction } from '../Database/Database';
 
 const LATITUDE_DELTA = 0.005;
 const LONGITUDE_DELTA = 0.005;
@@ -31,14 +33,18 @@ export default class MapScreen extends React.Component {
     this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
 
     this.gantryRef = db.collection('Gantries');
-    this.transactionRef = db.collection('TransactionGeofence');
     this.unsubscribeGantryRef = null;
-    this.unsubscribeTransactionRef = null;
 
     this.state = {
+      uid: firebase.app().auth().currentUser.uid,
+      currentGantry: null,
+      currentTransactionGeofence: null,
       gantries: [],
       grantryMarker: [],
-      ready: true,
+      ready: false,
+      isInsideGantry: false,
+      // isReadyForTransaction: true,
+      hasLeftTransactionGeofence: true,
       loadingGantries: true,
       loadingTransactionGeofences: true,
       gantryName: "Press a marker",
@@ -53,7 +59,7 @@ export default class MapScreen extends React.Component {
   map = null;
   watchId = null;
   isReadyForNotif = true;
-  isReadyForTransaction = true;
+  //isReadyForTransaction = true;
 
   setRegion(region) {
     if(!this.state.ready) {
@@ -66,17 +72,34 @@ export default class MapScreen extends React.Component {
   }
 
   isDeviceInGeofence(coordinates) {
+    let me = this;
     let isInsideCirle = false;
-    let index = null;
     this.state.gantries.forEach(function(gantry) {
-      if(geolib.isPointInCircle({ latitude: coordinates.latitude, longitude: coordinates.longitude }, gantry.center, 10 )) {
+      if(gantry.TransactionGeofence) {
+        const transactionGeofence = gantry.TransactionGeofence;
+      }
+      if(geolib.isPointInCircle({ latitude: coordinates.latitude, longitude: coordinates.longitude }, gantry.center, gantry.radius )) {
         isInsideCirle = true;
+        if(gantry.TransactionGeofence) {
+          //FIXME: Doesn't enter this if statement..
+          if(!geolib.isPointInCircle({ latitude: coordinates.latitude, longitude: coordinates.longitude }, transactionGeofence.center, transactionGeofence.radius )) {
+            console.log("has left!")
+            me.setState({
+              hasLeftTransactionGeofence: true
+            })
+          }
+        }
+        
+        me.setState({
+          isInsideGantry: true,
+          currentGantry: gantry,
+        })
       }
     })
     return isInsideCirle;
   }
 
-  componentWillMount(){ 
+  componentWillMount() { 
     //
     // ONLY non component state aware here in componentWillMount
     //
@@ -104,7 +127,6 @@ export default class MapScreen extends React.Component {
   componentDidMount() {
     this.getCurrentposition();
     this.unsubscribeGantryRef = this.gantryRef.onSnapshot(this.onGantryCollectionUpdate);
-    this.unsubscribeTransactionRef = this.transactionRef.onSnapshot(this.onTransactionCollectionUpdate);
     
 
     this.watchId = navigator.geolocation.watchPosition(
@@ -130,20 +152,22 @@ export default class MapScreen extends React.Component {
     this.beaconsDidRange = DeviceEventEmitter.addListener(
       'beaconsDidRange',
       (data) => {
-        // console.log(JSON.stringify(data, null, 2))
-        //console.log(JSON.stringify(data.beacons, null, 2))
         data.beacons.forEach((beacon) => {
           if(beacon.accuracy) {
             const distance = beacon.accuracy.toFixed(2);
             
-            if(this.isBeaconInRange(distance)) {
-              if(this.isReadyForTransaction) {
-                this.makeTransaction()
-                this.isReadyForTransaction = false;
+            if(this.isBeaconInRange(distance) && this.state.hasLeftTransactionGeofence && this.state.isInsideGantry) {
+              this.setState = {
+                hasLeftTransactionGeofence: false
               }
-            } else {
-              this.isReadyForTransaction = true;
-            }
+              //FIXME: Should only call this once. check isDeviceInGeofence.
+              this.makeTransaction()
+            } 
+            // else {
+            //   this.setState = {
+            //     isReadyForTransaction: true
+            //   }
+            // }
           }
         });
       }
@@ -153,18 +177,21 @@ export default class MapScreen extends React.Component {
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID);
     this.unsubscribeGantryRef();
-    this.unsubscribeTransactionRef();
     this.beaconsDidRange = null;
   }
 
   onGantryCollectionUpdate = (querySnapshot) => {
     const gantries = [];
     const gantryMarkers = [];
+    const transactionGeofences = [];
     querySnapshot.forEach((doc) => {
       const gantry = doc.data();
-      //console.log(JSON.stringify(doc.data(), null, 2));
 
       gantries.push({ 
+        title: gantry.Title,
+        date: gantry.Date,
+        time: gantry.Time,
+        cost: gantry.Cost,
         center: {
           latitude: gantry.Latitude,
           longitude: gantry.Longitude
@@ -179,34 +206,16 @@ export default class MapScreen extends React.Component {
         },
         gantryCost: gantry.Cost
       })
+      if(gantry.TransactionGeofence) {
+        transactionGeofences.push(gantry.TransactionGeofence);
+      }
     });
 
     this.setState({
       gantries,
       gantryMarkers,
-      loadingGantries: false
-    });
-  }
-
-  onTransactionCollectionUpdate = (querySnapshot) => {
-    const transactionGeofences = [];
-    querySnapshot.forEach((doc) => {
-      const geofence = doc.data();
-      // console.log("geofence: " + JSON.stringify(geofence, null, 2));
-
-      transactionGeofences.push({
-        center: {
-          latitude: geofence.Latitude,
-          longitude: geofence.Longitude
-        },
-        radius: geofence.Radius
-      });
-    });
-    console.log("Transaction geofence: " + JSON.stringify(transactionGeofences, null, 2));
-
-    this.setState({
       transactionGeofences,
-      loadingTransactionGeofences: false
+      loadingGantries: false
     });
   }
 
@@ -260,6 +269,9 @@ export default class MapScreen extends React.Component {
     console.log("make transaction!");
 
     //Skapa ett objekt med info om transaktionen.
+    const { currentGantry, uid } = this.state;
+    //console.log("gantry to add : " + JSON.stringify(currentGantry, null, 2));
+    addUserTransaction(currentGantry, uid);
   }
 
   render() {
@@ -270,12 +282,12 @@ export default class MapScreen extends React.Component {
     return (
       <View style={styles.container}>
         <MapView
-          showsUserLocation
+          showsUserLocation={true}
           ref={ map => { this.map = map }}
           data={markers}
-          initialRegion={initialRegion}
+          initialRegion={region}
           renderMarker={renderMarker}
-          onMapReady={this.onMapReady}
+          onMapReady={() => this.onMapReady}
           // followsUserLocation
           showsMyLocationButton={true}
           onRegionChange={this.onRegionChange}

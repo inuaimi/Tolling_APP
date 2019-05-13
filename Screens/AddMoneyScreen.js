@@ -30,8 +30,8 @@ export default class AddMoneyScreen extends React.Component {
   }
 
   addUserMoney = () => {
-    const { money } = this.state;
-    addUserMoney(money, this.state.uid);
+    const { money, uid } = this.state;
+    addUserMoney(money, uid);
     this.props.navigation.goBack();
   }
 
