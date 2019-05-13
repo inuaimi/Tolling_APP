@@ -197,6 +197,8 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - RNCAsyncStorage (1.4.0):
+    - React
   - RNDeviceInfo (1.5.0):
     - React
   - RNVectorIcons (6.4.2):
@@ -228,6 +230,7 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
@@ -268,6 +271,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-community/async-storage"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNVectorIcons:
@@ -302,10 +307,11 @@ SPEC CHECKSUMS:
   React: 5cb71fb1a15b5ce04794ab49e24b48ebe4c94e65
   react-native-google-maps: 7e8a041d5c552e698350a3380cbd0f4bf7e339b3
   react-native-maps: d87d8ed456d4132112fb1d2ee9baf3470c0f211d
+  RNCAsyncStorage: 0c3ef98facf3fecf455b518d6f52e10fc964c523
   RNDeviceInfo: a716865d784cda2df3b073afd659459540c8d321
   RNVectorIcons: 6607bd3a30291d0edb56f9bbe7ae411ee2b928b0
   yoga: 596e61c9b57751d08a22b07aba310dbd3e65ab75
 
-PODFILE CHECKSUM: 05538456a30a64d9ae71c5bcf416a28d69395f85
+PODFILE CHECKSUM: b1ee5761a7d58c34ad485cd896ad0d0d48fca278
 
 COCOAPODS: 1.6.1

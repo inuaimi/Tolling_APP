@@ -6,8 +6,7 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   StyleSheet,
-  ScrollView,
-  AsyncStorage
+  ScrollView
 } from "react-native";
 import {
   Header,
@@ -19,6 +18,7 @@ import {
   Icon
 } from "react-native-elements";
 import firebase from "react-native-firebase";
+import AsyncStorage from "@react-native-community/async-storage";
 //      Imports: "css-alike-ish" styling
 import styles from "../Styles/profileStyles";
 import { db } from "../Database/Database";
@@ -91,7 +91,7 @@ export default class ProfileScreen extends React.Component {
         ["isLoggedIn", "false"]
       ]);
     } catch {
-      //error saving data
+      console.log("Error saving signed out state");
     }
   };
 

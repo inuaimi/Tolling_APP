@@ -1,5 +1,6 @@
 import React from "react";
-import { Text, View, ImageBackground, AsyncStorage } from "react-native";
+import { Text, View, ImageBackground } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import styles from "../Styles/loginStyles";
 import { Buttons } from "../Components/Buttons";
 import { Inputs } from "../Components/Inputs";
@@ -43,7 +44,7 @@ export default class SecondScreen extends React.Component {
           error: "",
           loading: false
         });
-        //this._saveLoginData();
+        this.saveLoginData();
         this.props.navigation.navigate("Map");
       })
       .catch(() => {

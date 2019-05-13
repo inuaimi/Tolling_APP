@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, StyleSheet, ScrollView } from "react-native";
+import { Text, View, StyleSheet, ScrollView, TextInput } from "react-native";
 //      Imports: "css-alike-ish" styling
 import styles from "../Styles/styles";
 import {
@@ -11,7 +11,9 @@ import {
   Button
 } from "react-native-elements";
 import DeviceInfo from "react-native-device-info";
-import ActionButton from "react-native-action-button";
+import Modal from "react-native-modal";
+import firebase from "react-native-firebase";
+import { db } from "../Database/Database";
 
 export default class SecondScreen extends React.Component {
   static navigationOptions = {
@@ -21,7 +23,10 @@ export default class SecondScreen extends React.Component {
     super(props);
     this.state = {
       gantrys: [],
-      balance: Number
+      balance: 0,
+      moneyInput: Number,
+      showBalancePopUp: false,
+      uid: "SJha0BNAKBAJoth3ivAa"
     };
   }
 
@@ -33,7 +38,7 @@ export default class SecondScreen extends React.Component {
             {this.renderMoneyBalance()}
           </View>
           <View style={localStyles.addMoneyButton}>
-            {this.renderAddMoney2()}
+            {this.renderAddMoney()}
           </View>
           <View style={localStyles.gantrysContainer}>
             {this.renderPassedGantrys()}
@@ -43,10 +48,8 @@ export default class SecondScreen extends React.Component {
     );
   }
 
-  componentDidMount() {
-    DeviceInfo.getMACAddress().then(val => {
-      console.log("MacAdress: " + val);
-    });
+  async componentDidMount() {
+    this.getMoneyBalance();
     let gantry1 = { name: "Gantry1", date: "2019-02-11", cost: 20, id: "0" };
     let gantry2 = { name: "Gantry2", date: "2019-02-11", cost: 38, id: "1" };
     let gantry3 = { name: "Gantry3", date: "2019-02-11", cost: 38, id: "2" };
@@ -73,8 +76,28 @@ export default class SecondScreen extends React.Component {
         gantry11
       ]
     });
-    this.setState({ balance: 319 });
+    // this.setState({ balance: 319 });
   }
+
+  //Dubbelkolla async await grejerna
+  //Does not autoupdate
+  getMoneyBalance = () => {
+    const id = this.state.uid;
+    const ref = db.collection("Users").doc(id);
+    const getDoc = ref
+      .get()
+      .then(async doc => {
+        if (doc.exists) {
+          const data = await doc.data().balance;
+          this.setState({ balance: data });
+        }
+        console.log("No such document");
+        return;
+      })
+      .catch(err => {
+        console.log("Error getting document: ", err);
+      });
+  };
 
   renderMoneyBalance() {
     return (
@@ -109,59 +132,51 @@ export default class SecondScreen extends React.Component {
     );
   }
 
-  renderAddMoney2() {
-    return <Button title="Add money" />;
-  }
-
+  //BUG: Update när man trycker på hide också
   renderAddMoney() {
     return (
-      <ActionButton buttonColor="rgba(231,76,60,1)">
-        <ActionButton.Item
-          buttonColor="#9b59b6"
-          title="New Task"
-          onPress={() => console.log("notes tapped!")}
-        >
-          <Icon name="md-create" style={styles.actionButtonIcon} />
-        </ActionButton.Item>
-        <ActionButton.Item
-          buttonColor="#3498db"
-          title="Notifications"
-          onPress={() => {}}
-        >
-          <Icon name="md-notifications-off" style={styles.actionButtonIcon} />
-        </ActionButton.Item>
-        <ActionButton.Item
-          buttonColor="#1abc9c"
-          title="All Tasks"
-          onPress={() => {}}
-        >
-          <Icon name="md-done-all" style={styles.actionButtonIcon} />
-        </ActionButton.Item>
-      </ActionButton>
-    );
-  }
-
-  //Not used atm
-  calculateMoneySpent() {
-    let totalMoneySpent = 0;
-    this.state.gantrys.forEach(x => {
-      totalMoneySpent += x.cost;
-    });
-
-    return totalMoneySpent;
-  }
-
-  //Not used atm
-  renderMoneySpent() {
-    return (
       <View>
-        <Text style={localStyles.headerText}>Money spent: </Text>
-        <Text style={localStyles.infoText}>
-          {this.calculateMoneySpent() + "kr"}
-        </Text>
+        <Button title="Add money" onPress={this.toggleAddMoneyPopup} />
+        <Modal isVisible={this.state.showBalancePopUp}>
+          <View style={localStyles.addMoneyPopup}>
+            <Text>Add money</Text>
+            <TextInput
+              onChangeText={input => this.setState({ moneyInput: input })}
+              value={this.state.moneyInput}
+              keyboardType="numeric"
+              maxLength={10}
+              autoFocus={true}
+            />
+            {console.log(
+              "_application: :(((((((((((((((((((((((((",
+              this.state.moneyInput
+            )}
+            <Button title="Add" onPress={this.updateMoneyBalance} />
+            <Button title="Hide modal" onPress={this.toggleAddMoneyPopup} />
+          </View>
+        </Modal>
       </View>
     );
   }
+
+  toggleAddMoneyPopup = () => {
+    this.setState({ showBalancePopUp: !this.state.showBalancePopUp });
+  };
+
+  updateMoneyBalance = () => {
+    console.log("_application, IM HERE! :D");
+    const id = this.state.uid;
+    const inc = firebase.firestore.FieldValue.increment(this.state.moneyInput);
+    const ref = db.collection("Users").doc(id);
+    const updateDoc = ref
+      .update({ balance: inc })
+      .then(() => {
+        console.log("_application updated money balance");
+      })
+      .catch(err => {
+        console.log("_application Error updating balance: ", err);
+      });
+  };
 }
 
 const localStyles = StyleSheet.create({
@@ -196,5 +211,10 @@ const localStyles = StyleSheet.create({
     marginTop: 15,
     borderRadius: 25,
     marginHorizontal: 15
+  },
+  addMoneyPopup: {
+    backgroundColor: "#eeeeee",
+    height: 300,
+    width: 300
   }
 });
