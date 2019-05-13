@@ -284,29 +284,9 @@ export default class MapScreen extends React.Component {
           textStyle={{ color: '#bc8b00' }}
           containerStyle={{ backgroundColor: 'white', borderColor: '#bc8b00' }}
         > 
-<<<<<<< HEAD
           { this.renderGantryMarkers() }
           { this.renderGantries() }
           { this.renderTransactionGeofences() }
-=======
-          {this.state.gantryMarkers.map((marker, i) => (
-            <MapView.Marker
-              key={i}
-              coordinate={marker.coordinates}
-              title={marker.title}
-              onPress={() => {this.longNames(marker.title); this.setState({gantryCost: marker.gantryCost})}}
-            />
-          ))}
-          {this.state.gantries.map((gantry, i) => (
-            <MapView.Circle
-              key={i}
-              center={gantry.center}
-              radius={ 50 }
-              strokeWidth = { 1 }
-              strokeColor={ '#20bf6b' }
-            />
-          ))}
->>>>>>> development
         </MapView>
         <View style={styles.bottomDetailsContainer}>
           <View style={{flexDirection:"row"}}>
