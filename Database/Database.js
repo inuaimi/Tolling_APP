@@ -25,6 +25,12 @@ export const deleteUserVehicle = (vehicle, uid) => {
   });
 }
 
+export const editUserEmail = (email, uid) => {
+  db.collection('Users').doc(uid).update({
+    email: email
+  });
+}
+
 export const addUserVehicle = (licensePlate, type, uid) => {
   db.collection('Users').doc(uid).update({
     vehicles: firebase.firestore.FieldValue.arrayUnion({
@@ -46,5 +52,11 @@ export const createUser = (uid, name, email, vehicle, license) => {
       licensePlate: license
       }
     ]
+  });
+}
+
+export const addUserMoney = (amount, uid) => {
+  db.collection('Users').doc(uid).update({
+    balance: amount
   });
 }

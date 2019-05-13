@@ -41,6 +41,9 @@ export default class MapScreen extends React.Component {
       ready: true,
       loadingGantries: true,
       loadingTransactionGeofences: true,
+      gantryName: "Press a marker",
+      distanceToGantry: "",
+      gantryCost: 0,
       // BT region info
       identifier: 'Estimotes',
       uuid: 'B9407F30-F5F8-466E-AFF9-25556B57FE6D',
@@ -173,7 +176,8 @@ export default class MapScreen extends React.Component {
         coordinates: {
           latitude: gantry.Latitude,
           longitude: gantry.Longitude
-        }
+        },
+        gantryCost: gantry.Cost
       })
     });
 
@@ -280,19 +284,40 @@ export default class MapScreen extends React.Component {
           textStyle={{ color: '#bc8b00' }}
           containerStyle={{ backgroundColor: 'white', borderColor: '#bc8b00' }}
         > 
+<<<<<<< HEAD
           { this.renderGantryMarkers() }
           { this.renderGantries() }
           { this.renderTransactionGeofences() }
+=======
+          {this.state.gantryMarkers.map((marker, i) => (
+            <MapView.Marker
+              key={i}
+              coordinate={marker.coordinates}
+              title={marker.title}
+              onPress={() => {this.longNames(marker.title); this.setState({gantryCost: marker.gantryCost})}}
+            />
+          ))}
+          {this.state.gantries.map((gantry, i) => (
+            <MapView.Circle
+              key={i}
+              center={gantry.center}
+              radius={ 50 }
+              strokeWidth = { 1 }
+              strokeColor={ '#20bf6b' }
+            />
+          ))}
+>>>>>>> development
         </MapView>
         <View style={styles.bottomDetailsContainer}>
-          <View style={styles.bottomDetailsKeys}>
-            <Text style={styles.bottomDetailsKeyText}>Name of gantry</Text>
-            <Text style={styles.bottomDetailsKeyText}>Distance to gantry</Text>
-          </View>
-          <View style={styles.bottomDetailsValues}>
-          <Text style={styles.bottomDetailsText}>Öresund</Text>
-          <Text style={styles.bottomDetailsText}>10km</Text>
-          
+          <View style={{flexDirection:"row"}}>
+            <View style={styles.bottomDetailsKeys}>
+              <Text style={styles.bottomDetailsKeyTextLeft}>Name of gantry</Text>
+              <Text style={styles.bottomDetailsValueTextLeft}>{this.state.gantryName}</Text>
+            </View>
+            <View style={styles.bottomDetailsValues}>
+              <Text style={styles.bottomDetailsKeyText}>Cost of gantry</Text>
+              <Text style={styles.bottomDetailsValueText}>{this.state.gantryCost + "kr"}</Text>
+            </View>
           </View>
         </View>
       </View>
@@ -350,6 +375,18 @@ export default class MapScreen extends React.Component {
     } else {
       return null;
     }
+  }
+
+  longNames = (name) => {
+    let newName = "";
+
+    if(name.length > 17){
+      newName = name.replace(/\s+/g, "\n");
+    }else{
+      newName = name;
+    }
+
+    this.setState({gantryName: newName})
   }
 
   onRegister(token) {
