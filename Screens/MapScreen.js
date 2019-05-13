@@ -231,7 +231,7 @@ export default class MapScreen extends React.Component {
   longNames = (name) => {
     let newName = "";
 
-    if(name.length > 20){
+    if(name.length > 17){
       newName = name.replace(/\s+/g, "\n");
     }else{
       newName = name;

@@ -135,7 +135,7 @@ const localStyles = StyleSheet.create({
     backgroundColor: "#eeeeee"
   },
   balanceText: {
-    fontSize: 14,
+    fontSize: 16,
     textAlign: "center"
   },
   addVehicleButton: {
@@ -158,7 +158,6 @@ const localStyles = StyleSheet.create({
     fontWeight: 'bold'
   },
   emailText: {
-    fontSize: 14,
-    textAlign: "center"
+    fontSize: 16,
   }
 });
