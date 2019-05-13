@@ -41,7 +41,7 @@ export default class ProfileScreen extends React.Component {
 
   constructor() {
     super();
-    this.ref = db.collection("Users").doc("XO5lwKAyI3PaEpGQ2bZ4");
+    this.ref = db.collection("Users").doc("SJha0BNAKBAJoth3ivAa");
     this.unsubscribe = null;
 
     this.state = {
@@ -112,7 +112,7 @@ export default class ProfileScreen extends React.Component {
           </View>
 
           <View style={localStyles.moneyContainer}>
-            {this.renderVehicles()}
+            {/* {this.renderVehicles()} */}
           </View>
           <TouchableOpacity
             style={localStyles.addVehicleButton}

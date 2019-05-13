@@ -147,10 +147,6 @@ export default class SecondScreen extends React.Component {
               maxLength={10}
               autoFocus={true}
             />
-            {console.log(
-              "_application: :(((((((((((((((((((((((((",
-              this.state.moneyInput
-            )}
             <Button title="Add" onPress={this.updateMoneyBalance} />
             <Button title="Hide modal" onPress={this.toggleAddMoneyPopup} />
           </View>
@@ -164,7 +160,6 @@ export default class SecondScreen extends React.Component {
   };
 
   updateMoneyBalance = () => {
-    console.log("_application, IM HERE! :D");
     const id = this.state.uid;
     const inc = firebase.firestore.FieldValue.increment(this.state.moneyInput);
     const ref = db.collection("Users").doc(id);
@@ -188,9 +183,7 @@ const localStyles = StyleSheet.create({
     flex: 1,
     marginBottom: 10
   },
-  moneyContainer: {
-    // flex: 3
-  },
+  moneyContainer: {},
   headerText: {
     fontSize: 30,
     textAlign: "center",
