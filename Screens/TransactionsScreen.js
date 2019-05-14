@@ -1,5 +1,12 @@
 import React from "react";
-import { Text, View, StyleSheet, ScrollView, TextInput } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  ActivityIndicator
+} from "react-native";
 //      Imports: "css-alike-ish" styling
 import styles from "../Styles/styles";
 import {
@@ -14,6 +21,7 @@ import DeviceInfo from "react-native-device-info";
 import Modal from "react-native-modal";
 import firebase from "react-native-firebase";
 import { db } from "../Database/Database";
+import theme from "../Styles/theme";
 
 export default class SecondScreen extends React.Component {
   static navigationOptions = {
@@ -26,6 +34,7 @@ export default class SecondScreen extends React.Component {
       balance: 0,
       moneyInput: Number,
       showBalancePopUp: false,
+      isUpdatingBalance: false,
       uid: "SJha0BNAKBAJoth3ivAa"
     };
   }
@@ -37,7 +46,7 @@ export default class SecondScreen extends React.Component {
           <View style={localStyles.moneyContainer}>
             {this.renderMoneyBalance()}
           </View>
-          <View style={localStyles.addMoneyButton}>
+          <View style={localStyles.addMoneyContainer}>
             {this.renderAddMoney()}
           </View>
           <View style={localStyles.gantrysContainer}>
@@ -76,11 +85,8 @@ export default class SecondScreen extends React.Component {
         gantry11
       ]
     });
-    // this.setState({ balance: 319 });
   }
 
-  //Dubbelkolla async await grejerna
-  //Does not autoupdate
   getMoneyBalance = () => {
     const id = this.state.uid;
     const ref = db.collection("Users").doc(id);
@@ -132,24 +138,38 @@ export default class SecondScreen extends React.Component {
     );
   }
 
-  //BUG: Update när man trycker på hide också
   renderAddMoney() {
     return (
       <View>
-        <Button title="Add money" onPress={this.toggleAddMoneyPopup} />
-        <Modal isVisible={this.state.showBalancePopUp}>
-          <View style={localStyles.addMoneyPopup}>
-            <Text>Add money</Text>
-            <TextInput
-              onChangeText={input => this.setState({ moneyInput: input })}
-              value={this.state.moneyInput}
-              keyboardType="numeric"
-              maxLength={10}
-              autoFocus={true}
-            />
-            <Button title="Add" onPress={this.updateMoneyBalance} />
-            <Button title="Hide modal" onPress={this.toggleAddMoneyPopup} />
-          </View>
+        <Button
+          title="Add money"
+          style={localStyles.addMoneyButton}
+          onPress={this.toggleAddMoneyPopup}
+        />
+        <Modal
+          isVisible={this.state.showBalancePopUp}
+          onBackdropPress={() => this.toggleAddMoneyPopup()}
+          style={localStyles.modalPopup}
+        >
+          <Card title="Ammount">
+            <View style={localStyles.addMoneyPopup}>
+              <TextInput
+                onChangeText={input => this.setState({ moneyInput: input })}
+                value={this.state.moneyInput}
+                keyboardType="numeric"
+                maxLength={10}
+                autoFocus={true}
+                placeholder="Ammount"
+                style={localStyles.moneyTextInput}
+              />
+              <ActivityIndicator
+                size="small"
+                color={theme.PRIMARY_COLOR}
+                animating={this.state.isUpdatingBalance}
+              />
+              <Button title="Add" onPress={this.updateMoneyBalance} />
+            </View>
+          </Card>
         </Modal>
       </View>
     );
@@ -160,6 +180,7 @@ export default class SecondScreen extends React.Component {
   };
 
   updateMoneyBalance = () => {
+    this.setState({ isUpdatingBalance: true });
     const id = this.state.uid;
     const inc = firebase.firestore.FieldValue.increment(this.state.moneyInput);
     const ref = db.collection("Users").doc(id);
@@ -167,10 +188,18 @@ export default class SecondScreen extends React.Component {
       .update({ balance: inc })
       .then(() => {
         console.log("_application updated money balance");
+        this.moneyBalanceUpdateComplete();
       })
       .catch(err => {
         console.log("_application Error updating balance: ", err);
       });
+  };
+
+  moneyBalanceUpdateComplete = () => {
+    this.getMoneyBalance();
+    this.setState({ isUpdatingBalance: false });
+    this.toggleAddMoneyPopup();
+    this.setState({ moneyInput: Number });
   };
 }
 
@@ -179,22 +208,20 @@ const localStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#eeeeee"
   },
-  gantrysContainer: {
-    flex: 1,
-    marginBottom: 10
-  },
   moneyContainer: {},
   headerText: {
     fontSize: 30,
     textAlign: "center",
     margin: 10
   },
+  gantrysContainer: {
+    flex: 1,
+    marginBottom: 10
+  },
+  addMoneyContainer: {},
   infoText: {
     fontSize: 15,
     margin: 10
-  },
-  moneyButton: {
-    width: 350
   },
   balanceText: {
     fontSize: 30,
@@ -202,12 +229,20 @@ const localStyles = StyleSheet.create({
   },
   addMoneyButton: {
     marginTop: 15,
-    borderRadius: 25,
+    width: 345,
+    justifyContent: "center",
     marginHorizontal: 15
   },
-  addMoneyPopup: {
-    backgroundColor: "#eeeeee",
-    height: 300,
-    width: 300
+  modalPopup: {
+    alignItems: "center",
+    marginBottom: 30
+  },
+  moneyTextInput: {
+    backgroundColor: "#eee",
+    height: 40,
+    width: 280,
+    justifyContent: "center",
+    textAlign: "center",
+    marginBottom: 10
   }
 });
