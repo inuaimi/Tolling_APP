@@ -31,7 +31,8 @@ export default class SecondScreen extends React.Component {
   constructor(props) {
     super(props);
     // const uid = firebase.app().auth().currentUser.uid;
-    this.ref = db.collection("Users").doc("SJha0BNAKBAJoth3ivAa");
+    const uid = "0wvppHF0lDZbWgJEshp5UOqmJmu2";
+    this.ref = db.collection("Users").doc(uid);
     this.unsubscribe = null;
 
     this.state = {
@@ -40,7 +41,7 @@ export default class SecondScreen extends React.Component {
       moneyInput: Number,
       showBalancePopUp: false,
       isUpdatingBalance: false,
-      uid: "SJha0BNAKBAJoth3ivAa"
+      uid: uidø
     };
   }
 
@@ -83,17 +84,72 @@ export default class SecondScreen extends React.Component {
 
   async componentDidMount() {
     this.getMoneyBalance();
-    let gantry1 = { name: "Gantry1", date: "2019-02-11", cost: 20, id: "0" };
-    let gantry2 = { name: "Gantry2", date: "2019-02-11", cost: 38, id: "1" };
-    let gantry3 = { name: "Gantry3", date: "2019-02-11", cost: 38, id: "2" };
-    let gantry4 = { name: "Gantry4", date: "2019-02-11", cost: 38, id: "3" };
-    let gantry5 = { name: "Gantry5", date: "2019-02-11", cost: 38, id: "4" };
-    let gantry6 = { name: "Gantry6", date: "2019-02-11", cost: 38, id: "5" };
-    let gantry7 = { name: "Gantry7", date: "2019-02-11", cost: 38, id: "6" };
-    let gantry8 = { name: "Gantry8", date: "2019-02-11", cost: 38, id: "7" };
-    let gantry9 = { name: "Gantry9", date: "2019-02-11", cost: 38, id: "8" };
-    let gantry10 = { name: "Gantry10", date: "2019-02-17", cost: 38, id: "9" };
-    let gantry11 = { name: "Gantry11", date: "2019-02-17", cost: 40, id: "10" };
+    let gantry1 = {
+      name: "Gantry1",
+      date: "2019-02-11",
+      cost: 20,
+      id: "0"
+    };
+    let gantry2 = {
+      name: "Gantry2",
+      date: "2019-02-11",
+      cost: 38,
+      id: "1"
+    };
+    let gantry3 = {
+      name: "Gantry3",
+      date: "2019-02-11",
+      cost: 38,
+      id: "2"
+    };
+    let gantry4 = {
+      name: "Gantry4",
+      date: "2019-02-11",
+      cost: 38,
+      id: "3"
+    };
+    let gantry5 = {
+      name: "Gantry5",
+      date: "2019-02-11",
+      cost: 38,
+      id: "4"
+    };
+    let gantry6 = {
+      name: "Gantry6",
+      date: "2019-02-11",
+      cost: 38,
+      id: "5"
+    };
+    let gantry7 = {
+      name: "Gantry7",
+      date: "2019-02-11",
+      cost: 38,
+      id: "6"
+    };
+    let gantry8 = {
+      name: "Gantry8",
+      date: "2019-02-11",
+      cost: 38,
+      id: "7"
+    };
+    let gantry9 = {
+      name: "Gantry9",
+      date: "2019-02-11",
+      cost: 38,
+      id: "8"
+    };
+    let gantry10 = {
+      name: "Gantry10",
+      date: "2019-02-17",
+      cost: 38,
+      id: "9"
+    };
+    let gantry11 = {
+      name: "Gantry11",
+      date: "2019-02-17",
+      cost: 40,
+      id: "10"
+    };
     this.setState({
       gantrys: [
         gantry1,
@@ -147,18 +203,43 @@ export default class SecondScreen extends React.Component {
     );
   }
 
+  // renderPassedGantrys() {
+  //   const { transactions } = this.state;
+  //   return (
+  //     <Card title="Passed gantrys">
+  //       {this.state.transactions.map((transaction, key) => {
+  //         return (
+  //           <View key={key}>
+  //             <ListItem
+  //               title={transaction.gantry}
+  //               subtitle={transaction.date}
+  //               rightSubtitle={"-" + transaction.cost + "kr"}
+  //               subtitleStyle={{
+  //                 color: "#707070"
+  //               }}
+  //             />
+  //             <Divider />
+  //           </View>
+  //         );
+  //       })}
+  //     </Card>
+  //   );
+  // }
+
   renderPassedGantrys() {
-    const { transactions } = this.state;
+    console.log("gantrys:", this.state.gantrys);
     return (
       <Card title="Passed gantrys">
-        {this.state.transactions.map((transaction, key) => {
+        {this.state.gantrys.map(x => {
           return (
-            <View key={key}>
+            <View key={x.id}>
               <ListItem
-                title={transaction.gantry}
-                subtitle={transaction.date}
-                rightSubtitle={"-" + transaction.cost + "kr"}
-                subtitleStyle={{ color: "#707070" }}
+                title={x.name}
+                subtitle={x.date}
+                rightSubtitle={"-" + x.cost + "kr"}
+                subtitleStyle={{
+                  color: "#707070"
+                }}
               />
               <Divider />
             </View>
@@ -184,7 +265,11 @@ export default class SecondScreen extends React.Component {
           <Card title="Ammount">
             <View style={localStyles.addMoneyPopup}>
               <TextInput
-                onChangeText={input => this.setState({ moneyInput: input })}
+                onChangeText={input =>
+                  this.setState({
+                    moneyInput: input
+                  })
+                }
                 value={this.state.moneyInput}
                 keyboardType="numeric"
                 maxLength={10}
@@ -206,7 +291,9 @@ export default class SecondScreen extends React.Component {
   }
 
   toggleAddMoneyPopup = () => {
-    this.setState({ showBalancePopUp: !this.state.showBalancePopUp });
+    this.setState({
+      showBalancePopUp: !this.state.showBalancePopUp
+    });
   };
 
   updateMoneyBalance = () => {

@@ -41,7 +41,9 @@ export default class ProfileScreen extends React.Component {
 
   constructor() {
     super();
-    const uid = firebase.app().auth().currentUser.uid;
+    // const uid = firebase.app().auth().currentUser.uid;
+    //temp
+    const uid = "0wvppHF0lDZbWgJEshp5UOqmJmu2";
     this.ref = db.collection("Users").doc(uid);
     this.unsubscribe = null;
 
@@ -136,7 +138,7 @@ export default class ProfileScreen extends React.Component {
           </View>
 
           <View style={localStyles.moneyContainer}>
-            {/* {this.renderVehicles()} */}
+            {this.renderVehicles()}
           </View>
           <TouchableOpacity
             style={localStyles.addVehicleButton}
