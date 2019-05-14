@@ -30,8 +30,8 @@ export default class SecondScreen extends React.Component {
   };
   constructor(props) {
     super(props);
-    const uid = firebase.app().auth().currentUser.uid;
-    this.ref = db.collection("Users").doc(uid);
+    // const uid = firebase.app().auth().currentUser.uid;
+    this.ref = db.collection("Users").doc("SJha0BNAKBAJoth3ivAa");
     this.unsubscribe = null;
 
     this.state = {
@@ -44,29 +44,26 @@ export default class SecondScreen extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
-    this.setState({ balance: 319 });
-  }
+  // componentDidMount() {
+  //   this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+  //   this.setState({ balance: 319 });
+  // }
 
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
+  // componentWillUnmount() {
+  //   this.unsubscribe();
+  // }
 
-  onCollectionUpdate = doc => {
-    const user = doc.data();
+  // onCollectionUpdate = doc => {
+  //   const user = doc.data();
 
-    this.setState({
-      transactions: user.transactions,
-      balance: user.balance,
-      ready: true
-    });
-  };
+  //   this.setState({
+  //     transactions: user.transactions,
+  //     balance: user.balance,
+  //     ready: true
+  //   });
+  // };
 
   render() {
-    if (!this.state.ready) {
-      return null;
-    }
     return (
       <View style={localStyles.mainContainer}>
         <ScrollView>
@@ -139,12 +136,12 @@ export default class SecondScreen extends React.Component {
           <Text style={localStyles.balanceText}>
             {this.state.balance ? this.state.balance + " kr" : "0 kr"}
           </Text>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={localStyles.addMoneyButton}
             onPress={() => this.props.navigation.navigate("AddMoney")}
           >
             <Text style={localStyles.btnText}> Add money </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </Card>
     );

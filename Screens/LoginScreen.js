@@ -59,8 +59,8 @@ export default class SecondScreen extends React.Component {
         //   this.setState({
         //     error: error.code,
         //     loading: false
-          });
-        }
+        //   });
+        // }
       })
       .catch(() => {
         this.setState({
