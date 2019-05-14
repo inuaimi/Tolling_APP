@@ -46,6 +46,21 @@ export default class SecondScreen extends React.Component {
         });
         this.saveLoginData();
         this.props.navigation.navigate("Map");
+        // const user = firebase.app().auth().currentUser;
+        // console.log(user);
+        // if (user.emailVerified) {
+        //   this.setState({
+        //     error: "",
+        //     loading: false
+        //   });
+        //   this.props.navigation.navigate("Map");
+        // } else {
+        //   alert("Please verify email to sign in.");
+        //   this.setState({
+        //     error: error.code,
+        //     loading: false
+          });
+        }
       })
       .catch(() => {
         this.setState({
@@ -69,7 +84,7 @@ export default class SecondScreen extends React.Component {
         ["isLoggedIn", "true"]
       ]);
     } catch (error) {
-      //Error saving data
+      console.log("_application error saving data", error);
     }
   };
 

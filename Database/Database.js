@@ -19,17 +19,25 @@ export const addItem = item => {
 };
 
 // Should be 2 params, user and vehicle to delete. User will be signed in.
-export const deleteUserVehicle = vehicle => {
+export const deleteUserVehicle = (vehicle, uid) => {
   db.collection("Users")
-    .doc("XO5lwKAyI3PaEpGQ2bZ4")
+    .doc(uid)
     .update({
       vehicles: firebase.firestore.FieldValue.arrayRemove(vehicle)
     });
 };
 
-export const addUserVehicle = (licensePlate, type) => {
+export const editUserEmail = (email, uid) => {
   db.collection("Users")
-    .doc("XO5lwKAyI3PaEpGQ2bZ4")
+    .doc(uid)
+    .update({
+      email: email
+    });
+};
+
+export const addUserVehicle = (licensePlate, type, uid) => {
+  db.collection("Users")
+    .doc(uid)
     .update({
       vehicles: firebase.firestore.FieldValue.arrayUnion({
         licensePlate: licensePlate,
@@ -38,31 +46,18 @@ export const addUserVehicle = (licensePlate, type) => {
     });
 };
 
-export const createUser = (name, email, vehicle, license, balance) => {
-  db.collection("Users").add({
+export const createUser = (uid, name, email, vehicle, license, balance) => {
+  var userIdRef = db.collection("Users").doc(uid);
+  userIdRef.set({
+    uid: uid,
     name: name,
     email: email,
-    vehicle: vehicle,
-    licensePlate: license,
+    vehicles: [
+      {
+        type: vehicle,
+        licensePlate: license
+      }
+    ],
     balance: balance
   });
 };
-
-// export const getMoneyBalance = async id => {
-//   let balance;
-//   const ref = db.collection("Users").doc(id);
-//   const getDoc = ref
-//     .get()
-//     .then(doc => {
-//       if (doc.exists) {
-//         console.log("_application, Document exist!: ", doc.data());
-//         balance = doc.data().balance;
-//         console.log("_application balance var 1sec after:", balance);
-//       }
-//       console.log("No such document");
-//     })
-//     .catch(err => {
-//       console.log("Error getting document: ", err);
-//     });
-//   console.log("_application, balance var: ", balance);
-// };
