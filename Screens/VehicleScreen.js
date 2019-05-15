@@ -12,6 +12,7 @@ import {
 } from "react-native-elements";                       
 import styles from '../Styles/profileStyles'
 import { deleteUserVehicle } from '../Database/Database';
+import firebase from 'react-native-firebase';
 
 export default class VehicleScreen extends React.Component {
 
@@ -68,7 +69,8 @@ export default class VehicleScreen extends React.Component {
   }
 
   deleteVehicle = (vehicle) => {
-    deleteUserVehicle(vehicle);
+    const uid = firebase.app().auth().currentUser.uid;
+    deleteUserVehicle(vehicle, uid);
     this.props.navigation.goBack();
   }
 }

@@ -31,11 +31,13 @@ export default class ProfileScreen extends React.Component {
 
   constructor() {
     super()
-    this.ref = db.collection('Users').doc("XO5lwKAyI3PaEpGQ2bZ4");
+    const uid = firebase.app().auth().currentUser.uid;
+    this.ref = db.collection('Users').doc(uid);
     this.unsubscribe = null;
 
     this.state = {
       vehicles: [],
+      uid: uid
     }
   }
 
@@ -79,7 +81,16 @@ export default class ProfileScreen extends React.Component {
 
           <View style={localStyles.moneyContainer}>
             <Card title="Email">
-              <Text style={localStyles.balanceText}> {this.state.email} </Text>
+            <View>
+              <ListItem 
+                title={<Text style={localStyles.emailText}> {this.state.email} </Text>}
+                rightTitle={<TouchableOpacity onPress={() => this.props.navigation.navigate('EditEmail', this.state.email)} style={{marginRight: 15}}>
+                <Icon name="edit" type="font-awesome" color="black" />
+              </TouchableOpacity>}
+              />
+            </View>
+              
+              
             </Card>
           </View>
 
@@ -107,6 +118,7 @@ export default class ProfileScreen extends React.Component {
                   type: vehicle.type
                 })}
                 chevron
+                
               />
               <Divider />
             </View>
@@ -123,7 +135,7 @@ const localStyles = StyleSheet.create({
     backgroundColor: "#eeeeee"
   },
   balanceText: {
-    fontSize: 14,
+    fontSize: 16,
     textAlign: "center"
   },
   addVehicleButton: {
@@ -144,5 +156,8 @@ const localStyles = StyleSheet.create({
     alignSelf: 'center',
     color: 'white',
     fontWeight: 'bold'
+  },
+  emailText: {
+    fontSize: 16,
   }
 });

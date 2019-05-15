@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, ImageBackground } from "react-native";
+import { StyleSheet, Text, View, ImageBackground, Picker } from "react-native";
 import { Inputs } from "../Components/Inputs";
 import { Buttons } from "../Components/Buttons";
 import { createUser } from "../Database/Database";
@@ -15,7 +15,7 @@ export default class SignUpScreen extends React.Component {
     name: "",
     email: "",
     password: "",
-    vehicle: "",
+    vehicle: "Car",
     license: "",
     error: "",
     loading: false
@@ -67,7 +67,23 @@ export default class SignUpScreen extends React.Component {
           error: "",
           loading: false
         });
+        const uid = firebase.app().auth().currentUser.uid;
+        const user = firebase.app().auth().currentUser;
+        user
+          .sendEmailVerification()
+          .then(() => {
+            alert(
+              "Email successfully sent to " + email + ". Verify it to sign in."
+            );
+          })
+          .catch(error => {
+            this.setState({
+              error: error.code,
+              loading: false
+            });
+          });
         createUser(
+          uid,
           this.state.name,
           this.state.email,
           this.state.vehicle,
@@ -75,9 +91,9 @@ export default class SignUpScreen extends React.Component {
         );
         this.props.navigation.navigate("Login");
       })
-      .catch(() => {
+      .catch(error => {
         this.setState({
-          error: "Failed to sign up. Try again.",
+          error: error.code,
           loading: false
         });
       });
@@ -118,17 +134,30 @@ export default class SignUpScreen extends React.Component {
             value={this.state.password}
           />
           <Inputs
-            placeholder="Type of vehicle"
-            placeholderTextColor="#777777"
-            onChangeText={vehicle => this.setState({ vehicle })}
-            value={this.state.vehicle}
-          />
-          <Inputs
             placeholder="License plate"
             placeholderTextColor="#777777"
             onChangeText={license => this.setState({ license })}
             value={this.state.license}
           />
+          <Picker
+            itemStyle={styles.pickerItem}
+            style={styles.dropdown}
+            selectedValue={this.state.vehicle}
+            onValueChange={vehicle => this.setState({ vehicle: vehicle })}
+          >
+            <Picker.Item label="Car" value="Car" />
+            <Picker.Item label="Van" value="Van" />
+            <Picker.Item label="Truck" value="Truck" />
+            <Picker.Item label="Bus" value="Bus" />
+            <Picker.Item label="Motorcycle" value="Motorcycle" />
+          </Picker>
+
+          <View style={styles.vehicleText}>
+            <Text style={styles.vehicle}>
+              Chosen vehicle: {this.state.vehicle}
+            </Text>
+          </View>
+
           {this.renderButtonOrLoading()}
           <Text
             style={{
@@ -175,11 +204,38 @@ const styles = StyleSheet.create({
     height: "100%"
   },
   login: {
-    marginTop: 20,
+    marginTop: 10,
     color: "#000",
     fontSize: 18
   },
-  form: {
-    flex: 1
+  vehicleText: {
+    marginTop: 10,
+    width: "100%",
+    borderWidth: 1,
+    borderColor: "#000",
+    borderRadius: 50,
+    backgroundColor: "#000"
+  },
+  vehicle: {
+    color: "#fff",
+    fontWeight: "400",
+    fontSize: 18,
+    paddingRight: 20,
+    paddingLeft: 20,
+    paddingBottom: 10,
+    paddingTop: 10
+  },
+  dropdown: {
+    marginTop: 10,
+    width: "100%",
+    borderWidth: 1,
+    borderColor: "#000",
+    borderRadius: 50,
+    backgroundColor: "#000"
+  },
+  pickerItem: {
+    color: "#fff",
+    height: 130,
+    fontSize: 24
   }
 });

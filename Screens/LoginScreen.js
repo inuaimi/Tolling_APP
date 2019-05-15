@@ -12,8 +12,8 @@ export default class SecondScreen extends React.Component {
   };
 
   state = {
-    email: "",
-    password: "",
+    email: "lajneriet@gmail.com",
+    password: "lajneriet",
     error: "",
     loading: false
   };
@@ -39,11 +39,21 @@ export default class SecondScreen extends React.Component {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        this.setState({
-          error: "",
-          loading: false
-        });
-        this.props.navigation.navigate("Map");
+        const user = firebase.app().auth().currentUser;
+        console.log(user);
+        if (user.emailVerified) {
+          this.setState({
+            error: "",
+            loading: false
+          });
+          this.props.navigation.navigate("Map");
+        } else {
+          alert("Please verify email to sign in.");
+          this.setState({
+            error: error.code,
+            loading: false
+          });
+        }
       })
       .catch(() => {
         this.setState({
