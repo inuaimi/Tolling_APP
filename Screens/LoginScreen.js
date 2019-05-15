@@ -94,7 +94,12 @@ export default class SecondScreen extends React.Component {
           <Text style={styles.errorTextStyle}>{this.state.error}</Text>
           {this.renderButtonOrLoading()}
 
-          <Text style={styles.forgotPw}>
+          <Text
+            onPress={() => {
+              this.props.navigation.navigate("ForgotPw");
+            }}
+            style={styles.forgotPw}
+          >
             Forgot password |{" "}
             <Text
               onPress={() => {
