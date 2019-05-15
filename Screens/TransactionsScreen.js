@@ -79,23 +79,28 @@ export default class SecondScreen extends React.Component {
 
   renderPassedGantrys() {
     const { transactions } = this.state;
-    return (
-      <Card title="Passed gantrys">
-        {this.state.transactions.map((transaction, key) => {
-          return (
-            <View key={key}>
-              <ListItem
-                title={transaction.gantry}
-                subtitle={transaction.date}
-                rightSubtitle={"-" + transaction.cost + "kr"}
-                subtitleStyle={{ color: "#707070" }}
-              />
-              <Divider />
-            </View>
-          );
-        })}
-      </Card>
-    );
+
+    if(this.state.transactions) {
+      return (
+        <Card title="Passed gantrys">
+          {this.state.transactions.map((transaction, key) => {
+            return (
+              <View key={key}>
+                <ListItem
+                  title={transaction.gantry}
+                  subtitle={transaction.date}
+                  rightSubtitle={"-" + transaction.cost + "kr"}
+                  subtitleStyle={{ color: "#707070" }}
+                />
+                <Divider />
+              </View>
+            );
+          })}
+        </Card>
+      );
+    } else {
+      return null;
+    }
   }
 
   //Not used atm

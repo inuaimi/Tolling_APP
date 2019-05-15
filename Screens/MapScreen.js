@@ -273,9 +273,9 @@ export default class MapScreen extends React.Component {
           showsUserLocation
           ref={ map => { this.map = map }}
           data={markers}
-          initialRegion={initialRegion}
+          initialRegion={region}
           renderMarker={renderMarker}
-          onMapReady={this.onMapReady}
+          onMapReady={() => this.onMapReady}
           // followsUserLocation
           showsMyLocationButton={true}
           onRegionChange={this.onRegionChange}

@@ -4,6 +4,7 @@ import { Inputs } from "../Components/Inputs";
 import { Buttons } from "../Components/Buttons";
 import { createUser } from "../Database/Database";
 import firebase from "react-native-firebase";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default class SignUpScreen extends React.Component {
   static navigationOptions = {
@@ -112,6 +113,7 @@ export default class SignUpScreen extends React.Component {
         source={require("../Src/Images/signup.jpg")}
         style={styles.imgContainer}
       >
+      <ScrollView>
         <View style={styles.container}>
           <Text style={styles.text}>Sign up</Text>
           <Inputs
@@ -179,6 +181,7 @@ export default class SignUpScreen extends React.Component {
             </Text>
           </Text>
         </View>
+        </ScrollView>
       </ImageBackground>
     );
   }
@@ -188,11 +191,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    paddingBottom: 100,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "rgba(160, 204, 242, .4)"
   },
   text: {
+    marginTop: 30,
     marginBottom: 30,
     color: "#fff",
     fontWeight: "400",
@@ -201,7 +206,7 @@ const styles = StyleSheet.create({
   imgContainer: {
     flex: 1,
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   login: {
     marginTop: 10,
