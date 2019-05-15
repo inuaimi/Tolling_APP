@@ -30,8 +30,8 @@ export default class SecondScreen extends React.Component {
   };
   constructor(props) {
     super(props);
-    // const uid = firebase.app().auth().currentUser.uid;
-    const uid = "0wvppHF0lDZbWgJEshp5UOqmJmu2";
+    const uid = firebase.app().auth().currentUser.uid;
+    // const uid = "0wvppHF0lDZbWgJEshp5UOqmJmu2";
     this.ref = db.collection("Users").doc(uid);
     this.unsubscribe = null;
 
@@ -41,7 +41,7 @@ export default class SecondScreen extends React.Component {
       moneyInput: Number,
       showBalancePopUp: false,
       isUpdatingBalance: false,
-      uid: uidø
+      uid: uid
     };
   }
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, View, ImageBackground } from "react-native";
-import AsyncStorage from "@react-native-community/async-storage";
+// import AsyncStorage from "@react-native-community/async-storage";
 import styles from "../Styles/loginStyles";
 import { Buttons } from "../Components/Buttons";
 import { Inputs } from "../Components/Inputs";
@@ -44,23 +44,23 @@ export default class SecondScreen extends React.Component {
           error: "",
           loading: false
         });
-        this.saveLoginData();
-        this.props.navigation.navigate("Map");
-        // const user = firebase.app().auth().currentUser;
-        // console.log(user);
-        // if (user.emailVerified) {
-        //   this.setState({
-        //     error: "",
-        //     loading: false
-        //   });
-        //   this.props.navigation.navigate("Map");
-        // } else {
-        //   alert("Please verify email to sign in.");
-        //   this.setState({
-        //     error: error.code,
-        //     loading: false
-        //   });
-        // }
+        // this.saveLoginData();
+        // this.props.navigation.navigate("Map");
+        const user = firebase.app().auth().currentUser;
+        console.log(user);
+        if (user.emailVerified) {
+          this.setState({
+            error: "",
+            loading: false
+          });
+          this.props.navigation.navigate("Map");
+        } else {
+          alert("Please verify email to sign in.");
+          this.setState({
+            error: error.code,
+            loading: false
+          });
+        }
       })
       .catch(() => {
         this.setState({
@@ -71,22 +71,22 @@ export default class SecondScreen extends React.Component {
   }
 
   //We want to encrypt the arguments in future
-  saveLoginData = async () => {
-    try {
-      console.log(
-        "_application Saving login data: ",
-        this.state.email,
-        this.state.password
-      );
-      await AsyncStorage.multiSet([
-        ["email", this.state.email],
-        ["password", this.state.password],
-        ["isLoggedIn", "true"]
-      ]);
-    } catch (error) {
-      console.log("_application error saving data", error);
-    }
-  };
+  // saveLoginData = async () => {
+  //   try {
+  //     console.log(
+  //       "_application Saving login data: ",
+  //       this.state.email,
+  //       this.state.password
+  //     );
+  //     await AsyncStorage.multiSet([
+  //       ["email", this.state.email],
+  //       ["password", this.state.password],
+  //       ["isLoggedIn", "true"]
+  //     ]);
+  //   } catch (error) {
+  //     console.log("_application error saving data", error);
+  //   }
+  // };
 
   renderButtonOrLoading() {
     if (this.state.loading) {

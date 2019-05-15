@@ -10,7 +10,9 @@ import React from "react";
 //Main navigation system
 // import MainNavigator from "./Navigation/MainNavigator";
 import { createMainNavigator } from "./Navigation/MainNavigator";
-import AsyncStorage from "@react-native-community/async-storage";
+// import AsyncStorage from "@react-native-community/async-storage";
+import firebase from "react-native-firebase";
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -25,20 +27,31 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
-    let val = await this.checkIfLoggedIn();
+    // let val = await this.checkIfLoggedIn();
+    this.checkIfLoggedIn();
     console.log("_application isloggedIn: ", val);
-    this.setState({ isLoggedIn: val });
+    // this.setState({ isLoggedIn: val });
   }
 
   checkIfLoggedIn = async () => {
-    try {
-      const val = await AsyncStorage.getItem("isLoggedIn");
-      if (val === "true") {
-        return true;
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.setState({ isLoggedIn: true });
+      } else {
+        this.setState({ isLoggedIn: false });
       }
-      return false;
-    } catch {
-      //Handle error
-    }
+    });
   };
+
+  // checkIfLoggedIn = async () => {
+  //   try {
+  //     const val = await AsyncStorage.getItem("isLoggedIn");
+  //     if (val === "true") {
+  //       return true;
+  //     }
+  //     return false;
+  //   } catch {
+  //     //Handle error
+  //   }
+  // };
 }

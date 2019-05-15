@@ -1515,7 +1515,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 6ZH3MYV545;
-				DEVELOPMENT_TEAM = UC7XX3UNRQ;
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -1553,7 +1552,6 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = 6ZH3MYV545;
-				DEVELOPMENT_TEAM = UC7XX3UNRQ;
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1589,8 +1587,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 6ZH3MYV545;
-				DEVELOPMENT_TEAM = UC7XX3UNRQ;
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited) \"${PODS_ROOT}/FirebaseAnalytics/Frameworks\" \"${PODS_ROOT}/GoogleAppMeasurement/Frameworks\" \"${PODS_ROOT}/GoogleMaps/Base/Frameworks\" \"${PODS_ROOT}/GoogleMaps/Maps/Frameworks\"";
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/FirebaseAnalytics/Frameworks\"",
+					"\"${PODS_ROOT}/GoogleAppMeasurement/Frameworks\"",
+					"\"${PODS_ROOT}/GoogleMaps/Base/Frameworks\"",
+					"\"${PODS_ROOT}/GoogleMaps/Maps/Frameworks\"",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",

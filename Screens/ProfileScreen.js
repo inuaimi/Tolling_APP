@@ -18,7 +18,7 @@ import {
   Icon
 } from "react-native-elements";
 import firebase from "react-native-firebase";
-import AsyncStorage from "@react-native-community/async-storage";
+// import AsyncStorage from "@react-native-community/async-storage";
 //      Imports: "css-alike-ish" styling
 import styles from "../Styles/profileStyles";
 import { db } from "../Database/Database";
@@ -41,9 +41,9 @@ export default class ProfileScreen extends React.Component {
 
   constructor() {
     super();
-    // const uid = firebase.app().auth().currentUser.uid;
+    const uid = firebase.app().auth().currentUser.uid;
     //temp
-    const uid = "0wvppHF0lDZbWgJEshp5UOqmJmu2";
+    // const uid = "0wvppHF0lDZbWgJEshp5UOqmJmu2";
     this.ref = db.collection("Users").doc(uid);
     this.unsubscribe = null;
 
@@ -78,26 +78,26 @@ export default class ProfileScreen extends React.Component {
         .app()
         .auth()
         .signOut();
-      this.saveSignedOutState();
+      // this.saveSignedOutState();
       this.props.navigation.navigate("Login");
     } catch (e) {
       console.log(e);
     }
   };
 
-  saveSignedOutState = async () => {
-    console.log("_application, Hello from saveSignedOutState");
-    //overwrite login data
-    try {
-      await AsyncStorage.multiSet([
-        ["email", ""],
-        ["password", ""],
-        ["isLoggedIn", "false"]
-      ]);
-    } catch {
-      console.log("Error saving signed out state");
-    }
-  };
+  // saveSignedOutState = async () => {
+  //   console.log("_application, Hello from saveSignedOutState");
+  //   //overwrite login data
+  //   try {
+  //     await AsyncStorage.multiSet([
+  //       ["email", ""],
+  //       ["password", ""],
+  //       ["isLoggedIn", "false"]
+  //     ]);
+  //   } catch {
+  //     console.log("Error saving signed out state");
+  //   }
+  // };
 
   render() {
     return (
