@@ -9,8 +9,9 @@
 
 import React from 'react';
 import {
-  Text, View, Platform, DeviceEventEmitter
+  Text, View, Platform, DeviceEventEmitter, TouchableOpacity
 } from 'react-native';
+import { Icon } from "react-native-elements";
 import MapView, { PROVIDER_GOOGLE, Marker, Circle } from "react-native-maps";
                                                     //      Imports: "css-alike-ish" styling                            
 import styles from '../Styles/styles'
@@ -55,6 +56,7 @@ export default class MapScreen extends React.Component {
       gantryName: "Press a marker",
       distanceToGantry: "",
       gantryCost: 0,
+      toggleFollowUser: true,
       // BT region info
       identifier: 'Estimotes',
       uuid: 'B9407F30-F5F8-466E-AFF9-25556B57FE6D',
@@ -269,6 +271,12 @@ export default class MapScreen extends React.Component {
     addUserTransaction(currentGantry, uid);
   }
 
+  toggleFollowUserLocation = () => {
+    this.setState(state => ({
+      toggleFollowUser: !state.toggleFollowUser
+    }));
+  }
+
   render() {
     const { region } = this.state;
     
@@ -280,7 +288,7 @@ export default class MapScreen extends React.Component {
           initialRegion={region}
           onMapReady={() => this.onMapReady}
           loadingEnabled={true}
-          // followsUserLocation
+          followsUserLocation={this.state.toggleFollowUser}
           showsMyLocationButton={true}
           onRegionChange={this.onRegionChange}
           onRegionChangeComplete={this.onRegionChangeComplete}
@@ -292,6 +300,21 @@ export default class MapScreen extends React.Component {
           { this.renderGantries() }
           { this.renderTransactionGeofences() }
         </MapView>
+        <View
+          style={{
+            position: 'absolute',
+            top: '50%',
+            alignSelf: 'flex-end'
+          }}
+        >
+          <TouchableOpacity style={
+              this.state.toggleFollowUser
+                ? styles.activeFollowUserButton
+                : styles.inactiveFollowUserButton
+              } onPress={() => this.toggleFollowUserLocation()}>
+            <Icon name="location-arrow" type="font-awesome" color="white" />
+          </TouchableOpacity>
+        </View>
         <View style={styles.bottomDetailsContainer}>
           <View style={{flexDirection:"row"}}>
             <View style={styles.bottomDetailsKeys}>

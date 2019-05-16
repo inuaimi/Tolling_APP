@@ -105,5 +105,29 @@ export default StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     textAlign: "center"
+  },
+  activeFollowUserButton: {
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 50,
+    height: 50,
+    marginHorizontal: 15,
+    backgroundColor: 'rgba(46, 204, 113, 1)'
+  },
+  inactiveFollowUserButton: {
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 50,
+    height: 50,
+    marginHorizontal: 15,
+    // backgroundColor: '#2ecc71'
+    backgroundColor: 'rgba(46, 204, 113, 0.5)'
+  },
+  btnText: {
+    alignSelf: 'center',
+    color: 'white',
+    fontWeight: 'bold'
   }
 });
