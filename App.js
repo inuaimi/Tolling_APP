@@ -33,7 +33,7 @@ export default class App extends React.Component {
     // this.setState({ isLoggedIn: val });
   }
 
-  checkIfLoggedIn = async () => {
+  checkIfLoggedIn = () => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.setState({ isLoggedIn: true });

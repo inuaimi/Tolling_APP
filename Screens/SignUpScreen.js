@@ -68,20 +68,7 @@ export default class SignUpScreen extends React.Component {
           error: "",
           loading: false
         });
-        // <<<<<<< HEAD
-        //         createUser(
-        //           this.state.name,
-        //           this.state.email,
-        //           this.state.vehicle,
-        //           this.state.license,
-        //           this.state.balance
-        //         );
-        //         this.props.navigation.navigate("Login");
-        //       })
-        //       .catch(() => {
-        //         this.setState({
-        //           error: "Failed to sign up. Try again.",
-        // =======
+
         const uid = firebase.app().auth().currentUser.uid;
         const user = firebase.app().auth().currentUser;
         user

@@ -70,24 +70,6 @@ export default class SecondScreen extends React.Component {
       });
   }
 
-  //We want to encrypt the arguments in future
-  // saveLoginData = async () => {
-  //   try {
-  //     console.log(
-  //       "_application Saving login data: ",
-  //       this.state.email,
-  //       this.state.password
-  //     );
-  //     await AsyncStorage.multiSet([
-  //       ["email", this.state.email],
-  //       ["password", this.state.password],
-  //       ["isLoggedIn", "true"]
-  //     ]);
-  //   } catch (error) {
-  //     console.log("_application error saving data", error);
-  //   }
-  // };
-
   renderButtonOrLoading() {
     if (this.state.loading) {
       return <Text>Loading...</Text>;

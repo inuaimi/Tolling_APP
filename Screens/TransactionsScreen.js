@@ -18,7 +18,6 @@ import {
   Icon,
   Button
 } from "react-native-elements";
-import DeviceInfo from "react-native-device-info";
 import Modal from "react-native-modal";
 import firebase from "react-native-firebase";
 import { db } from "../Database/Database";
@@ -31,13 +30,14 @@ export default class SecondScreen extends React.Component {
   constructor(props) {
     super(props);
     const uid = firebase.app().auth().currentUser.uid;
-    // const uid = "0wvppHF0lDZbWgJEshp5UOqmJmu2";
     this.ref = db.collection("Users").doc(uid);
     this.unsubscribe = null;
 
     this.state = {
       gantrys: [],
       balance: 0,
+      transactions: [],
+      ready: false,
       moneyInput: Number,
       showBalancePopUp: false,
       isUpdatingBalance: false,
@@ -45,24 +45,23 @@ export default class SecondScreen extends React.Component {
     };
   }
 
-  // componentDidMount() {
-  //   this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
-  //   this.setState({ balance: 319 });
-  // }
+  componentDidMount() {
+    this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+  }
 
-  // componentWillUnmount() {
-  //   this.unsubscribe();
-  // }
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
 
-  // onCollectionUpdate = doc => {
-  //   const user = doc.data();
+  onCollectionUpdate = doc => {
+    const user = doc.data();
 
-  //   this.setState({
-  //     transactions: user.transactions,
-  //     balance: user.balance,
-  //     ready: true
-  //   });
-  // };
+    this.setState({
+      balance: user.balance,
+      transactions: user.transactions,
+      ready: true
+    });
+  };
 
   render() {
     return (
@@ -82,159 +81,33 @@ export default class SecondScreen extends React.Component {
     );
   }
 
-  async componentDidMount() {
-    this.getMoneyBalance();
-    let gantry1 = {
-      name: "Gantry1",
-      date: "2019-02-11",
-      cost: 20,
-      id: "0"
-    };
-    let gantry2 = {
-      name: "Gantry2",
-      date: "2019-02-11",
-      cost: 38,
-      id: "1"
-    };
-    let gantry3 = {
-      name: "Gantry3",
-      date: "2019-02-11",
-      cost: 38,
-      id: "2"
-    };
-    let gantry4 = {
-      name: "Gantry4",
-      date: "2019-02-11",
-      cost: 38,
-      id: "3"
-    };
-    let gantry5 = {
-      name: "Gantry5",
-      date: "2019-02-11",
-      cost: 38,
-      id: "4"
-    };
-    let gantry6 = {
-      name: "Gantry6",
-      date: "2019-02-11",
-      cost: 38,
-      id: "5"
-    };
-    let gantry7 = {
-      name: "Gantry7",
-      date: "2019-02-11",
-      cost: 38,
-      id: "6"
-    };
-    let gantry8 = {
-      name: "Gantry8",
-      date: "2019-02-11",
-      cost: 38,
-      id: "7"
-    };
-    let gantry9 = {
-      name: "Gantry9",
-      date: "2019-02-11",
-      cost: 38,
-      id: "8"
-    };
-    let gantry10 = {
-      name: "Gantry10",
-      date: "2019-02-17",
-      cost: 38,
-      id: "9"
-    };
-    let gantry11 = {
-      name: "Gantry11",
-      date: "2019-02-17",
-      cost: 40,
-      id: "10"
-    };
-    this.setState({
-      gantrys: [
-        gantry1,
-        gantry2,
-        gantry3,
-        gantry4,
-        gantry5,
-        gantry6,
-        gantry7,
-        gantry8,
-        gantry9,
-        gantry10,
-        gantry11
-      ]
-    });
-  }
-
-  getMoneyBalance = () => {
-    const id = this.state.uid;
-    const ref = db.collection("Users").doc(id);
-    const getDoc = ref
-      .get()
-      .then(async doc => {
-        if (doc.exists) {
-          const data = await doc.data().balance;
-          this.setState({ balance: data });
-        }
-        console.log("No such document");
-        return;
-      })
-      .catch(err => {
-        console.log("Error getting document: ", err);
-      });
-  };
-
   renderMoneyBalance() {
     return (
       <Card title="Balance">
         <View>
           <Text style={localStyles.balanceText}>
-            {this.state.balance ? this.state.balance + " kr" : "0 kr"}
+            {this.state.balance + " kr"}
           </Text>
-          {/* <TouchableOpacity
-            style={localStyles.addMoneyButton}
-            onPress={() => this.props.navigation.navigate("AddMoney")}
-          >
-            <Text style={localStyles.btnText}> Add money </Text>
-          </TouchableOpacity> */}
         </View>
       </Card>
     );
   }
 
-  // renderPassedGantrys() {
-  //   const { transactions } = this.state;
-  //   return (
-  //     <Card title="Passed gantrys">
-  //       {this.state.transactions.map((transaction, key) => {
-  //         return (
-  //           <View key={key}>
-  //             <ListItem
-  //               title={transaction.gantry}
-  //               subtitle={transaction.date}
-  //               rightSubtitle={"-" + transaction.cost + "kr"}
-  //               subtitleStyle={{
-  //                 color: "#707070"
-  //               }}
-  //             />
-  //             <Divider />
-  //           </View>
-  //         );
-  //       })}
-  //     </Card>
-  //   );
-  // }
-
   renderPassedGantrys() {
     console.log("gantrys:", this.state.gantrys);
+    if (
+      this.state.transactions === undefined ||
+      this.state.transactions.length === 0
+    ) {
+      return null;
+    }
     return (
-      <Card title="Passed gantrys">
-        {this.state.gantrys.map(x => {
+      <Card title="Passed transactions">
+        {this.state.transactions.map(x => {
           return (
             <View key={x.id}>
               <ListItem
-                title={x.name}
+                title={x.gantry}
                 subtitle={x.date}
                 rightSubtitle={"-" + x.cost + "kr"}
                 subtitleStyle={{
@@ -260,6 +133,7 @@ export default class SecondScreen extends React.Component {
         <Modal
           isVisible={this.state.showBalancePopUp}
           onBackdropPress={() => this.toggleAddMoneyPopup()}
+          keyboardShouldPersistTaps="always"
           style={localStyles.modalPopup}
         >
           <Card title="Ammount">
@@ -313,7 +187,6 @@ export default class SecondScreen extends React.Component {
   };
 
   moneyBalanceUpdateComplete = () => {
-    this.getMoneyBalance();
     this.setState({ isUpdatingBalance: false });
     this.toggleAddMoneyPopup();
     this.setState({ moneyInput: Number });
