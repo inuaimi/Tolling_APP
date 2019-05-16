@@ -279,6 +279,7 @@ export default class MapScreen extends React.Component {
           ref={ map => { this.map = map }}
           initialRegion={region}
           onMapReady={() => this.onMapReady}
+          loadingEnabled={true}
           // followsUserLocation
           showsMyLocationButton={true}
           onRegionChange={this.onRegionChange}
@@ -316,6 +317,7 @@ export default class MapScreen extends React.Component {
             key={i}
             coordinate={marker.coordinates}
             title={marker.title}
+            onPress={() => {this.longNames(marker.title); this.setState({gantryCost: marker.gantryCost})}}
           />
         ))
       )
