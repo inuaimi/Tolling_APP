@@ -35,6 +35,8 @@ export default class MapScreen extends React.Component {
     this.gantryRef = db.collection('Gantries');
     this.unsubscribeGantryRef = null;
 
+    // this.isDeviceInGeofence = this.isDeviceInGeofence.bind(this);
+
     this.state = {
       uid: firebase.app().auth().currentUser.uid,
       currentGantry: null,
@@ -72,24 +74,26 @@ export default class MapScreen extends React.Component {
   }
 
   isDeviceInGeofence(coordinates) {
+    console.log("Checking device status..");
     let me = this;
     let isInsideCirle = false;
-    this.state.gantries.forEach(function(gantry) {
-      if(gantry.TransactionGeofence) {
-        const transactionGeofence = gantry.TransactionGeofence;
+    let gantryHasTGF = false;
+    me.state.gantries.forEach(function(gantry) {
+      if(gantry.transactionGeofence) {
+        gantryHasTGF = true;
       }
       if(geolib.isPointInCircle({ latitude: coordinates.latitude, longitude: coordinates.longitude }, gantry.center, gantry.radius )) {
         isInsideCirle = true;
-        if(gantry.TransactionGeofence) {
+        console.log("Inside outer geo, check if still inside inner..");
+        if(gantryHasTGF) {
+          const transactionGeofence = gantry.transactionGeofence;
           //FIXME: Doesn't enter this if statement..
           if(!geolib.isPointInCircle({ latitude: coordinates.latitude, longitude: coordinates.longitude }, transactionGeofence.center, transactionGeofence.radius )) {
-            console.log("has left!")
             me.setState({
               hasLeftTransactionGeofence: true
-            })
+            });
           }
         }
-        
         me.setState({
           isInsideGantry: true,
           currentGantry: gantry,
@@ -152,16 +156,17 @@ export default class MapScreen extends React.Component {
     this.beaconsDidRange = DeviceEventEmitter.addListener(
       'beaconsDidRange',
       (data) => {
+        let me = this;
         data.beacons.forEach((beacon) => {
           if(beacon.accuracy) {
             const distance = beacon.accuracy.toFixed(2);
             
-            if(this.isBeaconInRange(distance) && this.state.hasLeftTransactionGeofence && this.state.isInsideGantry) {
-              this.setState = {
+            if(me.isBeaconInRange(distance) && me.state.hasLeftTransactionGeofence && me.state.isInsideGantry) {
+              me.setState({
                 hasLeftTransactionGeofence: false
-              }
-              //FIXME: Should only call this once. check isDeviceInGeofence.
-              this.makeTransaction()
+              });
+              me.makeTransaction();
+              console.log("Just made a transaction.     status on: hasLeftTransactionGeo: " + me.state.hasLeftTransactionGeofence);
             } 
             // else {
             //   this.setState = {
@@ -196,7 +201,8 @@ export default class MapScreen extends React.Component {
           latitude: gantry.Latitude,
           longitude: gantry.Longitude
         },
-        radius: gantry.Radius
+        radius: gantry.Radius,
+        transactionGeofence: gantry.TransactionGeofence
       });
       gantryMarkers.push({
         title: gantry.Title,
@@ -268,9 +274,7 @@ export default class MapScreen extends React.Component {
   makeTransaction = () => {
     console.log("make transaction!");
 
-    //Skapa ett objekt med info om transaktionen.
     const { currentGantry, uid } = this.state;
-    //console.log("gantry to add : " + JSON.stringify(currentGantry, null, 2));
     addUserTransaction(currentGantry, uid);
   }
 
