@@ -7,7 +7,6 @@ import {
   TextInput,
   ActivityIndicator
 } from "react-native";
-// import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 //      Imports: "css-alike-ish" styling
 import styles from "../Styles/styles";
 import {
@@ -74,7 +73,7 @@ export default class SecondScreen extends React.Component {
             {this.renderAddMoney()}
           </View>
           <View style={localStyles.gantrysContainer}>
-            {this.renderPassedGantrys()}
+            {this.renderRecentTransactions()}
           </View>
         </ScrollView>
       </View>
@@ -93,7 +92,7 @@ export default class SecondScreen extends React.Component {
     );
   }
 
-  renderPassedGantrys() {
+  renderRecentTransactions() {
     console.log("gantrys:", this.state.gantrys);
     if (
       this.state.transactions === undefined ||
@@ -102,7 +101,7 @@ export default class SecondScreen extends React.Component {
       return null;
     }
     return (
-      <Card title="Passed transactions">
+      <Card title="Recent transactions">
         {this.state.transactions.map(x => {
           return (
             <View key={x.id}>
@@ -136,7 +135,7 @@ export default class SecondScreen extends React.Component {
           keyboardShouldPersistTaps="always"
           style={localStyles.modalPopup}
         >
-          <Card title="Ammount">
+          <Card title="Amount">
             <View style={localStyles.addMoneyPopup}>
               <TextInput
                 onChangeText={input =>
@@ -148,7 +147,7 @@ export default class SecondScreen extends React.Component {
                 keyboardType="numeric"
                 maxLength={10}
                 autoFocus={true}
-                placeholder="Ammount"
+                placeholder="Amount"
                 style={localStyles.moneyTextInput}
               />
               <ActivityIndicator
