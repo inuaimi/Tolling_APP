@@ -5,6 +5,7 @@
 //     2. Beacon-skanning i bakgrunden.
 //  - Olika pris för fordonstyperna.
 //  - Fixa, zoom och toggle followUser.
+//  - Unable to retrieve location alert, fixa. De stackar på varandra....
 
 
 import React from 'react';
@@ -90,7 +91,7 @@ export default class MapScreen extends React.Component {
 
   componentDidMount() {
     this.unsubscribeGantryRef = this.gantryRef.onSnapshot(this.onGantryCollectionUpdate);
-    this.getCurrentposition();
+    this.getCurrentPosition(LATITUDE_DELTA, LONGITUDE_DELTA);
     this.watchPosition();
     this.scanForBeacons();
   }
@@ -104,6 +105,8 @@ export default class MapScreen extends React.Component {
   setRegion(region) {
     if(!this.state.ready) {
       setTimeout(() => this.map.animateToRegion(region), 10);
+    } else {
+      this.map.animateToRegion(region);
     }
   }
 
@@ -178,6 +181,21 @@ export default class MapScreen extends React.Component {
     me.watchId = navigator.geolocation.watchPosition(
       position => {
         let coordinates = position.coords;
+
+        //TODO: Needs fieldtesting!!!!
+        if(me.state.toggleFollowUser) {
+          console.log("follow!");
+          const { currentLatitudeDelta, currentLongitudeDelta } = me.state;
+          const region = {
+            latitude: coordinates.latitude,
+            longitude: coordinates.longitude,
+            latitudeDelta: currentLatitudeDelta,
+            longitudeDelta: currentLongitudeDelta
+          }
+          console.log("new region: " + JSON.stringify(region, null, 2));
+          me.setRegion(region);
+          // console.log("watchPos: " + JSON.stringify(position, null, 2));
+        }
   
         if(me.isDeviceInGeofence(coordinates)) {
           if(me.isReadyForNotif) {
@@ -219,16 +237,17 @@ export default class MapScreen extends React.Component {
     );
   }
 
-  getCurrentposition() {
+  getCurrentPosition(latDelta, longDelta) {
     try {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const region = {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA
+            latitudeDelta: latDelta,
+            longitudeDelta: longDelta
           };
+          console.log(" get curr pos new region: " + JSON.stringify(region, null, 2));
           this.setRegion(region);
         },
         (error) => {
@@ -253,11 +272,15 @@ export default class MapScreen extends React.Component {
   };
 
   onRegionChange = (region) => {
-    //console.log('onRegionChange', region);
+    // console.log('onRegionChange', region);
   };
 
   onRegionChangeComplete = (region) => {
-    //console.log('onRegionChangeComplete', region);
+    // console.log('onRegionChangeComplete', region);
+    this.setState({
+      currentLatitudeDelta: region.latitudeDelta,
+      currentLongitudeDelta: region.longitudeDelta
+    })
   };
 
   isBeaconInRange = (distance) => {
@@ -272,9 +295,14 @@ export default class MapScreen extends React.Component {
   }
 
   toggleFollowUserLocation = () => {
+    console.log("toggle!");
+    const { currentLatitudeDelta, currentLongitudeDelta, toggleFollowUser } = this.state;
     this.setState(state => ({
       toggleFollowUser: !state.toggleFollowUser
     }));
+    if(!toggleFollowUser) {
+      this.getCurrentPosition(currentLatitudeDelta, currentLongitudeDelta);
+    }
   }
 
   render() {
@@ -283,13 +311,12 @@ export default class MapScreen extends React.Component {
     return (
       <View style={styles.container}>
         <MapView
+          provider={PROVIDER_GOOGLE}
           showsUserLocation={true}
           ref={ map => { this.map = map }}
           initialRegion={region}
-          onMapReady={() => this.onMapReady}
+          onMapReady={() => this.onMapReady()}
           loadingEnabled={true}
-          followsUserLocation={this.state.toggleFollowUser}
-          showsMyLocationButton={true}
           onRegionChange={this.onRegionChange}
           onRegionChangeComplete={this.onRegionChangeComplete}
           style={styles.map}
@@ -300,13 +327,7 @@ export default class MapScreen extends React.Component {
           { this.renderGantries() }
           { this.renderTransactionGeofences() }
         </MapView>
-        <View
-          style={{
-            position: 'absolute',
-            top: '50%',
-            alignSelf: 'flex-end'
-          }}
-        >
+        <View style={styles.mapButtonContainer}>
           <TouchableOpacity style={
               this.state.toggleFollowUser
                 ? styles.activeFollowUserButton

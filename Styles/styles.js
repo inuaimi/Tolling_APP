@@ -125,9 +125,24 @@ export default StyleSheet.create({
     // backgroundColor: '#2ecc71'
     backgroundColor: 'rgba(46, 204, 113, 0.5)'
   },
+  zoomButtons: {
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 50,
+    height: 50,
+    marginHorizontal: 15,
+    backgroundColor: '#ffffff'
+  },
   btnText: {
     alignSelf: 'center',
     color: 'white',
     fontWeight: 'bold'
-  }
+  },
+  mapButtonContainer: {
+    position: 'absolute',
+    top: '50%',
+    alignSelf: 'flex-end',
+    flexDirection: 'column'
+  },
 });
