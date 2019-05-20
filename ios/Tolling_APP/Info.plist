@@ -40,7 +40,7 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This application need to know your location in order to send location-based notifications.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
