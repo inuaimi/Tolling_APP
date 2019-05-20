@@ -23,14 +23,24 @@ export default class AddVehicleScreen extends React.Component {
 
   constructor() {
     super()
-    this.state = {}
+    this.state = {
+      type: "Car",
+      licensePlate: "",
+    }
   }
 
   addUserVehicle = () => {
     var uid = firebase.auth().currentUser.uid;
     const { licensePlate, type } = this.state;
-    addUserVehicle(licensePlate, type, uid);
-    this.props.navigation.goBack();
+    if (licensePlate === "") {
+      alert(
+        "License plate can't be empty"
+      );
+      return;
+    } else {
+      addUserVehicle(licensePlate, type, uid);
+      this.props.navigation.goBack();
+    }
   }
 
   
