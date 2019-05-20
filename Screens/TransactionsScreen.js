@@ -140,7 +140,7 @@ export default class SecondScreen extends React.Component {
               <TextInput
                 onChangeText={input =>
                   this.setState({
-                    moneyInput: input
+                    moneyInput: Number(input)
                   })
                 }
                 value={this.state.moneyInput}
