@@ -23,10 +23,24 @@ export default class NotifService {
     });
   }
   
-  localNotif() {
+  geofenceNotif() {
     PushNotification.localNotificationSchedule({
       message: "You are inside a geofence!", // (required)
       date: new Date(Date.now() + (1 * 1000))
+    });
+  }
+
+  transactionGeofenceNotif() {
+    PushNotification.localNotificationSchedule({
+      message: "You're outside the TGF!",
+      date: new Date(Date.now() + (1 * 1000))
+    });
+  }
+
+  transactionNotif() {
+    PushNotification.localNotificationSchedule({
+      message: "A transaction was made",
+      date: new Date(Date.now() + (1*1000))
     });
   }
 

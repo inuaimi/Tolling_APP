@@ -1585,7 +1585,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = UC7XX3UNRQ;
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited) \"${PODS_ROOT}/FirebaseAnalytics/Frameworks\" \"${PODS_ROOT}/GoogleAppMeasurement/Frameworks\" \"${PODS_ROOT}/GoogleMaps/Base/Frameworks\" \"${PODS_ROOT}/GoogleMaps/Maps/Frameworks\"";
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/FirebaseAnalytics/Frameworks\"",
+					"\"${PODS_ROOT}/GoogleAppMeasurement/Frameworks\"",
+					"\"${PODS_ROOT}/GoogleMaps/Base/Frameworks\"",
+					"\"${PODS_ROOT}/GoogleMaps/Maps/Frameworks\"",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
@@ -1599,7 +1605,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.Tolling-APP";
 				PRODUCT_NAME = Tolling_APP;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1625,7 +1631,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.Tolling-APP";
 				PRODUCT_NAME = Tolling_APP;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

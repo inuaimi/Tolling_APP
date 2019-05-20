@@ -131,7 +131,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     width: 50,
     height: 50,
-    marginHorizontal: 15,
+    marginHorizontal: 10,
     backgroundColor: '#ffffff'
   },
   btnText: {
@@ -141,7 +141,8 @@ export default StyleSheet.create({
   },
   mapButtonContainer: {
     position: 'absolute',
-    top: '50%',
+    top: '73%',
+    // marginBottom: 50,
     alignSelf: 'flex-end',
     flexDirection: 'column'
   },

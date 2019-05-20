@@ -22,17 +22,17 @@ import EditEmailScreen from "../Screens/EditEmailScreen";
 
 
 //        CONFIG's for the TabNavigator
-const StackNavigator = createStackNavigator(
-  {
-    Home: TestHomeScreen,
-    Add: AddScreen,
-    List: ListScreen,
-    Beacons: BeaconsScreen,
-  },
-  {
-    initialRouteName: "Home",
-  }
-);
+// const StackNavigator = createStackNavigator(
+//   {
+//     Home: TestHomeScreen,
+//     Add: AddScreen,
+//     List: ListScreen,
+//     Beacons: BeaconsScreen,
+//   },
+//   {
+//     initialRouteName: "Home",
+//   }
+// );
 
 const ProfileStackNavigator = createStackNavigator(
   {
@@ -94,9 +94,9 @@ const TabNavigator = createBottomTabNavigator(
         )
       }
     },
-    Test: {
-      screen: StackNavigator
-    }
+    // Test: {
+    //   screen: StackNavigator
+    // }
   },
   {
     tabBarOptions: {
