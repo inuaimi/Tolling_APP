@@ -1,6 +1,6 @@
-import firebase from 'react-native-firebase';
+import firebase from "react-native-firebase";
 
-export const db = firebase.firestore()
+export const db = firebase.firestore();
 
 const config = {
   apiKey: "AIzaSyBidTQWLb2V9YekKSrn_iXpr5UqWgAybcQ",
@@ -12,35 +12,41 @@ const config = {
 };
 firebase.initializeApp(config);
 
-export const addItem = (item) => {
-  db.collection('test').add({
+export const addItem = item => {
+  db.collection("test").add({
     name: item
   });
-}
+};
 
 // Should be 2 params, user and vehicle to delete. User will be signed in.
 export const deleteUserVehicle = (vehicle, uid) => {
-  db.collection('Users').doc(uid).update({
-    vehicles: firebase.firestore.FieldValue.arrayRemove(vehicle)
-  });
-}
+  db.collection("Users")
+    .doc(uid)
+    .update({
+      vehicles: firebase.firestore.FieldValue.arrayRemove(vehicle)
+    });
+};
 
 export const editUserEmail = (email, uid) => {
-  db.collection('Users').doc(uid).update({
-    email: email
-  });
-}
+  db.collection("Users")
+    .doc(uid)
+    .update({
+      email: email
+    });
+};
 
 export const addUserVehicle = (licensePlate, type, uid) => {
-  db.collection('Users').doc(uid).update({
-    vehicles: firebase.firestore.FieldValue.arrayUnion({
-      licensePlate: licensePlate,
-      type: type
-     })
-  });
-}
+  db.collection("Users")
+    .doc(uid)
+    .update({
+      vehicles: firebase.firestore.FieldValue.arrayUnion({
+        licensePlate: licensePlate,
+        type: type
+      })
+    });
+};
 
-export const createUser = (uid, name, email, vehicle, license) => {
+export const createUser = (uid, name, email, vehicle, license, balance) => {
   var userIdRef = db.collection("Users").doc(uid);
   userIdRef.set({
     uid: uid,
@@ -48,12 +54,13 @@ export const createUser = (uid, name, email, vehicle, license) => {
     email: email,
     vehicles: [
       {
-      type: vehicle,
-      licensePlate: license
+        type: vehicle,
+        licensePlate: license
       }
-    ]
+    ],
+    balance: balance
   });
-}
+};
 
 export const addUserMoney = (amount, uid) => {
   db.collection('Users').doc(uid).update({
@@ -78,4 +85,4 @@ export const addUserTransaction = (gantry, uid) => {
       gantry: gantry.title
     })
   });
-}
+};

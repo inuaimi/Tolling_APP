@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, View, ImageBackground } from "react-native";
+// import AsyncStorage from "@react-native-community/async-storage";
 import styles from "../Styles/loginStyles";
 import { Buttons } from "../Components/Buttons";
 import { Inputs } from "../Components/Inputs";
@@ -12,8 +13,8 @@ export default class SecondScreen extends React.Component {
   };
 
   state = {
-    email: "lajneriet@gmail.com",
-    password: "lajneriet",
+    email: "",
+    password: "",
     error: "",
     loading: false
   };
@@ -39,6 +40,12 @@ export default class SecondScreen extends React.Component {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
+        this.setState({
+          error: "",
+          loading: false
+        });
+        // this.saveLoginData();
+        // this.props.navigation.navigate("Map");
         const user = firebase.app().auth().currentUser;
         console.log(user);
         if (user.emailVerified) {
@@ -94,7 +101,12 @@ export default class SecondScreen extends React.Component {
           <Text style={styles.errorTextStyle}>{this.state.error}</Text>
           {this.renderButtonOrLoading()}
 
-          <Text style={styles.forgotPw}>
+          <Text
+            onPress={() => {
+              this.props.navigation.navigate("ForgotPw");
+            }}
+            style={styles.forgotPw}
+          >
             Forgot password |{" "}
             <Text
               onPress={() => {

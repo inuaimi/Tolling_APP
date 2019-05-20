@@ -370,7 +370,7 @@ export default class MapScreen extends React.Component {
             key={i}
             coordinate={marker.coordinates}
             title={marker.title}
-            onPress={() => {this.longNames(marker.title); this.setState({gantryCost: marker.gantryCost})}}
+            onPress = {() => {this.longNames(marker.title); this.setState({gantryCost: marker.gantryCost})}}
           />
         ))
       )

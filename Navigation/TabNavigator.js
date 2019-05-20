@@ -16,23 +16,21 @@ import ListScreen from "../Screens/ListScreen";
 import BeaconsScreen from "../Screens/BeaconsScreen";
 import VehicleScreen from "../Screens/VehicleScreen";
 import AddVehicleScreen from "../Screens/AddVehicleScreen";
-import AddMoneyScreen from "../Screens/AddMoneyScreen";
 import theme from "../Styles/theme";
 import EditEmailScreen from "../Screens/EditEmailScreen";
 
-
 //        CONFIG's for the TabNavigator
-// const StackNavigator = createStackNavigator(
-//   {
-//     Home: TestHomeScreen,
-//     Add: AddScreen,
-//     List: ListScreen,
-//     Beacons: BeaconsScreen,
-//   },
-//   {
-//     initialRouteName: "Home",
-//   }
-// );
+const StackNavigator = createStackNavigator(
+  {
+    Home: TestHomeScreen,
+    Add: AddScreen,
+    List: ListScreen,
+    Beacons: BeaconsScreen
+  },
+  {
+    initialRouteName: "Home"
+  }
+);
 
 const ProfileStackNavigator = createStackNavigator(
   {
@@ -45,12 +43,11 @@ const ProfileStackNavigator = createStackNavigator(
     initialRouteName: "Home",
     defaultNavigationOptions: {
       headerStyle: {
-        backgroundColor: "#ff7f50"
+        backgroundColor: theme.PRIMARY_COLOR
       },
-      headerTintColor: "#fff",
+      headerTintColor: "#fff"
     }
   }
-
 );
 
 const transactionsStack = createStackNavigator({
@@ -62,9 +59,6 @@ const transactionsStack = createStackNavigator({
       },
       headerTintColor: "#fff"
     }
-  },
-  AddMoney: {
-    screen: AddMoneyScreen
   }
 });
 

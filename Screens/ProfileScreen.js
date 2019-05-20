@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Text,
   View,
@@ -7,22 +7,32 @@ import {
   TouchableHighlight,
   StyleSheet,
   ScrollView
-} from 'react-native';
+} from "react-native";
 import {
-  Header, Card, ListItem, Divider, CheckBox, Button, Icon
+  Header,
+  Card,
+  ListItem,
+  Divider,
+  CheckBox,
+  Button,
+  Icon
 } from "react-native-elements";
-import firebase from 'react-native-firebase';
-                                                    //      Imports: "css-alike-ish" styling                            
-import styles from '../Styles/profileStyles'
-import { db } from '../Database/Database';
+import firebase from "react-native-firebase";
+// import AsyncStorage from "@react-native-community/async-storage";
+//      Imports: "css-alike-ish" styling
+import styles from "../Styles/profileStyles";
+import { db } from "../Database/Database";
+import theme from "../Styles/theme";
 
 export default class ProfileScreen extends React.Component {
-
   static navigationOptions = ({ navigation }) => {
     return {
       title: "Profile",
       headerRight: (
-        <TouchableOpacity style={{ marginRight: 15 }} onPress={navigation.getParam('signOutUser')}>
+        <TouchableOpacity
+          style={{ marginRight: 15 }}
+          onPress={navigation.getParam("signOutUser")}
+        >
           <Icon name="logout" type="material-community" color="white" />
         </TouchableOpacity>
       )
@@ -30,15 +40,15 @@ export default class ProfileScreen extends React.Component {
   };
 
   constructor() {
-    super()
+    super();
     const uid = firebase.app().auth().currentUser.uid;
-    this.ref = db.collection('Users').doc(uid);
+    this.ref = db.collection("Users").doc(uid);
     this.unsubscribe = null;
 
     this.state = {
       vehicles: [],
       uid: uid
-    }
+    };
   }
 
   componentDidMount() {
@@ -50,24 +60,28 @@ export default class ProfileScreen extends React.Component {
     this.unsubscribe();
   }
 
-  onCollectionUpdate = (doc) => {
+  onCollectionUpdate = doc => {
     const user = doc.data();
-    
+
     this.setState({
       email: user.email,
       name: user.name,
       vehicles: user.vehicles
-    })
-  }
+    });
+  };
 
   _signOutUser = async () => {
     try {
-        await firebase.app().auth().signOut();
-        this.props.navigation.navigate("Login");
+      await firebase
+        .app()
+        .auth()
+        .signOut();
+      // this.saveSignedOutState();
+      this.props.navigation.navigate("Login");
     } catch (e) {
-        console.log(e);
+      console.log(e);
     }
-  }   
+  };
 
   render() {
     return (
@@ -81,28 +95,44 @@ export default class ProfileScreen extends React.Component {
 
           <View style={localStyles.moneyContainer}>
             <Card title="Email">
-            <View>
-              <ListItem 
-                title={<Text style={localStyles.emailText}> {this.state.email} </Text>}
-                rightTitle={<TouchableOpacity onPress={() => this.props.navigation.navigate('EditEmail', this.state.email)} style={{marginRight: 15}}>
-                <Icon name="edit" type="font-awesome" color="black" />
-              </TouchableOpacity>}
-              />
-            </View>
-              
-              
+              <View>
+                <ListItem
+                  title={
+                    <Text style={localStyles.emailText}>
+                      {" "}
+                      {this.state.email}{" "}
+                    </Text>
+                  }
+                  rightTitle={
+                    <TouchableOpacity
+                      onPress={() =>
+                        this.props.navigation.navigate(
+                          "EditEmail",
+                          this.state.email
+                        )
+                      }
+                      style={{ marginRight: 15 }}
+                    >
+                      <Icon name="edit" type="font-awesome" color="black" />
+                    </TouchableOpacity>
+                  }
+                />
+              </View>
             </Card>
           </View>
 
           <View style={localStyles.moneyContainer}>
             {this.renderVehicles()}
           </View>
-          <TouchableOpacity style={localStyles.addVehicleButton} onPress={() => this.props.navigation.navigate('AddVehicle')}>
+          <TouchableOpacity
+            style={localStyles.addVehicleButton}
+            onPress={() => this.props.navigation.navigate("AddVehicle")}
+          >
             <Text style={localStyles.btnText}>Add vehicle</Text>
           </TouchableOpacity>
         </ScrollView>
       </View>
-    )
+    );
   }
 
   renderVehicles() {
@@ -113,19 +143,20 @@ export default class ProfileScreen extends React.Component {
             <View key={key}>
               <ListItem
                 title={vehicle.licensePlate}
-                onPress={() => this.props.navigation.navigate('Vehicle', { 
-                  licensePlate: vehicle.licensePlate,
-                  type: vehicle.type
-                })}
+                onPress={() =>
+                  this.props.navigation.navigate("Vehicle", {
+                    licensePlate: vehicle.licensePlate,
+                    type: vehicle.type
+                  })
+                }
                 chevron
-                
               />
               <Divider />
             </View>
-          )
+          );
         })}
       </Card>
-    )
+    );
   }
 }
 
@@ -143,21 +174,21 @@ const localStyles = StyleSheet.create({
     borderRadius: 25,
     marginHorizontal: 15,
     marginTop: 15,
-    backgroundColor: '#ff7f50'
+    backgroundColor: theme.PRIMARY_COLOR
   },
   logoutButton: {
     paddingVertical: 15,
     borderRadius: 25,
     marginHorizontal: 15,
     marginTop: 15,
-    backgroundColor: '#EA2027'
+    backgroundColor: "#EA2027"
   },
   btnText: {
-    alignSelf: 'center',
-    color: 'white',
-    fontWeight: 'bold'
+    alignSelf: "center",
+    color: "white",
+    fontWeight: "bold"
   },
   emailText: {
-    fontSize: 16,
+    fontSize: 16
   }
 });

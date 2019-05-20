@@ -8,14 +8,14 @@
 
 import React from "react";
 //Main navigation system
-// import MainNavigator from "./Navigation/MainNavigator";
 import { createMainNavigator } from "./Navigation/MainNavigator";
+import firebase from "react-native-firebase";
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: false
+      isLoggedIn: Boolean
     };
   }
 
@@ -23,4 +23,18 @@ export default class App extends React.Component {
     const Layout = createMainNavigator(this.state.isLoggedIn);
     return <Layout />;
   }
+
+  async componentDidMount() {
+    this.checkIfLoggedIn();
+  }
+
+  checkIfLoggedIn = () => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.setState({ isLoggedIn: true });
+      } else {
+        this.setState({ isLoggedIn: false });
+      }
+    });
+  };
 }
