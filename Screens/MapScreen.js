@@ -103,9 +103,7 @@ export default class MapScreen extends React.Component {
   }
 
   setRegion(region) {
-    if(!this.state.ready) {
-      setTimeout(() => this.map.animateToRegion(region), 10);
-    } else {
+    if(this.state.ready) {
       this.map.animateToRegion(region);
     }
   }
@@ -193,6 +191,7 @@ export default class MapScreen extends React.Component {
             latitudeDelta: currentLatitudeDelta,
             longitudeDelta: currentLongitudeDelta
           }
+          console.log("region: " + JSON.stringify(region, null, 2));
           me.setRegion(region);
           // console.log("watchPos: " + JSON.stringify(position, null, 2));
         }
@@ -248,6 +247,7 @@ export default class MapScreen extends React.Component {
             latitudeDelta: latDelta,
             longitudeDelta: longDelta
           };
+          //Detta fungerar!
           this.setRegion(region);
         },
         (error) => {
@@ -315,7 +315,7 @@ export default class MapScreen extends React.Component {
   }
 
   render() {
-    const { region } = this.state;
+    // const { region } = this.state;
     
     return (
       <View style={styles.container}>
@@ -323,7 +323,7 @@ export default class MapScreen extends React.Component {
           provider={PROVIDER_GOOGLE}
           showsUserLocation={true}
           ref={ map => { this.map = map }}
-          initialRegion={region}
+          initialRegion={initialRegion}
           onMapReady={() => this.onMapReady()}
           loadingEnabled={true}
           onRegionChange={this.onRegionChange}

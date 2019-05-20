@@ -10,27 +10,10 @@ import {
 import MapScreen from "../Screens/MapScreen";
 import transactionsScreen from "../Screens/TransactionsScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
-import TestHomeScreen from "../Screens/TestHomeScreen";
-import AddScreen from "../Screens/AddScreen";
-import ListScreen from "../Screens/ListScreen";
-import BeaconsScreen from "../Screens/BeaconsScreen";
 import VehicleScreen from "../Screens/VehicleScreen";
 import AddVehicleScreen from "../Screens/AddVehicleScreen";
 import theme from "../Styles/theme";
 import EditEmailScreen from "../Screens/EditEmailScreen";
-
-//        CONFIG's for the TabNavigator
-// const StackNavigator = createStackNavigator(
-//   {
-//     Home: TestHomeScreen,
-//     Add: AddScreen,
-//     List: ListScreen,
-//     Beacons: BeaconsScreen
-//   },
-//   {
-//     initialRouteName: "Home"
-//   }
-// );
 
 const ProfileStackNavigator = createStackNavigator(
   {
