@@ -224,8 +224,8 @@ export default class MapScreen extends React.Component {
           if(beacon.accuracy) {
             const distance = beacon.accuracy.toFixed(2);
             
-            // if(me.isBeaconInRange(distance) && me.state.hasLeftTransactionGeofence && me.state.isInsideGantry) {
-              if(me.state.hasLeftTransactionGeofence && me.state.isInsideGantry) {
+            if(me.isBeaconInRange(distance) && me.state.hasLeftTransactionGeofence && me.state.isInsideGantry) {
+              // if(me.state.hasLeftTransactionGeofence && me.state.isInsideGantry) {
               me.setState({
                 hasLeftTransactionGeofence: false
               });
