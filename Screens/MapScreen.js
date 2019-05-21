@@ -47,7 +47,6 @@ export default class MapScreen extends React.Component {
     this.map = null, this.watchId = null, this.isReadyForNotif = null;
 
     this.state = {
-      uid: firebase.app().auth().currentUser.uid,
       gantries: [],
       grantryMarker: [],
       ready: false,
@@ -297,8 +296,9 @@ export default class MapScreen extends React.Component {
 
   makeTransaction = () => {
     console.log("make transaction!");
+    const uid = firebase.app().auth().currentUser.uid;
 
-    const { currentGantry, uid } = this.state;
+    const { currentGantry } = this.state;
     addUserTransaction(currentGantry, uid);
     this.notif.transactionNotif();
   }
