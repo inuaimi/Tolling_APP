@@ -65,7 +65,7 @@ export default class SecondScreen extends React.Component {
   render() {
     return (
       <View style={localStyles.mainContainer}>
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps="handled">
           <View style={localStyles.moneyContainer}>
             {this.renderMoneyBalance()}
           </View>
