@@ -156,7 +156,11 @@ export default class SecondScreen extends React.Component {
                 color={theme.PRIMARY_COLOR}
                 animating={this.state.isUpdatingBalance}
               />
-              <Button title="Add" onPress={this.updateMoneyBalance} />
+              <TouchableOpacity
+                style={localStyles.addMoneyButton}
+                onPress={this.updateMoneyBalance}>
+                <Text style={localStyles.addMoneyText}>Add</Text>
+              </TouchableOpacity>
             </View>
           </Card>
         </Modal>
