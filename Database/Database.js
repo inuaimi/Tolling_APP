@@ -86,3 +86,9 @@ export const addUserTransaction = (gantry, uid) => {
     })
   });
 };
+
+export const saveActiveVehicle = (activeVehicle, uid) => {
+  db.collection('Users').doc(uid).update({
+    activeVehicle: activeVehicle
+  })
+};

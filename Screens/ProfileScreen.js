@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   StyleSheet,
-  ScrollView
+  ScrollView,
+  Picker
 } from "react-native";
 import {
   Header,
@@ -23,6 +24,7 @@ import firebase from "react-native-firebase";
 import styles from "../Styles/profileStyles";
 import { db } from "../Database/Database";
 import theme from "../Styles/theme";
+import { saveActiveVehicle } from '../Database/Database';
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -47,7 +49,8 @@ export default class ProfileScreen extends React.Component {
 
     this.state = {
       vehicles: [],
-      uid: uid
+      uid: uid,
+      activeVehicle: ""
     };
   }
 
@@ -82,6 +85,17 @@ export default class ProfileScreen extends React.Component {
       console.log(e);
     }
   };
+
+  saveActiveVehicle = () => {
+    const { activeVehicle, uid } = this.state;
+    let vehicleType;
+    this.state.vehicles.forEach(vehicle => {
+      if(vehicle.licensePlate === activeVehicle){
+        vehicleType = vehicle.type;
+      }
+    });
+    saveActiveVehicle(vehicleType, uid);
+  }
 
   render() {
     return (
@@ -130,9 +144,40 @@ export default class ProfileScreen extends React.Component {
           >
             <Text style={localStyles.btnText}>Add vehicle</Text>
           </TouchableOpacity>
+
+          <View>
+            <Card title="Active vehicle">
+              <Picker 
+                selectedValue={this.state.activeVehicle}
+                onValueChange={(itemValue, itemIndex) =>
+                this.setState({activeVehicle: itemValue})
+              }>
+                <Picker.Item label="" value="" />
+                {this.renderPickerItem()}
+              </Picker>
+            </Card>
+            <TouchableOpacity
+            style={localStyles.addVehicleButton}
+            onPress={() => this.saveActiveVehicle()}
+            >
+              <Text style={localStyles.btnText}>Save active vehicle</Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </View>
     );
+  }
+
+  renderPickerItem() {
+    return (
+      this.state.vehicles.map((vehicle, key) => {
+        return (          
+          <Picker.Item label={vehicle.licensePlate}
+          value={vehicle.licensePlate}
+          />
+        )
+      })
+    )
   }
 
   renderVehicles() {
