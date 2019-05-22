@@ -63,10 +63,12 @@ export const createUser = (uid, name, email, vehicle, license, balance) => {
 };
 
 export const addUserMoney = (amount, uid) => {
-  db.collection('Users').doc(uid).update({
-    balance: amount
-  });
-}
+  db.collection("Users")
+    .doc(uid)
+    .update({
+      balance: amount
+    });
+};
 
 export const addUserTransaction = (gantry, uid) => {
   const date = new Date().getDate();
@@ -77,14 +79,46 @@ export const addUserTransaction = (gantry, uid) => {
   const sec = new Date().getSeconds();
   const dateTime = {
     date: date + "/" + month + "/" + year + " " + hours + ":" + min + ":" + sec
-  }
-  db.collection('Users').doc(uid).update({
-    transactions: firebase.firestore.FieldValue.arrayUnion({
-      cost: gantry.cost,
-      date: dateTime.date,
-      gantry: gantry.title
-    })
-  });
+  };
+  db.collection("Users")
+    .doc(uid)
+    .update({
+      transactions: firebase.firestore.FieldValue.arrayUnion({
+        cost: gantry.cost,
+        date: dateTime.date,
+        gantry: gantry.title
+      })
+    });
+};
+
+export const regiesterTransactionToGantry = async (gantryId, userId) => {
+  db.collection("Users")
+    .doc(userId)
+    .get()
+    .then(doc => {
+      const inc = firebase.firestore.FieldValue.increment(1);
+      const user = doc.data();
+      const date = new Date().getDate();
+      const month = new Date().getMonth();
+      const year = new Date().getFullYear();
+      const hours = new Date().getHours();
+      const min = new Date().getMinutes();
+      const sec = new Date().getSeconds();
+      const formatedDate =
+        date + "/" + month + "/" + year + " " + hours + ":" + min + ":" + sec;
+
+      db.collection("Gantries")
+        .doc(gantryId)
+        .update({
+          transactions: firebase.firestore.FieldValue.arrayUnion({
+            userId: userId,
+            veichle: "car",
+            name: user.name,
+            date: formatedDate
+          }),
+          count: inc
+        });
+    });
 };
 
 export const saveActiveVehicle = (activeVehicle, uid) => {

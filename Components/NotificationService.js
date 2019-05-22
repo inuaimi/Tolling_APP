@@ -25,13 +25,15 @@ export default class NotifService {
   
   geofenceNotif() {
     PushNotification.localNotificationSchedule({
-      message: "You are inside a geofence!", // (required)
+      title: "Tolling App",
+      message: "You entered a TollingZone, make sure Bluetooth is turned on.", // (required)
       date: new Date(Date.now() + (1 * 1000))
     });
   }
 
   transactionGeofenceNotif() {
     PushNotification.localNotificationSchedule({
+      title: "Tolling App",
       message: "You're outside the TGF!",
       date: new Date(Date.now() + (1 * 1000))
     });
@@ -39,6 +41,7 @@ export default class NotifService {
 
   transactionNotif() {
     PushNotification.localNotificationSchedule({
+      title: "Tolling App",
       message: "A transaction was made",
       date: new Date(Date.now() + (1*1000))
     });
