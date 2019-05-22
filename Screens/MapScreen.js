@@ -54,13 +54,16 @@ export default class MapScreen extends React.Component {
     this.map = null;
     this.watchId = null;
     this.isReadyForNotif = true;
+    this.isInsideGantry;
+    this.hasLeftTransactionGeofence;
+    this.ready = false;
 
     this.state = {
       gantries: [],
       grantryMarker: [],
-      ready: false,
-      isInsideGantry: false,
-      hasLeftTransactionGeofence: true,
+      // ready: false,
+      // isInsideGantry: false,
+      // hasLeftTransactionGeofence: true,
       loadingGantries: true,
       gantryName: "Press a marker",
       distanceToGantry: "",
@@ -72,19 +75,11 @@ export default class MapScreen extends React.Component {
     };
   }
 
-  componentWillMount() { 
+  componentWillMount() {
     if(Platform.OS === 'ios'){
       Beacons.requestWhenInUseAuthorization();
     } else if (Platform.OS === "android") {
       Beacons.detectIBeacons();
-    }
-    const region = {
-      identifier: this.state.identifier,
-      uuid: this.state.uuid
-    };
-    Beacons.startRangingBeaconsInRegion(region);
-    if (Platform.OS === "ios") {
-      Beacons.startUpdatingLocation();
     }
   }
 
@@ -109,7 +104,7 @@ export default class MapScreen extends React.Component {
   }
 
   setRegion(region) {
-    if (this.state.ready) {
+    if (this.ready) {
       this.map.animateToRegion(region);
     } else {
       console.log("not ready to animate");
@@ -121,6 +116,7 @@ export default class MapScreen extends React.Component {
     let isInsideCirle = false,
       gantryHasTGF = false;
     me.state.gantries.forEach(function(gantry) {
+      // console.log("gantry: " + JSON.stringify(gantry, null, 2));
       if (gantry.transactionGeofence) {
         gantryHasTGF = true;
       }
@@ -134,10 +130,12 @@ export default class MapScreen extends React.Component {
         isInsideCirle = true;
         me.scanForBeacons();
         me.setState({
-          isInsideGantry: true,
+          // isInsideGantry: true,
           currentGantry: gantry
         });
+        // console.log("gantryHasTGF status: " + gantryHasTGF);
         if (gantryHasTGF) {
+          // console.log("den ska ha TGF: " + JSON.stringify(gantry, null, 2));
           const transactionGeofence = gantry.transactionGeofence;
           if (
             !geolib.isPointInCircle(
@@ -150,9 +148,10 @@ export default class MapScreen extends React.Component {
             )
           ) {
             // me.notif.transactionGeofenceNotif();
-            me.setState({
-              hasLeftTransactionGeofence: true
-            });
+            // me.setState({
+            //   hasLeftTransactionGeofence: true
+            // });
+            me.hasLeftTransactionGeofence = true;
           }
         }
       }
@@ -169,7 +168,7 @@ export default class MapScreen extends React.Component {
       const gantry = doc.data();
 
       //Ta ut uid för gantry
-      console.log("_application Gantry ID: " + doc.id);
+      // console.log("_application Gantry ID: " + doc.id);
 
       gantries.push({
         id: gantryId,
@@ -196,7 +195,7 @@ export default class MapScreen extends React.Component {
       if (gantry.TransactionGeofence) {
         transactionGeofences.push(gantry.TransactionGeofence);
       }
-      console.log("_application gantries??: " + gantries[0].title);
+      // console.log("_application gantries??: " + gantries[0].title);
     });
 
     this.setState({
@@ -207,11 +206,15 @@ export default class MapScreen extends React.Component {
     });
   };
 
+  //FIXME: Denna borde köras varje gång positionen ändras????
   watchPosition() {
     let me = this;
     me.watchId = navigator.geolocation.watchPosition(
       position => {
         let coordinates = position.coords;
+        let lat = coordinates.latitude,
+            long = coordinates.longitude;
+        console.log("-----------------rörde mig till: ( " + lat + " , " + long + " )");
 
         if(me.state.toggleFollowUser) {
           const { currentLatitudeDelta, currentLongitudeDelta } = me.state;
@@ -223,14 +226,15 @@ export default class MapScreen extends React.Component {
           }
           me.setRegion(region);
         }
-
         if (me.isDeviceInGeofence(coordinates)) {
           if (me.isReadyForNotif) {
             me.notif.geofenceNotif();
+            me.isInsideGantry = true;
             me.isReadyForNotif = false;
           }
         } else {
           me.isReadyForNotif = true;
+          me.isInsideGantry = false;
         }
       }, 
       error => {
@@ -238,28 +242,42 @@ export default class MapScreen extends React.Component {
         alert(error.message)
         console.log(error.message);
       },
-      { enableHighAccuracy: true, timeout: 5000, maximumAge: 0, distanceFilter: 5 }
+      { enableHighAccuracy: true, timeout: 1000, maximumAge: 0, distanceFilter: 5 }
     );
   }
 
   scanForBeacons() {
+    let me = this;
+    const region = {
+      identifier: me.state.identifier,
+      uuid: me.state.uuid
+    };
+    Beacons.startRangingBeaconsInRegion(region);
+    if (Platform.OS === "ios") {
+      console.log("startupdatinglocation");
+      Beacons.startUpdatingLocation();
+    }
+    
     this.beaconsDidRange = DeviceEventEmitter.addListener(
       "beaconsDidRange",
       data => {
-        let me = this;
         data.beacons.forEach(beacon => {
+          // console.log("beacon: " + JSON.stringify(beacon, null, 2));
           if (beacon.accuracy) {
             const distance = beacon.accuracy.toFixed(2);
 
+            console.log("bools states, beaconInRange: " + me.isBeaconInRange(distance) + " hasLeftTGF: " + me.hasLeftTransactionGeofence + " isInsideGeofence: " + me.isInsideGantry);
+            
             if (
               me.isBeaconInRange(distance) &&
-              me.state.hasLeftTransactionGeofence &&
-              me.state.isInsideGantry
+              me.hasLeftTransactionGeofence &&
+              me.isInsideGantry
             ) {
               // if(me.state.hasLeftTransactionGeofence && me.state.isInsideGantry) {
-              me.setState({
-                hasLeftTransactionGeofence: false
-              });
+              // me.setState({
+              //   hasLeftTransactionGeofence: false
+              // });
+              me.hasLeftTransactionGeofence = false;
               me.makeTransaction();
             }
           }
@@ -300,8 +318,9 @@ export default class MapScreen extends React.Component {
   }
 
   onMapReady = e => {
-    if (!this.state.ready) {
-      this.setState({ ready: true });
+    if (!this.ready) {
+      // this.setState({ ready: true });
+      this.ready = true;
     }
   };
 
@@ -319,10 +338,10 @@ export default class MapScreen extends React.Component {
 
   isBeaconInRange = distance => {
     if (distance < 5) {
-      console.log("beacon in range");
+      // console.log("beacon in range");
       return true;
     } else {
-      console.log("not in range");
+      // console.log("not in range");
       return false;
     }
     //  return (distance < 5);
@@ -348,6 +367,7 @@ export default class MapScreen extends React.Component {
     this.setState(state => ({
       toggleFollowUser: !state.toggleFollowUser
     }));
+    
     if (!toggleFollowUser) {
       this.getCurrentPosition(currentLatitudeDelta, currentLongitudeDelta);
     }
@@ -355,6 +375,7 @@ export default class MapScreen extends React.Component {
 
   render() {
     // const { region } = this.state;
+    console.log("render");
 
     return (
       <View style={styles.container}>
