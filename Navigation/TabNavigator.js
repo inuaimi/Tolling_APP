@@ -12,6 +12,7 @@ import transactionsScreen from "../Screens/TransactionsScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
 import VehicleScreen from "../Screens/VehicleScreen";
 import AddVehicleScreen from "../Screens/AddVehicleScreen";
+import TestScreen from "../Screens/TestScreen";
 import theme from "../Styles/theme";
 import EditEmailScreen from "../Screens/EditEmailScreen";
 
@@ -71,9 +72,9 @@ const TabNavigator = createBottomTabNavigator(
         )
       }
     },
-    // Test: {
-    //   screen: StackNavigator
-    // }
+    Test: {
+      screen: TestScreen
+    }
   },
   {
     tabBarOptions: {
