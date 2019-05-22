@@ -16,7 +16,6 @@ export default StyleSheet.create({
   map: {
     flex: 5,
     justifyContent: "center",
-    backgroundColor: "#2ed573"
   },
 
   // #bottomDetails

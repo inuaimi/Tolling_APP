@@ -1,10 +1,8 @@
 // TODO: 
-//   - Skanna enbart efter beacons när man är inne i ett geofence.
 //   - Kolla upp om appen kör i bakgrunden för:
 //     1. Plats i bakgrunden.
 //     2. Beacon-skanning i bakgrunden.
 //  - Olika pris för fordonstyperna.
-//  - Fixa, zoom och toggle followUser.
 //  - Unable to retrieve location alert, fixa. De stackar på varandra....
 
 
@@ -38,16 +36,20 @@ export default class MapScreen extends React.Component {
     title: 'Map'
   };
 
+  _isMounted = false;
+  unsubscribeGantryRef = null;
+
   constructor(props) {
     super(props);
 
     this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
     this.gantryRef = db.collection('Gantries');
-    this.unsubscribeGantryRef = null;
-    this.map = null, this.watchId = null, this.isReadyForNotif = null;
+    // this.unsubscribeGantryRef = null;
+    this.map = null;
+    this.watchId = null;
+    this.isReadyForNotif = true;
 
     this.state = {
-      uid: firebase.app().auth().currentUser.uid,
       gantries: [],
       grantryMarker: [],
       ready: false,
@@ -65,24 +67,15 @@ export default class MapScreen extends React.Component {
   }
 
   componentWillMount() { 
-    //
-    // ONLY non component state aware here in componentWillMount
-    //
-    // Request for authorization while the app is open
     if(Platform.OS === 'ios'){
       Beacons.requestWhenInUseAuthorization();
     } else if(Platform.OS === 'android') {
       Beacons.detectIBeacons();
     }
-
-    // Define a region which can be identifier + uuid,
-    // identifier + uuid + major or identifier + uuid + major + minor
-    // (minor and major properties are numbers)
     const region = {
       identifier: this.state.identifier,
       uuid: this.state.uuid
     };
-    // Range for beacons inside the region
     Beacons.startRangingBeaconsInRegion(region);
     if(Platform.OS === 'ios'){
       Beacons.startUpdatingLocation();
@@ -90,25 +83,30 @@ export default class MapScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.unsubscribeGantryRef = this.gantryRef.onSnapshot(this.onGantryCollectionUpdate);
-    this.getCurrentPosition(LATITUDE_DELTA, LONGITUDE_DELTA);
-    this.watchPosition();
-    // this.scanForBeacons();
+    this._isMounted = true;
+    if(this._isMounted) {
+      this.unsubscribeGantryRef = this.gantryRef.onSnapshot(this.onGantryCollectionUpdate);
+      this.getCurrentPosition(LATITUDE_DELTA, LONGITUDE_DELTA);
+      this.watchPosition();
+    }
   }
 
   componentWillUnmount() {
+    this._isMounted = false;
     navigator.geolocation.clearWatch(this.watchID);
-    this.unsubscribeGantryRef();
+    if(this.unsubscribeGantryRef) {
+      this.unsubscribeGantryRef();
+    }
     this.beaconsDidRange = null;
   }
 
   setRegion(region) {
     if(this.state.ready) {
       this.map.animateToRegion(region);
+    } else {
+      console.log("not ready to animate");
     }
   }
-
-  //  FIXME: Ibland görs flera transaktioner på en gång, behöver testas utomhus med rPi'n!!!!!
 
   isDeviceInGeofence(coordinates) {
     let me = this;
@@ -182,7 +180,6 @@ export default class MapScreen extends React.Component {
       position => {
         let coordinates = position.coords;
 
-        //TODO: Needs fieldtesting!!!!
         if(me.state.toggleFollowUser) {
           const { currentLatitudeDelta, currentLongitudeDelta } = me.state;
           const region = {
@@ -191,9 +188,7 @@ export default class MapScreen extends React.Component {
             latitudeDelta: currentLatitudeDelta,
             longitudeDelta: currentLongitudeDelta
           }
-          console.log("region: " + JSON.stringify(region, null, 2));
           me.setRegion(region);
-          // console.log("watchPos: " + JSON.stringify(position, null, 2));
         }
   
         if(me.isDeviceInGeofence(coordinates)) {
@@ -205,16 +200,16 @@ export default class MapScreen extends React.Component {
           me.isReadyForNotif = true;
         }
       }, 
-      error => alert(error.message),
+      error => {
+        //FIXME:    Theese errors stacks..
+        alert(error.message)
+        console.log(error.message);
+      },
       { enableHighAccuracy: true, timeout: 5000, maximumAge: 0, distanceFilter: 5 }
     );
   }
 
   scanForBeacons() {
-    //
-    // component state aware here - attach events
-    //
-    // Ranging: Listen for beacon changes
     this.beaconsDidRange = DeviceEventEmitter.addListener(
       'beaconsDidRange',
       (data) => {
@@ -229,7 +224,6 @@ export default class MapScreen extends React.Component {
                 hasLeftTransactionGeofence: false
               });
               me.makeTransaction();
-              console.log("Just made a transaction.     status on: hasLeftTransactionGeo: " + me.state.hasLeftTransactionGeofence);
             }
           }
         });
@@ -268,6 +262,7 @@ export default class MapScreen extends React.Component {
 
   onMapReady = (e) => {
     if(!this.state.ready) {
+      console.log("set state ready");
       this.setState({ ready: true });
     }
   };
@@ -277,7 +272,7 @@ export default class MapScreen extends React.Component {
   };
 
   onRegionChangeComplete = (region) => {
-    // console.log('onRegionChangeComplete', region);
+    console.log('onRegionChangeComplete', region);
     this.setState({
       currentLatitudeDelta: region.latitudeDelta,
       currentLongitudeDelta: region.longitudeDelta
@@ -298,7 +293,9 @@ export default class MapScreen extends React.Component {
   makeTransaction = () => {
     console.log("make transaction!");
 
-    const { currentGantry, uid } = this.state;
+    const uid = firebase.app().auth().currentUser.uid;
+
+    const { currentGantry } = this.state;
     addUserTransaction(currentGantry, uid);
     this.notif.transactionNotif();
   }
@@ -322,6 +319,9 @@ export default class MapScreen extends React.Component {
         <MapView
           provider={PROVIDER_GOOGLE}
           showsUserLocation={true}
+          showsIndoors={false}
+          showsIndoorLevelPicker={false}
+          showsTraffic={false}
           ref={ map => { this.map = map }}
           initialRegion={initialRegion}
           onMapReady={() => this.onMapReady()}

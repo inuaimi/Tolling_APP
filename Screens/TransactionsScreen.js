@@ -102,9 +102,9 @@ export default class SecondScreen extends React.Component {
     }
     return (
       <Card title="Recent transactions">
-        {this.state.transactions.map(x => {
+        {this.state.transactions.map((x, key) => {
           return (
-            <View key={x.id}>
+            <View key={key}>
               <ListItem
                 title={x.gantry}
                 subtitle={x.date}
@@ -143,7 +143,7 @@ export default class SecondScreen extends React.Component {
                     moneyInput: Number(input)
                   })
                 }
-                value={this.state.moneyInput}
+                value={String(this.state.moneyInput)}
                 keyboardType="numeric"
                 maxLength={10}
                 autoFocus={true}
