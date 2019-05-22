@@ -5,7 +5,8 @@ import {
   StyleSheet,
   ScrollView,
   TextInput,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableOpacity
 } from "react-native";
 //      Imports: "css-alike-ish" styling
 import styles from "../Styles/styles";
@@ -65,7 +66,7 @@ export default class SecondScreen extends React.Component {
   render() {
     return (
       <View style={localStyles.mainContainer}>
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps="handled">
           <View style={localStyles.moneyContainer}>
             {this.renderMoneyBalance()}
           </View>
@@ -124,11 +125,11 @@ export default class SecondScreen extends React.Component {
   renderAddMoney() {
     return (
       <View>
-        <Button
-          title="Add money"
+        <TouchableOpacity
           style={localStyles.addMoneyButton}
-          onPress={this.toggleAddMoneyPopup}
-        />
+          onPress={this.toggleAddMoneyPopup}>
+          <Text style={localStyles.addMoneyText}>Add money</Text>
+        </TouchableOpacity>
         <Modal
           isVisible={this.state.showBalancePopUp}
           onBackdropPress={() => this.toggleAddMoneyPopup()}
@@ -155,7 +156,11 @@ export default class SecondScreen extends React.Component {
                 color={theme.PRIMARY_COLOR}
                 animating={this.state.isUpdatingBalance}
               />
-              <Button title="Add" onPress={this.updateMoneyBalance} />
+              <TouchableOpacity
+                style={localStyles.addMoneyButton}
+                onPress={this.updateMoneyBalance}>
+                <Text style={localStyles.addMoneyText}>Add</Text>
+              </TouchableOpacity>
             </View>
           </Card>
         </Modal>
@@ -217,10 +222,16 @@ const localStyles = StyleSheet.create({
     textAlign: "center"
   },
   addMoneyButton: {
+    paddingVertical: 15,
+    borderRadius: 25,
+    marginHorizontal: 15,
     marginTop: 15,
-    width: 345,
-    justifyContent: "center",
-    marginHorizontal: 15
+    backgroundColor: theme.PRIMARY_COLOR
+  },
+  addMoneyText: {
+    alignSelf: "center",
+    color: "white",
+    fontWeight: "bold"
   },
   modalPopup: {
     alignItems: "center",

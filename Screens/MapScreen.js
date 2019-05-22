@@ -5,21 +5,27 @@
 //  - Olika pris för fordonstyperna.
 //  - Unable to retrieve location alert, fixa. De stackar på varandra....
 
-
-import React from 'react';
+import React from "react";
 import {
-  Text, View, Platform, DeviceEventEmitter, TouchableOpacity
-} from 'react-native';
+  Text,
+  View,
+  Platform,
+  DeviceEventEmitter,
+  TouchableOpacity
+} from "react-native";
 import { Icon } from "react-native-elements";
 import MapView, { PROVIDER_GOOGLE, Marker, Circle } from "react-native-maps";
-                                                    //      Imports: "css-alike-ish" styling                            
-import styles from '../Styles/styles'
-import NotifService from '../Components/NotificationService';
-import { db } from '../Database/Database';
-import geolib from 'geolib';
-import Beacons from 'react-native-beacons-manager';
-import firebase from 'react-native-firebase';
-import { addUserTransaction } from '../Database/Database';
+//      Imports: "css-alike-ish" styling
+import styles from "../Styles/styles";
+import NotifService from "../Components/NotificationService";
+import { db } from "../Database/Database";
+import geolib from "geolib";
+import Beacons from "react-native-beacons-manager";
+import firebase from "react-native-firebase";
+import {
+  addUserTransaction,
+  regiesterTransactionToGantry
+} from "../Database/Database";
 
 const LATITUDE_DELTA = 0.005;
 const LONGITUDE_DELTA = 0.005;
@@ -29,11 +35,11 @@ const initialRegion = {
   longitude: 14.165725,
   latitudeDelta: LATITUDE_DELTA,
   longitudeDelta: LONGITUDE_DELTA
-}
+};
 
 export default class MapScreen extends React.Component {
   static navigationOptions = {
-    title: 'Map'
+    title: "Map"
   };
 
   _isMounted = false;
@@ -61,15 +67,15 @@ export default class MapScreen extends React.Component {
       gantryCost: 0,
       toggleFollowUser: true,
       // BT region info
-      identifier: 'Estimotes',
-      uuid: 'B9407F30-F5F8-466E-AFF9-25556B57FE6D',
+      identifier: "Estimotes",
+      uuid: "B9407F30-F5F8-466E-AFF9-25556B57FE6D"
     };
   }
 
   componentWillMount() { 
     if(Platform.OS === 'ios'){
       Beacons.requestWhenInUseAuthorization();
-    } else if(Platform.OS === 'android') {
+    } else if (Platform.OS === "android") {
       Beacons.detectIBeacons();
     }
     const region = {
@@ -77,7 +83,7 @@ export default class MapScreen extends React.Component {
       uuid: this.state.uuid
     };
     Beacons.startRangingBeaconsInRegion(region);
-    if(Platform.OS === 'ios'){
+    if (Platform.OS === "ios") {
       Beacons.startUpdatingLocation();
     }
   }
@@ -85,7 +91,9 @@ export default class MapScreen extends React.Component {
   componentDidMount() {
     this._isMounted = true;
     if(this._isMounted) {
-      this.unsubscribeGantryRef = this.gantryRef.onSnapshot(this.onGantryCollectionUpdate);
+      this.unsubscribeGantryRef = this.gantryRef.onSnapshot(
+        this.onGantryCollectionUpdate
+      );
       this.getCurrentPosition(LATITUDE_DELTA, LONGITUDE_DELTA);
       this.watchPosition();
     }
@@ -101,7 +109,7 @@ export default class MapScreen extends React.Component {
   }
 
   setRegion(region) {
-    if(this.state.ready) {
+    if (this.state.ready) {
       this.map.animateToRegion(region);
     } else {
       console.log("not ready to animate");
@@ -110,21 +118,37 @@ export default class MapScreen extends React.Component {
 
   isDeviceInGeofence(coordinates) {
     let me = this;
-    let isInsideCirle = false, gantryHasTGF = false;
+    let isInsideCirle = false,
+      gantryHasTGF = false;
     me.state.gantries.forEach(function(gantry) {
-      if(gantry.transactionGeofence) {
+      if (gantry.transactionGeofence) {
         gantryHasTGF = true;
       }
-      if(geolib.isPointInCircle({ latitude: coordinates.latitude, longitude: coordinates.longitude }, gantry.center, gantry.radius )) {
+      if (
+        geolib.isPointInCircle(
+          { latitude: coordinates.latitude, longitude: coordinates.longitude },
+          gantry.center,
+          gantry.radius
+        )
+      ) {
         isInsideCirle = true;
         me.scanForBeacons();
         me.setState({
           isInsideGantry: true,
-          currentGantry: gantry,
-        })
-        if(gantryHasTGF) {
+          currentGantry: gantry
+        });
+        if (gantryHasTGF) {
           const transactionGeofence = gantry.transactionGeofence;
-          if(!geolib.isPointInCircle({ latitude: coordinates.latitude, longitude: coordinates.longitude }, transactionGeofence.center, transactionGeofence.radius )) {
+          if (
+            !geolib.isPointInCircle(
+              {
+                latitude: coordinates.latitude,
+                longitude: coordinates.longitude
+              },
+              transactionGeofence.center,
+              transactionGeofence.radius
+            )
+          ) {
             // me.notif.transactionGeofenceNotif();
             me.setState({
               hasLeftTransactionGeofence: true
@@ -132,16 +156,23 @@ export default class MapScreen extends React.Component {
           }
         }
       }
-    })
+    });
     return isInsideCirle;
   }
 
-  onGantryCollectionUpdate = (querySnapshot) => {
-    const gantries = [], gantryMarkers = [], transactionGeofences = [];
-    querySnapshot.forEach((doc) => {
+  onGantryCollectionUpdate = querySnapshot => {
+    const gantries = [],
+      gantryMarkers = [],
+      transactionGeofences = [];
+    querySnapshot.forEach(doc => {
+      const gantryId = doc.id;
       const gantry = doc.data();
 
-      gantries.push({ 
+      //Ta ut uid för gantry
+      console.log("_application Gantry ID: " + doc.id);
+
+      gantries.push({
+        id: gantryId,
         title: gantry.Title,
         date: gantry.Date,
         time: gantry.Time,
@@ -154,16 +185,18 @@ export default class MapScreen extends React.Component {
         transactionGeofence: gantry.TransactionGeofence
       });
       gantryMarkers.push({
+        //id?
         title: gantry.Title,
         coordinates: {
           latitude: gantry.Latitude,
           longitude: gantry.Longitude
         },
         gantryCost: gantry.Cost
-      })
-      if(gantry.TransactionGeofence) {
+      });
+      if (gantry.TransactionGeofence) {
         transactionGeofences.push(gantry.TransactionGeofence);
       }
+      console.log("_application gantries??: " + gantries[0].title);
     });
 
     this.setState({
@@ -172,7 +205,7 @@ export default class MapScreen extends React.Component {
       transactionGeofences,
       loadingGantries: false
     });
-  }
+  };
 
   watchPosition() {
     let me = this;
@@ -190,9 +223,9 @@ export default class MapScreen extends React.Component {
           }
           me.setRegion(region);
         }
-  
-        if(me.isDeviceInGeofence(coordinates)) {
-          if(me.isReadyForNotif) {
+
+        if (me.isDeviceInGeofence(coordinates)) {
+          if (me.isReadyForNotif) {
             me.notif.geofenceNotif();
             me.isReadyForNotif = false;
           }
@@ -211,14 +244,18 @@ export default class MapScreen extends React.Component {
 
   scanForBeacons() {
     this.beaconsDidRange = DeviceEventEmitter.addListener(
-      'beaconsDidRange',
-      (data) => {
+      "beaconsDidRange",
+      data => {
         let me = this;
-        data.beacons.forEach((beacon) => {
-          if(beacon.accuracy) {
+        data.beacons.forEach(beacon => {
+          if (beacon.accuracy) {
             const distance = beacon.accuracy.toFixed(2);
-            
-            if(me.isBeaconInRange(distance) && me.state.hasLeftTransactionGeofence && me.state.isInsideGantry) {
+
+            if (
+              me.isBeaconInRange(distance) &&
+              me.state.hasLeftTransactionGeofence &&
+              me.state.isInsideGantry
+            ) {
               // if(me.state.hasLeftTransactionGeofence && me.state.isInsideGantry) {
               me.setState({
                 hasLeftTransactionGeofence: false
@@ -234,7 +271,7 @@ export default class MapScreen extends React.Component {
   getCurrentPosition(latDelta, longDelta) {
     try {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        position => {
           const region = {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
@@ -244,30 +281,31 @@ export default class MapScreen extends React.Component {
           //Detta fungerar!
           this.setRegion(region);
         },
-        (error) => {
-          switch(error.code) {
+        error => {
+          switch (error.code) {
             case 1:
-              alert("To locate your location enable permission for the application in Settings - Privacy - Location");
+              alert(
+                "To locate your location enable permission for the application in Settings - Privacy - Location"
+              );
               break;
             default:
               alert("Error in localizing your location");
           }
         }
       );
-    } catch(e) {
+    } catch (e) {
       alert(e.message || "");
       console.log("catch error: " + JSON.stringify(e, null, 2));
     }
-  };
+  }
 
-  onMapReady = (e) => {
-    if(!this.state.ready) {
-      console.log("set state ready");
+  onMapReady = e => {
+    if (!this.state.ready) {
       this.setState({ ready: true });
     }
   };
 
-  onRegionChange = (region) => {
+  onRegionChange = region => {
     // console.log('onRegionChange', region);
   };
 
@@ -276,11 +314,11 @@ export default class MapScreen extends React.Component {
     this.setState({
       currentLatitudeDelta: region.latitudeDelta,
       currentLongitudeDelta: region.longitudeDelta
-    })
+    });
   };
 
-  isBeaconInRange = (distance) => {
-    if(distance < 5) {
+  isBeaconInRange = distance => {
+    if (distance < 5) {
       console.log("beacon in range");
       return true;
     } else {
@@ -288,32 +326,36 @@ export default class MapScreen extends React.Component {
       return false;
     }
     //  return (distance < 5);
-  }
+  };
 
   makeTransaction = () => {
     console.log("make transaction!");
-
     const uid = firebase.app().auth().currentUser.uid;
 
     const { currentGantry } = this.state;
     addUserTransaction(currentGantry, uid);
+    regiesterTransactionToGantry(currentGantry.id, uid);
     this.notif.transactionNotif();
-  }
+  };
 
   toggleFollowUserLocation = () => {
     // console.log("toggle!");
-    const { currentLatitudeDelta, currentLongitudeDelta, toggleFollowUser } = this.state;
+    const {
+      currentLatitudeDelta,
+      currentLongitudeDelta,
+      toggleFollowUser
+    } = this.state;
     this.setState(state => ({
       toggleFollowUser: !state.toggleFollowUser
     }));
-    if(!toggleFollowUser) {
+    if (!toggleFollowUser) {
       this.getCurrentPosition(currentLatitudeDelta, currentLongitudeDelta);
     }
-  }
+  };
 
   render() {
     // const { region } = this.state;
-    
+
     return (
       <View style={styles.container}>
         <MapView
@@ -329,103 +371,108 @@ export default class MapScreen extends React.Component {
           onRegionChange={this.onRegionChange}
           onRegionChangeComplete={this.onRegionChangeComplete}
           style={styles.map}
-          textStyle={{ color: '#bc8b00' }}
-          containerStyle={{ backgroundColor: 'white', borderColor: '#bc8b00' }}
-        > 
-          { this.renderGantryMarkers() }
-          { this.renderGantries() }
-          { this.renderTransactionGeofences() }
+          textStyle={{ color: "#bc8b00" }}
+          containerStyle={{ backgroundColor: "white", borderColor: "#bc8b00" }}
+        >
+          {this.renderGantryMarkers()}
+          {this.renderGantries()}
+          {this.renderTransactionGeofences()}
         </MapView>
         <View style={styles.mapButtonContainer}>
-          <TouchableOpacity style={
+          <TouchableOpacity
+            style={
               this.state.toggleFollowUser
                 ? styles.activeFollowUserButton
                 : styles.inactiveFollowUserButton
-              } onPress={() => this.toggleFollowUserLocation()}>
+            }
+            onPress={() => this.toggleFollowUserLocation()}
+          >
             <Icon name="location-arrow" type="font-awesome" color="white" />
           </TouchableOpacity>
         </View>
         <View style={styles.bottomDetailsContainer}>
-          <View style={{flexDirection:"row"}}>
+          <View style={{ flexDirection: "row" }}>
             <View style={styles.bottomDetailsKeys}>
-              <Text style={styles.bottomDetailsKeyTextLeft}>Name of gantry</Text>
-              <Text style={styles.bottomDetailsValueTextLeft}>{this.state.gantryName}</Text>
+              <Text style={styles.bottomDetailsKeyTextLeft}>
+                Name of gantry
+              </Text>
+              <Text style={styles.bottomDetailsValueTextLeft}>
+                {this.state.gantryName}
+              </Text>
             </View>
             <View style={styles.bottomDetailsValues}>
               <Text style={styles.bottomDetailsKeyText}>Cost of gantry</Text>
-              <Text style={styles.bottomDetailsValueText}>{this.state.gantryCost + "kr"}</Text>
+              <Text style={styles.bottomDetailsValueText}>
+                {this.state.gantryCost + "kr"}
+              </Text>
             </View>
           </View>
         </View>
       </View>
     );
-
   }
 
   renderGantryMarkers() {
-    if(this.state.gantryMarkers) {
-      return (
-        this.state.gantryMarkers.map((marker, i) => (
-          <MapView.Marker
-            key={i}
-            coordinate={marker.coordinates}
-            title={marker.title}
-            onPress = {() => {this.longNames(marker.title); this.setState({gantryCost: marker.gantryCost})}}
-          />
-        ))
-      )
+    if (this.state.gantryMarkers) {
+      return this.state.gantryMarkers.map((marker, i) => (
+        <MapView.Marker
+          key={i}
+          coordinate={marker.coordinates}
+          title={marker.title}
+          onPress={() => {
+            this.longNames(marker.title);
+            this.setState({ gantryCost: marker.gantryCost });
+          }}
+        />
+      ));
     } else {
       return null;
     }
   }
 
   renderGantries() {
-    if(this.state.gantries) {
-      return (
-        this.state.gantries.map((gantry, i) => (
-          <MapView.Circle
-            key={i}
-            center={gantry.center}
-            radius={ gantry.radius }
-            strokeWidth = { 1 }
-            strokeColor={ '#20bf6b' }
-          />
-        ))
-      )
+    if (this.state.gantries) {
+      return this.state.gantries.map((gantry, i) => (
+        <MapView.Circle
+          key={i}
+          center={gantry.center}
+          radius={gantry.radius}
+          strokeWidth={1}
+          strokeColor={"#20bf6b"}
+        />
+      ));
     } else {
       return null;
     }
   }
 
   renderTransactionGeofences() {
-    if(this.state.transactionGeofences) {
-      return (
-        this.state.transactionGeofences.map((geofence, i) => (
-          <MapView.Circle
-            key={i}
-            center={geofence.center}
-            radius={ geofence.radius }
-            strokeWidth = { 1 }
-            strokeColor={ '#2980b9' }
-          />
-        ))
-      )
+    if (this.state.transactionGeofences) {
+      return this.state.transactionGeofences.map((geofence, i) => (
+        <MapView.Circle
+          key={i}
+          center={geofence.center}
+          radius={geofence.radius}
+          strokeWidth={1}
+          strokeColor={"#2980b9"}
+        />
+      ));
     } else {
       return null;
     }
   }
 
-  longNames = (name) => {
+  longNames = name => {
     let newName = "";
 
-    if(name.length > 17){
+    if (name.length > 17) {
       newName = name.replace(/\s+/g, "\n");
-    }else{
+    } else {
       newName = name;
     }
 
-    this.setState({gantryName: newName})
-  }
+    this.setState({ gantryName: newName });
+  };
 
   onRegister(token) {
     alert("Registered !", JSON.stringify(token));
