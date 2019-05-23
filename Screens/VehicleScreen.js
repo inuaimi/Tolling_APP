@@ -51,7 +51,7 @@ export default class VehicleScreen extends React.Component {
         <View>
           <Card>
             <ListItem 
-              title={ <Text style={localStyles.leftText}> LicensePlate </Text> }
+              title={ <Text style={localStyles.leftText}> License plate </Text> }
               rightTitle={ <Text style={styles.rightText}> {licensePlate} </Text> }
               Divider
             />

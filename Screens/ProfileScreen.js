@@ -147,8 +147,8 @@ export default class ProfileScreen extends React.Component {
           </TouchableOpacity>
 
           <View>
-            <Card title={<Text style={localStyles.balanceText}>Active vehicle: {this.state.activeVehiclePlate}</Text>}>
-            
+            <Card title={<Text style={localStyles.activeVehicleStyle}>Active vehicle: {this.state.activeVehiclePlate}</Text>}>
+            <Divider />
               <Picker 
                 selectedValue={this.state.activeVehicle}
                 onValueChange={(itemValue, itemIndex) =>
@@ -237,5 +237,10 @@ const localStyles = StyleSheet.create({
   },
   emailText: {
     fontSize: 16
+  },
+  activeVehicleStyle: {
+    fontSize: 16,
+    textAlign: "center",
+    paddingBottom: 15
   }
 });
