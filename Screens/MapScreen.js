@@ -52,11 +52,12 @@ export default class MapScreen extends React.Component {
     this.gantryRef = db.collection('Gantries');
     // this.unsubscribeGantryRef = null;
     this.map = null;
-    this.watchId = null;
+    // this.watchId = null;
     this.isReadyForNotif = true;
     this.isInsideGantry;
     this.hasLeftTransactionGeofence;
     this.ready = false;
+    this.toggleFollowUser = true;
 
     this.state = {
       gantries: [],
@@ -68,7 +69,7 @@ export default class MapScreen extends React.Component {
       gantryName: "Press a marker",
       distanceToGantry: "",
       gantryCost: 0,
-      toggleFollowUser: true,
+      // toggleFollowUser: true,
       // BT region info
       identifier: "Estimotes",
       uuid: "B9407F30-F5F8-466E-AFF9-25556B57FE6D"
@@ -90,13 +91,13 @@ export default class MapScreen extends React.Component {
         this.onGantryCollectionUpdate
       );
       this.getCurrentPosition(LATITUDE_DELTA, LONGITUDE_DELTA);
-      this.watchPosition();
+      // this.watchPosition();
     }
   }
 
   componentWillUnmount() {
     this._isMounted = false;
-    navigator.geolocation.clearWatch(this.watchID);
+    // navigator.geolocation.clearWatch(this.watchID);
     if(this.unsubscribeGantryRef) {
       this.unsubscribeGantryRef();
     }
@@ -216,7 +217,7 @@ export default class MapScreen extends React.Component {
             long = coordinates.longitude;
         console.log("-----------------rörde mig till: ( " + lat + " , " + long + " )");
 
-        if(me.state.toggleFollowUser) {
+        if(me.toggleFollowUser) {
           const { currentLatitudeDelta, currentLongitudeDelta } = me.state;
           const region = {
             latitude: coordinates.latitude,
@@ -336,6 +337,46 @@ export default class MapScreen extends React.Component {
     });
   };
 
+  onUserLocationChange = location => {
+    // console.log('onUserLocationChange', location.nativeEvent.coordinate);
+
+    let me = this,
+        coordinates = location.nativeEvent.coordinate,
+        lat = coordinates.latitude,
+        long = coordinates.longitude;
+    // console.log("-----------------rörde mig till: ( " + lat + " , " + long + " )");
+
+    if(me.toggleFollowUser) {
+      const { currentLatitudeDelta, currentLongitudeDelta } = me.state;
+      const region = {
+        latitude: coordinates.latitude,
+        longitude: coordinates.longitude,
+        latitudeDelta: currentLatitudeDelta,
+        longitudeDelta: currentLongitudeDelta
+      }
+      me.setRegion(region);
+    }
+    if (me.isDeviceInGeofence(coordinates)) {
+      if (me.isReadyForNotif) {
+        me.notif.geofenceNotif();
+        me.isInsideGantry = true;
+        me.isReadyForNotif = false;
+      }
+    } else {
+      me.isReadyForNotif = true;
+      me.isInsideGantry = false;
+    }
+  };
+
+  onDrag= () => {
+    if(this.toggleFollowUser) {
+      // this.setState({
+      //   toggleFollowUser: false
+      // });
+      this.toggleFollowUser = false;
+    }
+  }
+
   isBeaconInRange = distance => {
     if (distance < 5) {
       // console.log("beacon in range");
@@ -362,13 +403,13 @@ export default class MapScreen extends React.Component {
     const {
       currentLatitudeDelta,
       currentLongitudeDelta,
-      toggleFollowUser
     } = this.state;
-    this.setState(state => ({
-      toggleFollowUser: !state.toggleFollowUser
-    }));
+    // this.setState(state => ({
+    //   toggleFollowUser: !state.toggleFollowUser
+    // }));
+    this.toggleFollowUser = !this.toggleFollowUser;
     
-    if (!toggleFollowUser) {
+    if (!this.toggleFollowUser) {
       this.getCurrentPosition(currentLatitudeDelta, currentLongitudeDelta);
     }
   };
@@ -391,6 +432,8 @@ export default class MapScreen extends React.Component {
           loadingEnabled={true}
           onRegionChange={this.onRegionChange}
           onRegionChangeComplete={this.onRegionChangeComplete}
+          onUserLocationChange={this.onUserLocationChange}
+          onPanDrag={this.onDrag}
           style={styles.map}
           textStyle={{ color: "#bc8b00" }}
           containerStyle={{ backgroundColor: "white", borderColor: "#bc8b00" }}
@@ -402,7 +445,7 @@ export default class MapScreen extends React.Component {
         <View style={styles.mapButtonContainer}>
           <TouchableOpacity
             style={
-              this.state.toggleFollowUser
+              this.toggleFollowUser
                 ? styles.activeFollowUserButton
                 : styles.inactiveFollowUserButton
             }
