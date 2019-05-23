@@ -84,6 +84,8 @@ export const addUserTransaction = (gantry, uid, user) => {
 
   if (user.activeVehicle === "Car"){
     cost = gantry.cost
+  }else if (user.activeVehicle === "Truck") {
+    cost = gantry.cost * 2.5
   } else if (user.activeVehicle === "Bus") {
     cost = gantry.cost * 2
   } else if (user.activeVehicle === "Van"){
