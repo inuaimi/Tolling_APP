@@ -120,3 +120,10 @@ export const regiesterTransactionToGantry = async (gantryId, userId) => {
         });
     });
 };
+
+export const saveActiveVehicle = (activeVehicle, activeVehiclePlate, uid) => {
+  db.collection('Users').doc(uid).update({
+    activeVehicle: activeVehicle,
+    activeVehiclePlate: activeVehiclePlate
+  })
+};
