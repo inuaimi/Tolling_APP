@@ -174,7 +174,7 @@ const localStyles = StyleSheet.create({
     borderRadius: 25,
     marginHorizontal: 15,
     marginTop: 15,
-    backgroundColor: theme.PRIMARY_COLOR
+    backgroundColor: theme.ACCENT_COLOR
   },
   logoutButton: {
     paddingVertical: 15,

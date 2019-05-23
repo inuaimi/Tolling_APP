@@ -6,7 +6,8 @@ import {
   ScrollView,
   TextInput,
   ActivityIndicator,
-  TouchableOpacity
+  TouchableOpacity,
+  StatusBar
 } from "react-native";
 //      Imports: "css-alike-ish" styling
 import styles from "../Styles/styles";
@@ -66,6 +67,7 @@ export default class SecondScreen extends React.Component {
   render() {
     return (
       <View style={localStyles.mainContainer}>
+        <StatusBar barStyle="light-content" />
         <ScrollView keyboardShouldPersistTaps="handled">
           <View style={localStyles.moneyContainer}>
             {this.renderMoneyBalance()}
@@ -127,7 +129,8 @@ export default class SecondScreen extends React.Component {
       <View>
         <TouchableOpacity
           style={localStyles.addMoneyButton}
-          onPress={this.toggleAddMoneyPopup}>
+          onPress={this.toggleAddMoneyPopup}
+        >
           <Text style={localStyles.addMoneyText}>Add money</Text>
         </TouchableOpacity>
         <Modal
@@ -158,7 +161,8 @@ export default class SecondScreen extends React.Component {
               />
               <TouchableOpacity
                 style={localStyles.addMoneyButton}
-                onPress={this.updateMoneyBalance}>
+                onPress={this.updateMoneyBalance}
+              >
                 <Text style={localStyles.addMoneyText}>Add</Text>
               </TouchableOpacity>
             </View>
@@ -226,7 +230,7 @@ const localStyles = StyleSheet.create({
     borderRadius: 25,
     marginHorizontal: 15,
     marginTop: 15,
-    backgroundColor: theme.PRIMARY_COLOR
+    backgroundColor: theme.ACCENT_COLOR
   },
   addMoneyText: {
     alignSelf: "center",

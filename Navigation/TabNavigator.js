@@ -41,6 +41,7 @@ const transactionsStack = createStackNavigator({
       headerStyle: {
         backgroundColor: theme.PRIMARY_COLOR
       },
+      statusBar: { style: "light-content", tintColor: "#ef5350" },
       headerTintColor: "#fff"
     }
   }
