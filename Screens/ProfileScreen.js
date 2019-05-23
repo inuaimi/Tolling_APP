@@ -7,6 +7,7 @@ import {
   TouchableHighlight,
   StyleSheet,
   ScrollView,
+  StatusBar,
   Picker
 } from "react-native";
 import {
@@ -24,7 +25,7 @@ import firebase from "react-native-firebase";
 import styles from "../Styles/profileStyles";
 import { db } from "../Database/Database";
 import theme from "../Styles/theme";
-import { saveActiveVehicle } from '../Database/Database';
+import { saveActiveVehicle } from "../Database/Database";
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -50,16 +51,20 @@ export default class ProfileScreen extends React.Component {
     this.state = {
       vehicles: [],
       uid: uid,
-      activeVehicle: "",
+      activeVehicle: ""
     };
   }
 
   componentDidMount() {
+    this._navListener = this.props.navigation.addListener("didFocus", () => {
+      StatusBar.setBarStyle("light-content");
+    });
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
     this.props.navigation.setParams({ signOutUser: this._signOutUser });
   }
 
   componentWillUnmount() {
+    this._navListener.remove();
     this.unsubscribe();
   }
 
@@ -91,12 +96,12 @@ export default class ProfileScreen extends React.Component {
     const { activeVehicle, uid } = this.state;
     let vehicleType;
     this.state.vehicles.forEach(vehicle => {
-      if(vehicle.licensePlate === activeVehicle){
+      if (vehicle.licensePlate === activeVehicle) {
         vehicleType = vehicle.type;
       }
     });
     saveActiveVehicle(vehicleType, activeVehicle, uid);
-  }
+  };
 
   render() {
     return (
@@ -147,20 +152,27 @@ export default class ProfileScreen extends React.Component {
           </TouchableOpacity>
 
           <View>
-            <Card title={<Text style={localStyles.activeVehicleStyle}>Active vehicle: {this.state.activeVehiclePlate}</Text>}>
-            <Divider />
-              <Picker 
+            <Card
+              title={
+                <Text style={localStyles.activeVehicleStyle}>
+                  Active vehicle: {this.state.activeVehiclePlate}
+                </Text>
+              }
+            >
+              <Divider />
+              <Picker
                 selectedValue={this.state.activeVehicle}
                 onValueChange={(itemValue, itemIndex) =>
-                this.setState({activeVehicle: itemValue})
-              }>
+                  this.setState({ activeVehicle: itemValue })
+                }
+              >
                 <Picker.Item label="" value="" />
                 {this.renderPickerItem()}
               </Picker>
             </Card>
             <TouchableOpacity
-            style={localStyles.addVehicleButton}
-            onPress={() => this.saveActiveVehicle()}
+              style={localStyles.addVehicleButton}
+              onPress={() => this.saveActiveVehicle()}
             >
               <Text style={localStyles.btnText}>Save active vehicle</Text>
             </TouchableOpacity>
@@ -171,15 +183,14 @@ export default class ProfileScreen extends React.Component {
   }
 
   renderPickerItem() {
-    return (
-      this.state.vehicles.map((vehicle, key) => {
-        return (          
-          <Picker.Item label={vehicle.licensePlate}
+    return this.state.vehicles.map((vehicle, key) => {
+      return (
+        <Picker.Item
+          label={vehicle.licensePlate}
           value={vehicle.licensePlate}
-          />
-        )
-      })
-    )
+        />
+      );
+    });
   }
 
   renderVehicles() {

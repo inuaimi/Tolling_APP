@@ -91,6 +91,9 @@ export default class MapScreen extends React.Component {
   }
 
   componentDidMount() {
+    this._navListener = this.props.navigation.addListener("didFocus", () => {
+      StatusBar.setBarStyle("dark-content");
+    });
     this._isMounted = true;
     if (this._isMounted) {
       this.unsubscribeGantryRef = this.gantryRef.onSnapshot(
@@ -102,6 +105,7 @@ export default class MapScreen extends React.Component {
   }
 
   componentWillUnmount() {
+    this._navListener.remove();
     this._isMounted = false;
     if (this.unsubscribeGantryRef) {
       this.unsubscribeGantryRef();

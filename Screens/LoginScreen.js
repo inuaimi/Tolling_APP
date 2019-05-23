@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, ImageBackground } from "react-native";
+import { Text, View, ImageBackground, StatusBar } from "react-native";
 // import AsyncStorage from "@react-native-community/async-storage";
 import styles from "../Styles/loginStyles";
 import { Buttons } from "../Components/Buttons";
@@ -18,6 +18,16 @@ export default class SecondScreen extends React.Component {
     error: "",
     loading: false
   };
+
+  componentDidMount() {
+    this._navListener = this.props.navigation.addListener("didFocus", () => {
+      StatusBar.setBarStyle("light-content");
+    });
+  }
+
+  componentWillUnmount() {
+    this._navListener.remove();
+  }
 
   onSignInPressed() {
     this.setState({ error: "", loading: true });
