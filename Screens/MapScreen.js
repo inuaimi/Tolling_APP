@@ -82,7 +82,6 @@ export default class MapScreen extends React.Component {
     };
     Beacons.startRangingBeaconsInRegion(region);
     if (Platform.OS === "ios") {
-      console.log("startupdatinglocation");
       Beacons.startUpdatingLocation();
     }
   }
