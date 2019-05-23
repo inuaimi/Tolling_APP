@@ -57,7 +57,6 @@ export default class MapScreen extends React.Component {
     this.isInsideGantry;
     this.hasLeftTransactionGeofence;
     this.ready = false;
-    this.toggleFollowUser = true;
 
     this.state = {
       gantries: [],
@@ -69,7 +68,7 @@ export default class MapScreen extends React.Component {
       gantryName: "Press a marker",
       distanceToGantry: "",
       gantryCost: 0,
-      // toggleFollowUser: true,
+      toggleFollowUser: true,
       // BT region info
       identifier: "Estimotes",
       uuid: "B9407F30-F5F8-466E-AFF9-25556B57FE6D"
@@ -81,6 +80,15 @@ export default class MapScreen extends React.Component {
       Beacons.requestWhenInUseAuthorization();
     } else if (Platform.OS === "android") {
       Beacons.detectIBeacons();
+    }
+    const region = {
+      identifier: this.state.identifier,
+      uuid: this.state.uuid
+    };
+    Beacons.startRangingBeaconsInRegion(region);
+    if (Platform.OS === "ios") {
+      console.log("startupdatinglocation");
+      Beacons.startUpdatingLocation();
     }
   }
 
@@ -217,7 +225,7 @@ export default class MapScreen extends React.Component {
             long = coordinates.longitude;
         console.log("-----------------rörde mig till: ( " + lat + " , " + long + " )");
 
-        if(me.toggleFollowUser) {
+        if(me.state.toggleFollowUser) {
           const { currentLatitudeDelta, currentLongitudeDelta } = me.state;
           const region = {
             latitude: coordinates.latitude,
@@ -225,6 +233,7 @@ export default class MapScreen extends React.Component {
             latitudeDelta: currentLatitudeDelta,
             longitudeDelta: currentLongitudeDelta
           }
+          console.log("animate: " + JSON.stringify(region, null, 2));
           me.setRegion(region);
         }
         if (me.isDeviceInGeofence(coordinates)) {
@@ -249,15 +258,6 @@ export default class MapScreen extends React.Component {
 
   scanForBeacons() {
     let me = this;
-    const region = {
-      identifier: me.state.identifier,
-      uuid: me.state.uuid
-    };
-    Beacons.startRangingBeaconsInRegion(region);
-    if (Platform.OS === "ios") {
-      console.log("startupdatinglocation");
-      Beacons.startUpdatingLocation();
-    }
     
     this.beaconsDidRange = DeviceEventEmitter.addListener(
       "beaconsDidRange",
@@ -298,6 +298,7 @@ export default class MapScreen extends React.Component {
             longitudeDelta: longDelta
           };
           //Detta fungerar!
+          console.log("animate1: " + JSON.stringify(region, null, 2));
           this.setRegion(region);
         },
         error => {
@@ -338,22 +339,33 @@ export default class MapScreen extends React.Component {
   };
 
   onUserLocationChange = location => {
-    // console.log('onUserLocationChange', location.nativeEvent.coordinate);
-
     let me = this,
         coordinates = location.nativeEvent.coordinate,
         lat = coordinates.latitude,
         long = coordinates.longitude;
     // console.log("-----------------rörde mig till: ( " + lat + " , " + long + " )");
 
-    if(me.toggleFollowUser) {
+    if(me.state.toggleFollowUser) {
       const { currentLatitudeDelta, currentLongitudeDelta } = me.state;
-      const region = {
-        latitude: coordinates.latitude,
-        longitude: coordinates.longitude,
-        latitudeDelta: currentLatitudeDelta,
-        longitudeDelta: currentLongitudeDelta
+      let region;
+      if( !(currentLatitudeDelta && currentLongitudeDelta)) {
+        console.log("HAR EJ");
+        region = {
+          latitude: coordinates.latitude,
+          longitude: coordinates.longitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA
+        }
+      } else {
+        console.log("HAR");
+        region = {
+          latitude: coordinates.latitude,
+          longitude: coordinates.longitude,
+          latitudeDelta: currentLatitudeDelta,
+          longitudeDelta: currentLongitudeDelta
+        }
       }
+      console.log("animate: " + JSON.stringify(region, null, 2));
       me.setRegion(region);
     }
     if (me.isDeviceInGeofence(coordinates)) {
@@ -368,24 +380,12 @@ export default class MapScreen extends React.Component {
     }
   };
 
-  onDrag= () => {
-    if(this.toggleFollowUser) {
-      // this.setState({
-      //   toggleFollowUser: false
-      // });
-      this.toggleFollowUser = false;
-    }
-  }
-
   isBeaconInRange = distance => {
     if (distance < 5) {
-      // console.log("beacon in range");
       return true;
     } else {
-      // console.log("not in range");
       return false;
     }
-    //  return (distance < 5);
   };
 
   makeTransaction = () => {
@@ -404,12 +404,11 @@ export default class MapScreen extends React.Component {
       currentLatitudeDelta,
       currentLongitudeDelta,
     } = this.state;
-    // this.setState(state => ({
-    //   toggleFollowUser: !state.toggleFollowUser
-    // }));
-    this.toggleFollowUser = !this.toggleFollowUser;
+    this.setState(state => ({
+      toggleFollowUser: !state.toggleFollowUser
+    }));
     
-    if (!this.toggleFollowUser) {
+    if (!this.state.toggleFollowUser) {
       this.getCurrentPosition(currentLatitudeDelta, currentLongitudeDelta);
     }
   };
@@ -433,7 +432,6 @@ export default class MapScreen extends React.Component {
           onRegionChange={this.onRegionChange}
           onRegionChangeComplete={this.onRegionChangeComplete}
           onUserLocationChange={this.onUserLocationChange}
-          onPanDrag={this.onDrag}
           style={styles.map}
           textStyle={{ color: "#bc8b00" }}
           containerStyle={{ backgroundColor: "white", borderColor: "#bc8b00" }}
@@ -445,7 +443,7 @@ export default class MapScreen extends React.Component {
         <View style={styles.mapButtonContainer}>
           <TouchableOpacity
             style={
-              this.toggleFollowUser
+              this.state.toggleFollowUser
                 ? styles.activeFollowUserButton
                 : styles.inactiveFollowUserButton
             }
