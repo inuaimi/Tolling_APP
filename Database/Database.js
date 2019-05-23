@@ -70,7 +70,7 @@ export const addUserMoney = (amount, uid) => {
     });
 };
 
-export const addUserTransaction = (gantry, uid) => {
+export const addUserTransaction = (gantry, uid, user) => {
   const date = new Date().getDate();
   const month = new Date().getMonth();
   const year = new Date().getFullYear();
