@@ -70,7 +70,7 @@ export const addUserMoney = (amount, uid) => {
     });
 };
 
-export const addUserTransaction = (gantry, uid) => {
+export const addUserTransaction = (gantry, uid, user) => {
   const date = new Date().getDate();
   const month = new Date().getMonth();
   const year = new Date().getFullYear();
@@ -80,11 +80,26 @@ export const addUserTransaction = (gantry, uid) => {
   const dateTime = {
     date: date + "/" + month + "/" + year + " " + hours + ":" + min + ":" + sec
   };
+  let cost;
+
+  if (user.activeVehicle === "Car"){
+    cost = gantry.cost
+  } else if (user.activeVehicle === "Bus") {
+    cost = gantry.cost * 2
+  } else if (user.activeVehicle === "Van"){
+    cost = gantry.cost * 1.5
+  } else if (user.activeVehicle === "Motorcycle") {
+    cost = gantry.cost * 0.8
+  }
+
+  let newBalance = user.balance - cost
+
   db.collection("Users")
     .doc(uid)
     .update({
+      balance: newBalance,
       transactions: firebase.firestore.FieldValue.arrayUnion({
-        cost: gantry.cost,
+        cost: cost,
         date: dateTime.date,
         gantry: gantry.title
       })
@@ -112,7 +127,7 @@ export const regiesterTransactionToGantry = async (gantryId, userId) => {
         .update({
           transactions: firebase.firestore.FieldValue.arrayUnion({
             userId: userId,
-            veichle: "car",
+            vehicle: user.activeVehicle,
             name: user.name,
             date: formatedDate
           }),
