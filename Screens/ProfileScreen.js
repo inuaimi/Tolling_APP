@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   StyleSheet,
-  ScrollView
+  ScrollView,
+  Picker
 } from "react-native";
 import {
   Header,
@@ -23,6 +24,7 @@ import firebase from "react-native-firebase";
 import styles from "../Styles/profileStyles";
 import { db } from "../Database/Database";
 import theme from "../Styles/theme";
+import { saveActiveVehicle } from '../Database/Database';
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -47,7 +49,8 @@ export default class ProfileScreen extends React.Component {
 
     this.state = {
       vehicles: [],
-      uid: uid
+      uid: uid,
+      activeVehicle: "",
     };
   }
 
@@ -66,7 +69,8 @@ export default class ProfileScreen extends React.Component {
     this.setState({
       email: user.email,
       name: user.name,
-      vehicles: user.vehicles
+      vehicles: user.vehicles,
+      activeVehiclePlate: user.activeVehiclePlate
     });
   };
 
@@ -82,6 +86,17 @@ export default class ProfileScreen extends React.Component {
       console.log(e);
     }
   };
+
+  saveActiveVehicle = () => {
+    const { activeVehicle, uid } = this.state;
+    let vehicleType;
+    this.state.vehicles.forEach(vehicle => {
+      if(vehicle.licensePlate === activeVehicle){
+        vehicleType = vehicle.type;
+      }
+    });
+    saveActiveVehicle(vehicleType, activeVehicle, uid);
+  }
 
   render() {
     return (
@@ -130,9 +145,41 @@ export default class ProfileScreen extends React.Component {
           >
             <Text style={localStyles.btnText}>Add vehicle</Text>
           </TouchableOpacity>
+
+          <View>
+            <Card title={<Text style={localStyles.activeVehicleStyle}>Active vehicle: {this.state.activeVehiclePlate}</Text>}>
+            <Divider />
+              <Picker 
+                selectedValue={this.state.activeVehicle}
+                onValueChange={(itemValue, itemIndex) =>
+                this.setState({activeVehicle: itemValue})
+              }>
+                <Picker.Item label="" value="" />
+                {this.renderPickerItem()}
+              </Picker>
+            </Card>
+            <TouchableOpacity
+            style={localStyles.addVehicleButton}
+            onPress={() => this.saveActiveVehicle()}
+            >
+              <Text style={localStyles.btnText}>Save active vehicle</Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </View>
     );
+  }
+
+  renderPickerItem() {
+    return (
+      this.state.vehicles.map((vehicle, key) => {
+        return (          
+          <Picker.Item label={vehicle.licensePlate}
+          value={vehicle.licensePlate}
+          />
+        )
+      })
+    )
   }
 
   renderVehicles() {
@@ -190,5 +237,10 @@ const localStyles = StyleSheet.create({
   },
   emailText: {
     fontSize: 16
+  },
+  activeVehicleStyle: {
+    fontSize: 16,
+    textAlign: "center",
+    paddingBottom: 15
   }
 });
