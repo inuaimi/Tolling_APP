@@ -121,8 +121,9 @@ export const regiesterTransactionToGantry = async (gantryId, userId) => {
     });
 };
 
-export const saveActiveVehicle = (activeVehicle, uid) => {
+export const saveActiveVehicle = (activeVehicle, activeVehiclePlate, uid) => {
   db.collection('Users').doc(uid).update({
-    activeVehicle: activeVehicle
+    activeVehicle: activeVehicle,
+    activeVehiclePlate: activeVehiclePlate
   })
 };

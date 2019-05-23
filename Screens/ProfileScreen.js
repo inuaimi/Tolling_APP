@@ -50,7 +50,7 @@ export default class ProfileScreen extends React.Component {
     this.state = {
       vehicles: [],
       uid: uid,
-      activeVehicle: ""
+      activeVehicle: "",
     };
   }
 
@@ -69,7 +69,8 @@ export default class ProfileScreen extends React.Component {
     this.setState({
       email: user.email,
       name: user.name,
-      vehicles: user.vehicles
+      vehicles: user.vehicles,
+      activeVehiclePlate: user.activeVehiclePlate
     });
   };
 
@@ -94,7 +95,7 @@ export default class ProfileScreen extends React.Component {
         vehicleType = vehicle.type;
       }
     });
-    saveActiveVehicle(vehicleType, uid);
+    saveActiveVehicle(vehicleType, activeVehicle, uid);
   }
 
   render() {
@@ -146,7 +147,8 @@ export default class ProfileScreen extends React.Component {
           </TouchableOpacity>
 
           <View>
-            <Card title="Active vehicle">
+            <Card title={<Text style={localStyles.balanceText}>Active vehicle: {this.state.activeVehiclePlate}</Text>}>
+            
               <Picker 
                 selectedValue={this.state.activeVehicle}
                 onValueChange={(itemValue, itemIndex) =>
