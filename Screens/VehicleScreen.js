@@ -56,7 +56,7 @@ export default class VehicleScreen extends React.Component {
               Divider
             />
             <ListItem
-              title={ <Text style={localStyles.leftText} > Car type </Text> }
+              title={ <Text style={localStyles.leftText} > Vehicle type </Text> }
               rightTitle={ <Text style={localStyles.rightText}> {type} </Text> }
             />
             <TouchableOpacity style={localStyles.deleteButton} onPress={() => this.deleteVehicle(vehicle)}>
