@@ -9,16 +9,7 @@ import {
   TouchableOpacity,
   StatusBar
 } from "react-native";
-//      Imports: "css-alike-ish" styling
-import styles from "../Styles/styles";
-import {
-  Header,
-  Card,
-  ListItem,
-  Divider,
-  Icon,
-  Button
-} from "react-native-elements";
+import { Card, ListItem, Divider } from "react-native-elements";
 import Modal from "react-native-modal";
 import firebase from "react-native-firebase";
 import { db } from "../Database/Database";
@@ -47,10 +38,14 @@ export default class SecondScreen extends React.Component {
   }
 
   componentDidMount() {
+    this._navListener = this.props.navigation.addListener("didFocus", () => {
+      StatusBar.setBarStyle("light-content");
+    });
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
   }
 
   componentWillUnmount() {
+    this._navListener.remove();
     this.unsubscribe();
   }
 
@@ -67,7 +62,6 @@ export default class SecondScreen extends React.Component {
   render() {
     return (
       <View style={localStyles.mainContainer}>
-        <StatusBar barStyle="light-content" />
         <ScrollView keyboardShouldPersistTaps="handled">
           <View style={localStyles.moneyContainer}>
             {this.renderMoneyBalance()}
@@ -147,7 +141,6 @@ export default class SecondScreen extends React.Component {
                     moneyInput: Number(input)
                   })
                 }
-                value={String(this.state.moneyInput)}
                 keyboardType="numeric"
                 maxLength={10}
                 autoFocus={true}

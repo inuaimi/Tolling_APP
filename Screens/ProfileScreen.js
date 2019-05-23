@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   StyleSheet,
-  ScrollView
+  ScrollView,
+  StatusBar
 } from "react-native";
 import {
   Header,
@@ -52,11 +53,15 @@ export default class ProfileScreen extends React.Component {
   }
 
   componentDidMount() {
+    this._navListener = this.props.navigation.addListener("didFocus", () => {
+      StatusBar.setBarStyle("light-content");
+    });
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
     this.props.navigation.setParams({ signOutUser: this._signOutUser });
   }
 
   componentWillUnmount() {
+    this._navListener.remove();
     this.unsubscribe();
   }
 
