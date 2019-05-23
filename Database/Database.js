@@ -70,7 +70,7 @@ export const addUserMoney = (amount, uid) => {
     });
 };
 
-export const addUserTransaction = (gantry, uid, user) => {
+export const addUserTransaction = (gantry, uid) => {
   const date = new Date().getDate();
   const month = new Date().getMonth();
   const year = new Date().getFullYear();
@@ -94,12 +94,12 @@ export const addUserTransaction = (gantry, uid, user) => {
     cost = gantry.cost * 0.8
   }
 
-  let newBalance = user.balance - cost
+  let dec = firebase.firestore.FieldValue.increment(-cost);
 
   db.collection("Users")
     .doc(uid)
     .update({
-      balance: newBalance,
+      balance: dec,
       transactions: firebase.firestore.FieldValue.arrayUnion({
         cost: cost,
         date: dateTime.date,
