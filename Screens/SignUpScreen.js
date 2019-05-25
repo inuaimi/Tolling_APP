@@ -1,8 +1,15 @@
 import React from "react";
-import { StyleSheet, Text, View, ImageBackground, Picker } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  Picker,
+  StatusBar
+} from "react-native";
 import { Inputs } from "../Components/Inputs";
 import { Buttons } from "../Components/Buttons";
-import { createUser } from "../Database/Database";
+import { createUser, saveActiveVehicle } from "../Database/Database";
 import firebase from "react-native-firebase";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -22,6 +29,16 @@ export default class SignUpScreen extends React.Component {
     error: "",
     loading: false
   };
+
+  componentDidMount() {
+    this._navListener = this.props.navigation.addListener("didFocus", () => {
+      StatusBar.setBarStyle("light-content");
+    });
+  }
+
+  componentWillUnmount() {
+    this._navListener.remove();
+  }
 
   onPressSignUp() {
     this.setState({
@@ -93,6 +110,11 @@ export default class SignUpScreen extends React.Component {
           this.state.license,
           this.state.balance
         );
+        saveActiveVehicle(
+          this.state.vehicle,
+          this.state.license,
+          uid,
+        );
         this.props.navigation.navigate("Login");
       })
       .catch(error => {
@@ -116,74 +138,74 @@ export default class SignUpScreen extends React.Component {
         source={require("../Src/Images/signup.jpg")}
         style={styles.imgContainer}
       >
-      <ScrollView>
-        <View style={styles.container}>
-          <Text style={styles.text}>Sign up</Text>
-          <Inputs
-            placeholder="Full name"
-            placeholderTextColor="#777777"
-            onChangeText={name => this.setState({ name })}
-            value={this.state.name}
-          />
-          <Inputs
-            placeholder="Email"
-            placeholderTextColor="#777777"
-            onChangeText={email => this.setState({ email })}
-            value={this.state.email}
-          />
-          <Inputs
-            placeholder="Password"
-            placeholderTextColor="#777777"
-            secureTextEntry
-            onChangeText={password => this.setState({ password })}
-            value={this.state.password}
-          />
-          <Inputs
-            placeholder="License plate"
-            placeholderTextColor="#777777"
-            onChangeText={license => this.setState({ license })}
-            value={this.state.license}
-          />
-          <Picker
-            itemStyle={styles.pickerItem}
-            style={styles.dropdown}
-            selectedValue={this.state.vehicle}
-            onValueChange={vehicle => this.setState({ vehicle: vehicle })}
-          >
-            <Picker.Item label="Car" value="Car" />
-            <Picker.Item label="Van" value="Van" />
-            <Picker.Item label="Truck" value="Truck" />
-            <Picker.Item label="Bus" value="Bus" />
-            <Picker.Item label="Motorcycle" value="Motorcycle" />
-          </Picker>
+        <ScrollView>
+          <View style={styles.container}>
+            <Text style={styles.text}>Sign up</Text>
+            <Inputs
+              placeholder="Full name"
+              placeholderTextColor="#777777"
+              onChangeText={name => this.setState({ name })}
+              value={this.state.name}
+            />
+            <Inputs
+              placeholder="Email"
+              placeholderTextColor="#777777"
+              onChangeText={email => this.setState({ email })}
+              value={this.state.email}
+            />
+            <Inputs
+              placeholder="Password"
+              placeholderTextColor="#777777"
+              secureTextEntry
+              onChangeText={password => this.setState({ password })}
+              value={this.state.password}
+            />
+            <Inputs
+              placeholder="License plate"
+              placeholderTextColor="#777777"
+              onChangeText={license => this.setState({ license })}
+              value={this.state.license}
+            />
+            <Picker
+              itemStyle={styles.pickerItem}
+              style={styles.dropdown}
+              selectedValue={this.state.vehicle}
+              onValueChange={vehicle => this.setState({ vehicle: vehicle })}
+            >
+              <Picker.Item label="Car" value="Car" />
+              <Picker.Item label="Van" value="Van" />
+              <Picker.Item label="Truck" value="Truck" />
+              <Picker.Item label="Bus" value="Bus" />
+              <Picker.Item label="Motorcycle" value="Motorcycle" />
+            </Picker>
 
-          <View style={styles.vehicleText}>
-            <Text style={styles.vehicle}>
-              Chosen vehicle: {this.state.vehicle}
+            <View style={styles.vehicleText}>
+              <Text style={styles.vehicle}>
+                Chosen vehicle: {this.state.vehicle}
+              </Text>
+            </View>
+
+            {this.renderButtonOrLoading()}
+            <Text
+              style={{
+                color: "#ff0000",
+                marginTop: 10,
+                marginBottom: 10,
+                fontSize: 16
+              }}
+            >
+              {this.state.error}
+            </Text>
+            <Text style={styles.login}>
+              Already have an account?{" "}
+              <Text
+                onPress={() => this.props.navigation.navigate("Login")}
+                style={{ color: "#fff" }}
+              >
+                Sign in
+              </Text>
             </Text>
           </View>
-
-          {this.renderButtonOrLoading()}
-          <Text
-            style={{
-              color: "#ff0000",
-              marginTop: 10,
-              marginBottom: 10,
-              fontSize: 16
-            }}
-          >
-            {this.state.error}
-          </Text>
-          <Text style={styles.login}>
-            Already have an account?{" "}
-            <Text
-              onPress={() => this.props.navigation.navigate("Login")}
-              style={{ color: "#fff" }}
-            >
-              Sign in
-            </Text>
-          </Text>
-        </View>
         </ScrollView>
       </ImageBackground>
     );
@@ -209,7 +231,7 @@ const styles = StyleSheet.create({
   imgContainer: {
     flex: 1,
     width: "100%",
-    height: "100%",
+    height: "100%"
   },
   login: {
     marginTop: 10,

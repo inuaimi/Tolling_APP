@@ -6,18 +6,10 @@ import {
   ScrollView,
   TextInput,
   ActivityIndicator,
-  TouchableOpacity
+  TouchableOpacity,
+  StatusBar
 } from "react-native";
-//      Imports: "css-alike-ish" styling
-import styles from "../Styles/styles";
-import {
-  Header,
-  Card,
-  ListItem,
-  Divider,
-  Icon,
-  Button
-} from "react-native-elements";
+import { Card, ListItem, Divider } from "react-native-elements";
 import Modal from "react-native-modal";
 import firebase from "react-native-firebase";
 import { db } from "../Database/Database";
@@ -46,10 +38,14 @@ export default class SecondScreen extends React.Component {
   }
 
   componentDidMount() {
+    this._navListener = this.props.navigation.addListener("didFocus", () => {
+      StatusBar.setBarStyle("light-content");
+    });
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
   }
 
   componentWillUnmount() {
+    this._navListener.remove();
     this.unsubscribe();
   }
 
@@ -103,7 +99,7 @@ export default class SecondScreen extends React.Component {
     }
     return (
       <Card title="Recent transactions">
-        {this.state.transactions.map((x, key) => {
+        {this.state.transactions.reverse().map((x, key) => {
           return (
             <View key={key}>
               <ListItem
@@ -127,7 +123,8 @@ export default class SecondScreen extends React.Component {
       <View>
         <TouchableOpacity
           style={localStyles.addMoneyButton}
-          onPress={this.toggleAddMoneyPopup}>
+          onPress={this.toggleAddMoneyPopup}
+        >
           <Text style={localStyles.addMoneyText}>Add money</Text>
         </TouchableOpacity>
         <Modal
@@ -144,7 +141,6 @@ export default class SecondScreen extends React.Component {
                     moneyInput: Number(input)
                   })
                 }
-                value={String(this.state.moneyInput)}
                 keyboardType="numeric"
                 maxLength={10}
                 autoFocus={true}
@@ -158,7 +154,8 @@ export default class SecondScreen extends React.Component {
               />
               <TouchableOpacity
                 style={localStyles.addMoneyButton}
-                onPress={this.updateMoneyBalance}>
+                onPress={this.updateMoneyBalance}
+              >
                 <Text style={localStyles.addMoneyText}>Add</Text>
               </TouchableOpacity>
             </View>
@@ -226,7 +223,7 @@ const localStyles = StyleSheet.create({
     borderRadius: 25,
     marginHorizontal: 15,
     marginTop: 15,
-    backgroundColor: theme.PRIMARY_COLOR
+    backgroundColor: theme.ACCENT_COLOR
   },
   addMoneyText: {
     alignSelf: "center",

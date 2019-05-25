@@ -12,7 +12,6 @@ import transactionsScreen from "../Screens/TransactionsScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
 import VehicleScreen from "../Screens/VehicleScreen";
 import AddVehicleScreen from "../Screens/AddVehicleScreen";
-import TestScreen from "../Screens/TestScreen";
 import theme from "../Styles/theme";
 import EditEmailScreen from "../Screens/EditEmailScreen";
 
@@ -41,6 +40,7 @@ const transactionsStack = createStackNavigator({
       headerStyle: {
         backgroundColor: theme.PRIMARY_COLOR
       },
+      statusBar: { style: "light-content", tintColor: "#ef5350" },
       headerTintColor: "#fff"
     }
   }
@@ -71,9 +71,6 @@ const TabNavigator = createBottomTabNavigator(
           <Icon name="user-circle" type="font-awesome" color={tintColor} />
         )
       }
-    },
-    Test: {
-      screen: TestScreen
     }
   },
   {
