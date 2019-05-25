@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Inputs } from "../Components/Inputs";
 import { Buttons } from "../Components/Buttons";
-import { createUser } from "../Database/Database";
+import { createUser, saveActiveVehicle } from "../Database/Database";
 import firebase from "react-native-firebase";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -109,6 +109,11 @@ export default class SignUpScreen extends React.Component {
           this.state.vehicle,
           this.state.license,
           this.state.balance
+        );
+        saveActiveVehicle(
+          this.state.vehicle,
+          this.state.license,
+          uid,
         );
         this.props.navigation.navigate("Login");
       })

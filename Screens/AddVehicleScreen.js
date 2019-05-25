@@ -59,6 +59,7 @@ export default class AddVehicleScreen extends React.Component {
                 }
               >
                 <Picker.Item label="Car" value="Car" />
+                <Picker.Item label="Van" value="Van" />
                 <Picker.Item label="Truck" value="Truck" />
                 <Picker.Item label="Bus" value="Bus" />
                 <Picker.Item label="Motorcycle" value="Motorcycle" />
