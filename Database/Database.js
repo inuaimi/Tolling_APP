@@ -138,14 +138,8 @@ export const regiesterTransactionToGantry = async (gantryId, userId) => {
         .doc(gantryId)
         .update({
           transactions: firebase.firestore.FieldValue.arrayUnion({
-<<<<<<< HEAD
-            veichle: user.activeVehicle,
-            licensePlate: user.activeVehiclePlate,
-=======
-            userId: userId,
             vehicle: user.activeVehicle,
-            name: user.name,
->>>>>>> 2b2ae011366bdb576433ba7cb32a1664eea0df32
+            licensePlate: user.activeVehiclePlate,
             date: formatedDate
           }),
           count: inc

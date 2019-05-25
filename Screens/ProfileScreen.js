@@ -123,19 +123,6 @@ export default class ProfileScreen extends React.Component {
                       {this.state.email}{" "}
                     </Text>
                   }
-                  rightTitle={
-                    <TouchableOpacity
-                      onPress={() =>
-                        this.props.navigation.navigate(
-                          "EditEmail",
-                          this.state.email
-                        )
-                      }
-                      style={{ marginRight: 15 }}
-                    >
-                      <Icon name="edit" type="font-awesome" color="black" />
-                    </TouchableOpacity>
-                  }
                 />
               </View>
             </Card>
@@ -166,7 +153,6 @@ export default class ProfileScreen extends React.Component {
                   this.setState({ activeVehicle: itemValue })
                 }
               >
-                <Picker.Item label="" value="" />
                 {this.renderPickerItem()}
               </Picker>
             </Card>
