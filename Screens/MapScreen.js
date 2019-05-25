@@ -57,7 +57,7 @@ export default class MapScreen extends React.Component {
     this.map = null;
     this.isReadyForNotif = true;
     this.isInsideGantry;
-    this.hasLeftTransactionGeofence;
+    this.hasLeftTransactionGeofence = true;
     this.ready = false;
 
     this.state = {
@@ -203,23 +203,12 @@ export default class MapScreen extends React.Component {
 
   scanForBeacons() {
     let me = this;
-
     this.beaconsDidRange = DeviceEventEmitter.addListener(
       "beaconsDidRange",
       data => {
         data.beacons.forEach(beacon => {
-          // console.log("beacon: " + JSON.stringify(beacon, null, 2));
           if (beacon.accuracy) {
             const distance = beacon.accuracy.toFixed(2);
-
-            console.log(
-              "bools states, beaconInRange: " +
-                me.isBeaconInRange(distance) +
-                " hasLeftTGF: " +
-                me.hasLeftTransactionGeofence +
-                " isInsideGeofence: " +
-                me.isInsideGantry
-            );
 
             if (
               me.isBeaconInRange(distance) &&
@@ -317,7 +306,7 @@ export default class MapScreen extends React.Component {
   };
 
   isBeaconInRange = distance => {
-    if (distance < 5) {
+    if (distance < 100 && distance >= 0) {
       return true;
     } else {
       return false;
@@ -407,8 +396,6 @@ export default class MapScreen extends React.Component {
   }
 
   renderGantryMarkers() {
-    const { currentLatitudeDelta } = this.state;
-    console.log("delta: " + currentLatitudeDelta);
     if (this.state.gantryMarkers) {
       return this.state.gantryMarkers.map((marker, i) => (
         <MapView.Marker

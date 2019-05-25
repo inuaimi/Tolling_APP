@@ -26,9 +26,11 @@ export default class SecondScreen extends React.Component {
     this.unsubscribe = null;
 
     this.state = {
+      renderAll: false,
       gantrys: [],
       balance: 0,
       transactions: [],
+      recentTransactions: [],
       ready: false,
       moneyInput: Number,
       showBalancePopUp: false,
@@ -52,14 +54,26 @@ export default class SecondScreen extends React.Component {
   onCollectionUpdate = doc => {
     const user = doc.data();
 
+    let transactions = user.transactions.reverse(),
+        recentTransactions = [];
+
+
+    for(let i = 0; i < 10; i++) {
+      recentTransactions.push(transactions[i]);
+    }
+
+    console.log("recent: " + JSON.stringify(recentTransactions, null, 2));
+
     this.setState({
       balance: user.balance,
-      transactions: user.transactions,
+      transactions: transactions,
+      recentTransactions: recentTransactions,
       ready: true
     });
   };
 
   render() {
+    console.log("renderAll? " + this.state.renderAll);
     return (
       <View style={localStyles.mainContainer}>
         <ScrollView keyboardShouldPersistTaps="handled">
@@ -70,7 +84,9 @@ export default class SecondScreen extends React.Component {
             {this.renderAddMoney()}
           </View>
           <View style={localStyles.gantrysContainer}>
-            {this.renderRecentTransactions()}
+            { this.state.renderAll ?
+              this.renderAllTransactions()
+            : this.renderRecentTransactions() }
           </View>
         </ScrollView>
       </View>
@@ -90,7 +106,44 @@ export default class SecondScreen extends React.Component {
   }
 
   renderRecentTransactions() {
-    console.log("gantrys:", this.state.gantrys);
+    if (
+      this.state.recentTransactions === undefined ||
+      this.state.recentTransactions.length === 0
+    ) {
+      return null;
+    }
+    return (
+      <Card title="Recent transactions">
+        <View>
+          {this.state.recentTransactions.map((x, key) => {
+            return (
+              <View key={key}>
+                <ListItem
+                  title={x.gantry}
+                  subtitle={x.date}
+                  rightSubtitle={"-" + x.cost + "kr"}
+                  subtitleStyle={{
+                    color: "#707070"
+                  }}
+                />
+                <Divider />
+              </View>
+            );
+          })}
+        </View>
+        <TouchableOpacity 
+          style={localStyles.addMoneyButton}
+          onPress={() => this.setState({ renderAll: true })}
+        >
+          <Text style={localStyles.addMoneyText}>
+            Show all transactions
+          </Text>
+        </TouchableOpacity>
+      </Card>
+    );
+  }
+
+  renderAllTransactions() {
     if (
       this.state.transactions === undefined ||
       this.state.transactions.length === 0
@@ -98,7 +151,7 @@ export default class SecondScreen extends React.Component {
       return null;
     }
     return (
-      <Card title="Recent transactions">
+      <Card title="All transactions">
         {this.state.transactions.reverse().map((x, key) => {
           return (
             <View key={key}>

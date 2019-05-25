@@ -172,6 +172,7 @@ export default class ProfileScreen extends React.Component {
     return this.state.vehicles.map((vehicle, key) => {
       return (
         <Picker.Item
+          key={key}
           label={vehicle.licensePlate}
           value={vehicle.licensePlate}
         />
