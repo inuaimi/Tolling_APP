@@ -397,6 +397,7 @@ export default class MapScreen extends React.Component {
           key={i}
           coordinate={marker.coordinates}
           title={marker.title}
+          image={require('../Src/Images/place_60.png')}
           onPress={() => {
             this.longNames(marker.title);
             this.setState({ gantryCost: marker.gantryCost });
@@ -439,6 +440,12 @@ export default class MapScreen extends React.Component {
       return null;
     }
   }
+
+  // renderMarkerIcon() {
+  //   return (
+  //     <Icon name="edit" type="font-awesome" color="black" />
+  //   )
+  // }
 
   longNames = name => {
     let newName = "";
