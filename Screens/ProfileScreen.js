@@ -17,7 +17,8 @@ import {
   Divider,
   CheckBox,
   Button,
-  Icon
+  Icon,
+  normalize
 } from "react-native-elements";
 import firebase from "react-native-firebase";
 // import AsyncStorage from "@react-native-community/async-storage";
@@ -115,35 +116,24 @@ export default class ProfileScreen extends React.Component {
 
           <View style={localStyles.moneyContainer}>
             <Card title="Email">
-              <View>
-                <ListItem
-                  title={
-                    <Text style={localStyles.emailText}>
-                      {" "}
-                      {this.state.email}{" "}
-                    </Text>
-                  }
-                />
-              </View>
+              <Text style={localStyles.balanceText}> {this.state.email} </Text>
             </Card>
           </View>
 
           <View style={localStyles.moneyContainer}>
             {this.renderVehicles()}
           </View>
-          <TouchableOpacity
-            style={localStyles.addVehicleButton}
-            onPress={() => this.props.navigation.navigate("AddVehicle")}
-          >
-            <Text style={localStyles.btnText}>Add vehicle</Text>
-          </TouchableOpacity>
-
           <View>
             <Card
               title={
-                <Text style={localStyles.activeVehicleStyle}>
-                  Active vehicle: {this.state.activeVehiclePlate}
-                </Text>
+                <View style={localStyles.activeVehicleContainer}>
+                  <Text style={localStyles.activeVehicleTitleStyle}>
+                    Active vehicle
+                  </Text>
+                  <Text style={localStyles.activeVehicleStyle}>
+                    {this.state.activeVehiclePlate}
+                  </Text>
+                </View>
               }
             >
               <Divider />
@@ -155,13 +145,13 @@ export default class ProfileScreen extends React.Component {
               >
                 {this.renderPickerItem()}
               </Picker>
+              <TouchableOpacity
+                style={localStyles.saveActiveVehicleButton}
+                onPress={() => this.saveActiveVehicle()}
+              >
+                <Text style={localStyles.btnText}>Save active vehicle</Text>
+              </TouchableOpacity>
             </Card>
-            <TouchableOpacity
-              style={localStyles.addVehicleButton}
-              onPress={() => this.saveActiveVehicle()}
-            >
-              <Text style={localStyles.btnText}>Save active vehicle</Text>
-            </TouchableOpacity>
           </View>
         </ScrollView>
       </View>
@@ -183,23 +173,31 @@ export default class ProfileScreen extends React.Component {
   renderVehicles() {
     return (
       <Card title="Vehicles">
-        {this.state.vehicles.map((vehicle, key) => {
-          return (
-            <View key={key}>
-              <ListItem
-                title={vehicle.licensePlate}
-                onPress={() =>
-                  this.props.navigation.navigate("Vehicle", {
-                    licensePlate: vehicle.licensePlate,
-                    type: vehicle.type
-                  })
-                }
-                chevron
-              />
-              <Divider />
-            </View>
-          );
-        })}
+        <View>
+          {this.state.vehicles.map((vehicle, key) => {
+            return (
+              <View key={key}>
+                <ListItem
+                  title={vehicle.licensePlate}
+                  onPress={() =>
+                    this.props.navigation.navigate("Vehicle", {
+                      licensePlate: vehicle.licensePlate,
+                      type: vehicle.type
+                    })
+                  }
+                  chevron
+                />
+                <Divider />
+              </View>
+            );
+          })}
+        </View>
+        <TouchableOpacity
+            style={localStyles.addVehicleButton}
+            onPress={() => this.props.navigation.navigate("AddVehicle")}
+          >
+            <Text style={localStyles.btnText}>Add vehicle</Text>
+          </TouchableOpacity>
       </Card>
     );
   }
@@ -221,6 +219,12 @@ const localStyles = StyleSheet.create({
     marginTop: 15,
     backgroundColor: theme.ACCENT_COLOR
   },
+  saveActiveVehicleButton: {
+    paddingVertical: 15,
+    borderRadius: 25,
+    margin: 15,
+    backgroundColor: theme.ACCENT_COLOR
+  },
   logoutButton: {
     paddingVertical: 15,
     borderRadius: 25,
@@ -236,8 +240,21 @@ const localStyles = StyleSheet.create({
   emailText: {
     fontSize: 16
   },
+  activeVehicleContainer: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "space-around",
+  },
+  activeVehicleTitleStyle: {
+    fontSize: normalize(14),
+    fontWeight: 'bold',
+    color: "#43484d",
+    textAlign: "center",
+    paddingBottom: 15,
+  },
   activeVehicleStyle: {
-    fontSize: 16,
+    fontSize: normalize(14),
+    color: "#43484d",
     textAlign: "center",
     paddingBottom: 15
   }

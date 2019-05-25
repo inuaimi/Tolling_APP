@@ -53,16 +53,12 @@ export default class SecondScreen extends React.Component {
 
   onCollectionUpdate = doc => {
     const user = doc.data();
-
     let transactions = user.transactions.reverse(),
         recentTransactions = [];
-
 
     for(let i = 0; i < 10; i++) {
       recentTransactions.push(transactions[i]);
     }
-
-    console.log("recent: " + JSON.stringify(recentTransactions, null, 2));
 
     this.setState({
       balance: user.balance,
@@ -73,7 +69,6 @@ export default class SecondScreen extends React.Component {
   };
 
   render() {
-    console.log("renderAll? " + this.state.renderAll);
     return (
       <View style={localStyles.mainContainer}>
         <ScrollView keyboardShouldPersistTaps="handled">
@@ -152,7 +147,7 @@ export default class SecondScreen extends React.Component {
     }
     return (
       <Card title="All transactions">
-        {this.state.transactions.reverse().map((x, key) => {
+        {this.state.transactions.map((x, key) => {
           return (
             <View key={key}>
               <ListItem
