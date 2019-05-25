@@ -80,14 +80,39 @@ export const addUserTransaction = (gantry, uid) => {
   const dateTime = {
     date: date + "/" + month + "/" + year + " " + hours + ":" + min + ":" + sec
   };
+
   db.collection("Users")
     .doc(uid)
-    .update({
-      transactions: firebase.firestore.FieldValue.arrayUnion({
-        cost: gantry.cost,
-        date: dateTime.date,
-        gantry: gantry.title
-      })
+    .get()
+    .then(doc => {
+      const user = doc.data();
+
+      let cost;
+
+      if (user.activeVehicle === "Car") {
+        cost = gantry.cost;
+      } else if (user.activeVehicle === "Truck") {
+        cost = gantry.cost * 2.5;
+      } else if (user.activeVehicle === "Bus") {
+        cost = gantry.cost * 2;
+      } else if (user.activeVehicle === "Van") {
+        cost = gantry.cost * 1.5;
+      } else if (user.activeVehicle === "Motorcycle") {
+        cost = gantry.cost * 0.8;
+      }
+
+      let dec = firebase.firestore.FieldValue.increment(-cost);
+
+      db.collection("Users")
+        .doc(uid)
+        .update({
+          balance: dec,
+          transactions: firebase.firestore.FieldValue.arrayUnion({
+            cost: cost,
+            date: dateTime.date,
+            gantry: gantry.title
+          })
+        });
     });
 };
 
