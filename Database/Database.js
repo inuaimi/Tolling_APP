@@ -107,13 +107,13 @@ export const regiesterTransactionToGantry = async (gantryId, userId) => {
       const formatedDate =
         date + "/" + month + "/" + year + " " + hours + ":" + min + ":" + sec;
 
+      //VIKTIGT: Se till att nedan motsvarar rätt struktur på user
       db.collection("Gantries")
         .doc(gantryId)
         .update({
           transactions: firebase.firestore.FieldValue.arrayUnion({
-            userId: userId,
-            veichle: "car",
-            name: user.name,
+            veichle: user.activeVehicle,
+            licensePlate: user.activeVehiclePlate,
             date: formatedDate
           }),
           count: inc
@@ -122,8 +122,10 @@ export const regiesterTransactionToGantry = async (gantryId, userId) => {
 };
 
 export const saveActiveVehicle = (activeVehicle, activeVehiclePlate, uid) => {
-  db.collection('Users').doc(uid).update({
-    activeVehicle: activeVehicle,
-    activeVehiclePlate: activeVehiclePlate
-  })
+  db.collection("Users")
+    .doc(uid)
+    .update({
+      activeVehicle: activeVehicle,
+      activeVehiclePlate: activeVehiclePlate
+    });
 };

@@ -99,7 +99,7 @@ export default class SecondScreen extends React.Component {
     }
     return (
       <Card title="Recent transactions">
-        {this.state.transactions.map((x, key) => {
+        {this.state.transactions.reverse().map((x, key) => {
           return (
             <View key={key}>
               <ListItem
