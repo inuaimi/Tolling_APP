@@ -346,6 +346,7 @@ export default class MapScreen extends React.Component {
   };
 
   render() {
+    const { currentLatitudeDelta, currentLongitudeDelta } = this.state;
     return (
       <View style={styles.container}>
         <MapView
@@ -367,9 +368,9 @@ export default class MapScreen extends React.Component {
           textStyle={{ color: "#bc8b00" }}
           containerStyle={{ backgroundColor: "white", borderColor: "#bc8b00" }}
         >
-          {this.renderGantryMarkers()}
-          {this.renderGantries()}
-          {this.renderTransactionGeofences()}
+          { (currentLatitudeDelta < 0.350) && this.renderGantryMarkers()}
+          { (currentLatitudeDelta < 0.100) && this.renderGantries() }
+          { (currentLatitudeDelta < 0.060) && this.renderTransactionGeofences() }
         </MapView>
         <View style={styles.mapButtonContainer}>
           <TouchableOpacity
@@ -406,13 +407,15 @@ export default class MapScreen extends React.Component {
   }
 
   renderGantryMarkers() {
+    const { currentLatitudeDelta } = this.state;
+    console.log("delta: " + currentLatitudeDelta);
     if (this.state.gantryMarkers) {
       return this.state.gantryMarkers.map((marker, i) => (
         <MapView.Marker
           key={i}
           coordinate={marker.coordinates}
           title={marker.title}
-          image={require('../Src/Images/place_60.png')}
+          image={require('../Src/Images/place_32.png')}
           onPress={() => {
             this.longNames(marker.title);
             this.setState({ gantryCost: marker.gantryCost });
@@ -455,12 +458,6 @@ export default class MapScreen extends React.Component {
       return null;
     }
   }
-
-  // renderMarkerIcon() {
-  //   return (
-  //     <Icon name="edit" type="font-awesome" color="black" />
-  //   )
-  // }
 
   longNames = name => {
     let newName = "";
