@@ -162,6 +162,14 @@ export default class SecondScreen extends React.Component {
             </View>
           );
         })}
+        <TouchableOpacity 
+          style={localStyles.addMoneyButton}
+          onPress={() => this.setState({ renderAll: false })}
+        >
+          <Text style={localStyles.addMoneyText}>
+            Hide transactions
+          </Text>
+        </TouchableOpacity>
       </Card>
     );
   }

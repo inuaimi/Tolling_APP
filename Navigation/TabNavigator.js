@@ -13,14 +13,12 @@ import ProfileScreen from "../Screens/ProfileScreen";
 import VehicleScreen from "../Screens/VehicleScreen";
 import AddVehicleScreen from "../Screens/AddVehicleScreen";
 import theme from "../Styles/theme";
-import EditEmailScreen from "../Screens/EditEmailScreen";
 
 const ProfileStackNavigator = createStackNavigator(
   {
     Home: ProfileScreen,
     Vehicle: VehicleScreen,
     AddVehicle: AddVehicleScreen,
-    EditEmail: EditEmailScreen,
   },
   {
     initialRouteName: "Home",
