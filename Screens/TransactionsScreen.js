@@ -53,20 +53,14 @@ export default class SecondScreen extends React.Component {
 
   onCollectionUpdate = doc => {
     const user = doc.data();
-    if (
-      user.transactions === undefined ||
-      user.transactions.length === 0
-    ) {
-      return null;
-    } else {
-      let transactions = user.transactions.reverse(),
-          recentTransactions = [];
 
-      for(let i = 0; i < 10; i++) {
-        recentTransactions.push(transactions[i]);
-      }
+    let transactions = user.transactions.reverse(),
+        recentTransactions = [];
+
+    for(let i = 0; i < 10; i++) {
+      recentTransactions.push(transactions[i]);
     }
-
+    
     this.setState({
       balance: user.balance,
       transactions: transactions,

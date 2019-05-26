@@ -23,7 +23,7 @@ export default class SignUpScreen extends React.Component {
     name: "",
     email: "",
     password: "",
-    vehicle: "car",
+    vehicle: "Car",
     license: "",
     balance: 0,
     error: "",
