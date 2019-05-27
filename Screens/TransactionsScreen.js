@@ -57,8 +57,16 @@ export default class SecondScreen extends React.Component {
     let transactions = user.transactions.reverse(),
         recentTransactions = [];
 
-    for(let i = 0; i < 10; i++) {
-      recentTransactions.push(transactions[i]);
+    if(transactions.length > 0) {
+      if(transactions.length < 10) {
+        transactions.map(x => {
+          recentTransactions.push(x);
+        })
+      } else {
+        for(let i = 0; i < 10; i++) {
+          recentTransactions.push(transactions[i]);
+        }
+      }
     }
     
     this.setState({
