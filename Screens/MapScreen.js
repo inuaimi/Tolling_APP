@@ -327,12 +327,11 @@ export default class MapScreen extends React.Component {
   makeTransaction = () => {
     const uid = firebase.app().auth().currentUser.uid;
     const { currentGantry } = this.state;
-     
+
     addUserTransaction(currentGantry, uid);
-    regiesterTransactionToGantry(currentGantry.id, uid);
+    // regiesterTransactionToGantry(currentGantry.id, uid);
     this.notif.transactionNotif();
   };
-
 
   toggleFollowUserLocation = () => {
     const { currentLatitudeDelta, currentLongitudeDelta } = this.state;

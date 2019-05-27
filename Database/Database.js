@@ -80,7 +80,7 @@ export const addUserTransaction = (gantry, uid) => {
   const dateTime = {
     date: date + "/" + month + "/" + year + " " + hours + ":" + min + ":" + sec
   };
-  
+
   db.collection("Users")
     .doc(uid)
     .get()
@@ -89,16 +89,16 @@ export const addUserTransaction = (gantry, uid) => {
 
       let cost;
 
-      if (user.activeVehicle === "Car"){
-        cost = gantry.cost
-      }else if (user.activeVehicle === "Truck") {
-        cost = gantry.cost * 2.5
+      if (user.activeVehicle === "Car") {
+        cost = gantry.cost;
+      } else if (user.activeVehicle === "Truck") {
+        cost = gantry.cost * 2.5;
       } else if (user.activeVehicle === "Bus") {
-        cost = gantry.cost * 2
-      } else if (user.activeVehicle === "Van"){
-        cost = gantry.cost * 1.5
+        cost = gantry.cost * 2;
+      } else if (user.activeVehicle === "Van") {
+        cost = gantry.cost * 1.5;
       } else if (user.activeVehicle === "Motorcycle") {
-        cost = gantry.cost * 0.8
+        cost = gantry.cost * 0.8;
       }
 
       let dec = firebase.firestore.FieldValue.increment(-cost);
@@ -113,44 +113,16 @@ export const addUserTransaction = (gantry, uid) => {
             gantry: gantry.title
           })
         });
-
+      this.regiesterTransactionToGantry(cost, gantry);
     });
 };
 
-export const regiesterTransactionToGantry = async (gantryId, userId) => {
-  db.collection("Users")
-    .doc(userId)
-    .get()
-    .then(doc => {
-      const inc = firebase.firestore.FieldValue.increment(1);
-      const user = doc.data();
-      const date = new Date().getDate();
-      const month = new Date().getMonth();
-      const year = new Date().getFullYear();
-      const hours = new Date().getHours();
-      const min = new Date().getMinutes();
-      const sec = new Date().getSeconds();
-      const formatedDate =
-        date + "/" + month + "/" + year + " " + hours + ":" + min + ":" + sec;
-
-      //VIKTIGT: Se till att nedan motsvarar rätt struktur på user
-      db.collection("Gantries")
-        .doc(gantryId)
-        .update({
-          transactions: firebase.firestore.FieldValue.arrayUnion({
-<<<<<<< HEAD
-            veichle: user.activeVehicle,
-            licensePlate: user.activeVehiclePlate,
-=======
-            userId: userId,
-            vehicle: user.activeVehicle,
-            name: user.name,
->>>>>>> 2b2ae011366bdb576433ba7cb32a1664eea0df32
-            date: formatedDate
-          }),
-          count: inc
-        });
-    });
+export const regiesterTransactionToGantry = (cost, gantry) => {
+  const costInc = firebase.firestore.FieldValue.increment(cost);
+  const countInc = firebase.firestore.FieldValue.increment(1);
+  db.collection("Gantries")
+    .doc(gantry.id)
+    .update({ count: countInc, totalCost: costInc });
 };
 
 export const saveActiveVehicle = (activeVehicle, activeVehiclePlate, uid) => {
