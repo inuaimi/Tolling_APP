@@ -46,7 +46,15 @@ export const addUserVehicle = (licensePlate, type, uid) => {
     });
 };
 
-export const createUser = (uid, name, email, vehicle, license, balance) => {
+export const createUser = (
+  uid,
+  name,
+  email,
+  vehicle,
+  license,
+  balance,
+  transactions
+) => {
   var userIdRef = db.collection("Users").doc(uid);
   userIdRef.set({
     uid: uid,
@@ -58,7 +66,8 @@ export const createUser = (uid, name, email, vehicle, license, balance) => {
         licensePlate: license
       }
     ],
-    balance: balance
+    balance: balance,
+    transactions: transactions
   });
 };
 

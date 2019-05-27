@@ -23,9 +23,10 @@ export default class SignUpScreen extends React.Component {
     name: "",
     email: "",
     password: "",
-    vehicle: "car",
+    vehicle: "Car",
     license: "",
     balance: 0,
+    transactions: [],
     error: "",
     loading: false
   };
@@ -108,7 +109,8 @@ export default class SignUpScreen extends React.Component {
           this.state.email,
           this.state.vehicle,
           this.state.license,
-          this.state.balance
+          this.state.balance,
+          this.state.transactions
         );
         saveActiveVehicle(
           this.state.vehicle,

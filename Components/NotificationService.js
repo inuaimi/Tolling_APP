@@ -26,7 +26,7 @@ export default class NotifService {
   geofenceNotif() {
     PushNotification.localNotificationSchedule({
       title: "Tolling App",
-      message: "You entered a TollingZone, make sure Bluetooth is turned on.", // (required)
+      message: "You're inside a TollingZone, make sure Bluetooth is turned on.", // (required)
       date: new Date(Date.now() + (1 * 1000))
     });
   }

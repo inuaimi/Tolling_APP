@@ -12,7 +12,8 @@ import {
   Platform,
   DeviceEventEmitter,
   TouchableOpacity,
-  StatusBar
+  StatusBar,
+  Image
 } from "react-native";
 import { Icon } from "react-native-elements";
 import MapView, { PROVIDER_GOOGLE, Marker, Circle } from "react-native-maps";
@@ -57,7 +58,7 @@ export default class MapScreen extends React.Component {
     this.map = null;
     this.isReadyForNotif = true;
     this.isInsideGantry;
-    this.hasLeftTransactionGeofence;
+    this.hasLeftTransactionGeofence = true;
     this.ready = false;
 
     this.state = {
@@ -203,23 +204,12 @@ export default class MapScreen extends React.Component {
 
   scanForBeacons() {
     let me = this;
-
     this.beaconsDidRange = DeviceEventEmitter.addListener(
       "beaconsDidRange",
       data => {
         data.beacons.forEach(beacon => {
-          // console.log("beacon: " + JSON.stringify(beacon, null, 2));
           if (beacon.accuracy) {
             const distance = beacon.accuracy.toFixed(2);
-
-            console.log(
-              "bools states, beaconInRange: " +
-                me.isBeaconInRange(distance) +
-                " hasLeftTGF: " +
-                me.hasLeftTransactionGeofence +
-                " isInsideGeofence: " +
-                me.isInsideGantry
-            );
 
             if (
               me.isBeaconInRange(distance) &&
@@ -317,7 +307,7 @@ export default class MapScreen extends React.Component {
   };
 
   isBeaconInRange = distance => {
-    if (distance < 5) {
+    if (distance < 100 && distance >= 0) {
       return true;
     } else {
       return false;
@@ -345,6 +335,7 @@ export default class MapScreen extends React.Component {
   };
 
   render() {
+    const { currentLatitudeDelta, currentLongitudeDelta } = this.state;
     return (
       <View style={styles.container}>
         <MapView
@@ -366,9 +357,9 @@ export default class MapScreen extends React.Component {
           textStyle={{ color: "#bc8b00" }}
           containerStyle={{ backgroundColor: "white", borderColor: "#bc8b00" }}
         >
-          {this.renderGantryMarkers()}
-          {this.renderGantries()}
-          {this.renderTransactionGeofences()}
+          {currentLatitudeDelta < 0.35 && this.renderGantryMarkers()}
+          {currentLatitudeDelta < 0.1 && this.renderGantries()}
+          {currentLatitudeDelta < 0.06 && this.renderTransactionGeofences()}
         </MapView>
         <View style={styles.mapButtonContainer}>
           <TouchableOpacity
@@ -415,7 +406,12 @@ export default class MapScreen extends React.Component {
             this.longNames(marker.title);
             this.setState({ gantryCost: marker.gantryCost });
           }}
-        />
+        >
+          <Image
+            style={{ height: 30, width: 30, resizeMode: "contain" }}
+            source={require("../Src/Images/tolling_station.png")}
+          />
+        </MapView.Marker>
       ));
     } else {
       return null;
