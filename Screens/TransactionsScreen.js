@@ -53,13 +53,22 @@ export default class SecondScreen extends React.Component {
 
   onCollectionUpdate = doc => {
     const user = doc.data();
+
     let transactions = user.transactions.reverse(),
         recentTransactions = [];
 
-    for(let i = 0; i < 10; i++) {
-      recentTransactions.push(transactions[i]);
+    if(transactions.length > 0) {
+      if(transactions.length < 10) {
+        transactions.map(x => {
+          recentTransactions.push(x);
+        })
+      } else {
+        for(let i = 0; i < 10; i++) {
+          recentTransactions.push(transactions[i]);
+        }
+      }
     }
-
+    
     this.setState({
       balance: user.balance,
       transactions: transactions,
@@ -162,6 +171,14 @@ export default class SecondScreen extends React.Component {
             </View>
           );
         })}
+        <TouchableOpacity 
+          style={localStyles.addMoneyButton}
+          onPress={() => this.setState({ renderAll: false })}
+        >
+          <Text style={localStyles.addMoneyText}>
+            Hide transactions
+          </Text>
+        </TouchableOpacity>
       </Card>
     );
   }
