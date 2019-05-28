@@ -64,6 +64,7 @@ export default class MapScreen extends React.Component {
     this.state = {
       gantries: [],
       grantryMarker: [],
+      activeVehicle: "",
       loadingGantries: true,
       gantryName: "Press a marker",
       distanceToGantry: "",
@@ -101,7 +102,7 @@ export default class MapScreen extends React.Component {
         this.onGantryCollectionUpdate
       );
       this.getCurrentPosition(LATITUDE_DELTA, LONGITUDE_DELTA);
-      // this.watchPosition();
+      this.getCurrentUser();
     }
   }
 
@@ -193,14 +194,32 @@ export default class MapScreen extends React.Component {
         transactionGeofences.push(gantry.TransactionGeofence);
       }
     });
-
-    this.setState({
-      gantries,
-      gantryMarkers,
-      transactionGeofences,
-      loadingGantries: false
-    });
+    if (this._isMounted) {
+      this.setState({
+        gantries,
+        gantryMarkers,
+        transactionGeofences,
+        loadingGantries: false
+      });
+    }
   };
+
+  getCurrentUser = () => {
+    let me = this;
+    const uid = firebase.app().auth().currentUser.uid;
+    db.collection("Users")
+      .doc(uid)
+      .get()
+      .then(doc => {
+        const user = doc.data();
+
+        if (this._isMounted) {
+          me.setState({
+            activeVehicle: user.activeVehicle
+          });
+        }
+      });
+  }
 
   scanForBeacons() {
     let me = this;
@@ -396,6 +415,7 @@ export default class MapScreen extends React.Component {
   }
 
   renderGantryMarkers() {
+    const { activeVehicle } = this.state;
     if (this.state.gantryMarkers) {
       return this.state.gantryMarkers.map((marker, i) => (
         <MapView.Marker
@@ -404,7 +424,19 @@ export default class MapScreen extends React.Component {
           title={marker.title}
           onPress={() => {
             this.longNames(marker.title);
-            this.setState({ gantryCost: marker.gantryCost });
+            let cost;
+            if (activeVehicle === "Car"){
+              cost = marker.gantryCost
+            }else if (activeVehicle === "Truck") {
+              cost = marker.gantryCost * 2.5
+            } else if (activeVehicle === "Bus") {
+              cost = marker.gantryCost * 2
+            } else if (activeVehicle === "Van"){
+              cost = marker.gantryCost * 1.5
+            } else if (activeVehicle === "Motorcycle") {
+              cost = marker.gantryCost * 0.8
+            }
+            this.setState({ gantryCost: cost });
           }}
         >
           <Image
