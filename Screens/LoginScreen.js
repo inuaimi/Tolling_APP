@@ -1,6 +1,5 @@
 import React from "react";
 import { Text, View, ImageBackground, StatusBar } from "react-native";
-// import AsyncStorage from "@react-native-community/async-storage";
 import styles from "../Styles/loginStyles";
 import { Buttons } from "../Components/Buttons";
 import { Inputs } from "../Components/Inputs";
@@ -54,10 +53,7 @@ export default class SecondScreen extends React.Component {
           error: "",
           loading: false
         });
-        // this.saveLoginData();
-        // this.props.navigation.navigate("Map");
         const user = firebase.app().auth().currentUser;
-        console.log(user);
         if (user.emailVerified) {
           this.setState({
             error: "",

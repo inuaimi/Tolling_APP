@@ -1,10 +1,3 @@
-// TODO:
-//   - Kolla upp om appen kör i bakgrunden för:
-//     1. Plats i bakgrunden.
-//     2. Beacon-skanning i bakgrunden.
-//  - Olika pris för fordonstyperna.
-//  - Unable to retrieve location alert, fixa. De stackar på varandra....
-
 import React from "react";
 import {
   Text,
@@ -17,17 +10,13 @@ import {
 } from "react-native";
 import { Icon } from "react-native-elements";
 import MapView, { PROVIDER_GOOGLE, Marker, Circle } from "react-native-maps";
-//      Imports: "css-alike-ish" styling
 import styles from "../Styles/styles";
 import NotifService from "../Components/NotificationService";
 import { db } from "../Database/Database";
 import geolib from "geolib";
 import Beacons from "react-native-beacons-manager";
 import firebase from "react-native-firebase";
-import {
-  addUserTransaction,
-  regiesterTransactionToGantry
-} from "../Database/Database";
+import { addUserTransaction } from "../Database/Database";
 
 const LATITUDE_DELTA = 0.005;
 const LONGITUDE_DELTA = 0.005;
@@ -219,7 +208,7 @@ export default class MapScreen extends React.Component {
           });
         }
       });
-  }
+  };
 
   scanForBeacons() {
     let me = this;
@@ -338,7 +327,6 @@ export default class MapScreen extends React.Component {
     const { currentGantry } = this.state;
 
     addUserTransaction(currentGantry, uid);
-    // regiesterTransactionToGantry(currentGantry.id, uid);
     this.notif.transactionNotif();
   };
 
@@ -425,16 +413,16 @@ export default class MapScreen extends React.Component {
           onPress={() => {
             this.longNames(marker.title);
             let cost;
-            if (activeVehicle === "Car"){
-              cost = marker.gantryCost
-            }else if (activeVehicle === "Truck") {
-              cost = marker.gantryCost * 2.5
+            if (activeVehicle === "Car") {
+              cost = marker.gantryCost;
+            } else if (activeVehicle === "Truck") {
+              cost = marker.gantryCost * 2.5;
             } else if (activeVehicle === "Bus") {
-              cost = marker.gantryCost * 2
-            } else if (activeVehicle === "Van"){
-              cost = marker.gantryCost * 1.5
+              cost = marker.gantryCost * 2;
+            } else if (activeVehicle === "Van") {
+              cost = marker.gantryCost * 1.5;
             } else if (activeVehicle === "Motorcycle") {
-              cost = marker.gantryCost * 0.8
+              cost = marker.gantryCost * 0.8;
             }
             this.setState({ gantryCost: cost });
           }}
@@ -496,12 +484,10 @@ export default class MapScreen extends React.Component {
 
   onRegister(token) {
     alert("Registered !", JSON.stringify(token));
-    console.log(token);
     this.setState({ registerToken: token.token, gcmRegistered: true });
   }
 
   onNotif(notif) {
-    console.log(notif);
     alert(notif.message);
   }
 }

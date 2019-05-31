@@ -3,13 +3,11 @@ import {
   Text,
   View,
   TouchableOpacity,
-  TouchableHighlight,
   StyleSheet,
   TextInput,
   Picker
 } from "react-native";
-import { Header, Card, ListItem, Divider, Button } from "react-native-elements";
-import styles from "../Styles/profileStyles";
+import { Card } from "react-native-elements";
 import { addUserVehicle } from "../Database/Database";
 import firebase from "react-native-firebase";
 import theme from "../Styles/theme";

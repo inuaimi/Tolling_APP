@@ -18,7 +18,6 @@ export const addItem = item => {
   });
 };
 
-// Should be 2 params, user and vehicle to delete. User will be signed in.
 export const deleteUserVehicle = (vehicle, uid) => {
   db.collection("Users")
     .doc(uid)

@@ -18,7 +18,7 @@ const ProfileStackNavigator = createStackNavigator(
   {
     Home: ProfileScreen,
     Vehicle: VehicleScreen,
-    AddVehicle: AddVehicleScreen,
+    AddVehicle: AddVehicleScreen
   },
   {
     initialRouteName: "Home",

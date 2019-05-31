@@ -1,8 +1,7 @@
 import {
   createAppContainer,
   createStackNavigator,
-  createSwitchNavigator,
-  SwitchNavigator
+  createSwitchNavigator
 } from "react-navigation";
 
 import LoginScreen from "../Screens/LoginScreen";

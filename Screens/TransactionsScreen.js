@@ -55,20 +55,20 @@ export default class SecondScreen extends React.Component {
     const user = doc.data();
 
     let transactions = user.transactions.reverse(),
-        recentTransactions = [];
+      recentTransactions = [];
 
-    if(transactions.length > 0) {
-      if(transactions.length < 10) {
+    if (transactions.length > 0) {
+      if (transactions.length < 10) {
         transactions.map(x => {
           recentTransactions.push(x);
-        })
+        });
       } else {
-        for(let i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
           recentTransactions.push(transactions[i]);
         }
       }
     }
-    
+
     this.setState({
       balance: user.balance,
       transactions: transactions,
@@ -88,9 +88,9 @@ export default class SecondScreen extends React.Component {
             {this.renderAddMoney()}
           </View>
           <View style={localStyles.gantrysContainer}>
-            { this.state.renderAll ?
-              this.renderAllTransactions()
-            : this.renderRecentTransactions() }
+            {this.state.renderAll
+              ? this.renderAllTransactions()
+              : this.renderRecentTransactions()}
           </View>
         </ScrollView>
       </View>
@@ -135,13 +135,11 @@ export default class SecondScreen extends React.Component {
             );
           })}
         </View>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={localStyles.addMoneyButton}
           onPress={() => this.setState({ renderAll: true })}
         >
-          <Text style={localStyles.addMoneyText}>
-            Show all transactions
-          </Text>
+          <Text style={localStyles.addMoneyText}>Show all transactions</Text>
         </TouchableOpacity>
       </Card>
     );
@@ -171,13 +169,11 @@ export default class SecondScreen extends React.Component {
             </View>
           );
         })}
-        <TouchableOpacity 
+        <TouchableOpacity
           style={localStyles.addMoneyButton}
           onPress={() => this.setState({ renderAll: false })}
         >
-          <Text style={localStyles.addMoneyText}>
-            Hide transactions
-          </Text>
+          <Text style={localStyles.addMoneyText}>Hide transactions</Text>
         </TouchableOpacity>
       </Card>
     );
@@ -244,7 +240,6 @@ export default class SecondScreen extends React.Component {
     const updateDoc = ref
       .update({ balance: inc })
       .then(() => {
-        console.log("_application updated money balance");
         this.moneyBalanceUpdateComplete();
       })
       .catch(err => {

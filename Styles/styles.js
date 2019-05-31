@@ -15,7 +15,7 @@ export default StyleSheet.create({
   },
   map: {
     flex: 5,
-    justifyContent: "center",
+    justifyContent: "center"
   },
 
   // #bottomDetails
@@ -24,18 +24,16 @@ export default StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-around",
     backgroundColor: "#FFF"
-    },
+  },
   bottomDetailsKeys: {
     flexDirection: "column",
     alignItems: "center",
-    textAlign: "center",
-    // backgroundColor: '#ff7f50'
+    textAlign: "center"
   },
   bottomDetailsValues: {
     flexDirection: "column",
     alignItems: "center",
     textAlign: "center"
-    // backgroundColor: '#eccc68'
   },
   bottomDetailsKeyTextLeft: {
     fontSize: 14,
@@ -50,7 +48,7 @@ export default StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginRight: 65,
-    marginTop: 25,
+    marginTop: 25
   },
   bottomDetailsValueTextLeft: {
     fontSize: 14,
@@ -58,7 +56,6 @@ export default StyleSheet.create({
     marginLeft: 65,
     marginTop: 15,
     marginRight: 65
-    
   },
   bottomDetailsValueText: {
     fontSize: 14,
@@ -105,44 +102,43 @@ export default StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center"
   },
-  activeFollowUserButton: {
+  activeFollowUserButton: {
     borderRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     width: 50,
     height: 50,
     marginHorizontal: 15,
-    backgroundColor: 'rgba(46, 204, 113, 1)'
+    backgroundColor: "rgba(46, 204, 113, 1)"
   },
-  inactiveFollowUserButton: {
+  inactiveFollowUserButton: {
     borderRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     width: 50,
     height: 50,
     marginHorizontal: 15,
     // backgroundColor: '#2ecc71'
-    backgroundColor: 'rgba(46, 204, 113, 0.5)'
+    backgroundColor: "rgba(46, 204, 113, 0.5)"
   },
   zoomButtons: {
     borderRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     width: 50,
     height: 50,
     marginHorizontal: 10,
-    backgroundColor: '#ffffff'
+    backgroundColor: "#ffffff"
   },
   btnText: {
-    alignSelf: 'center',
-    color: 'white',
-    fontWeight: 'bold'
+    alignSelf: "center",
+    color: "white",
+    fontWeight: "bold"
   },
   mapButtonContainer: {
-    position: 'absolute',
-    top: '73%',
-    // marginBottom: 50,
-    alignSelf: 'flex-end',
-    flexDirection: 'column'
-  },
+    position: "absolute",
+    top: "73%",
+    alignSelf: "flex-end",
+    flexDirection: "column"
+  }
 });

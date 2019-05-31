@@ -2,28 +2,20 @@ import React from "react";
 import {
   Text,
   View,
-  ImageBackground,
   TouchableOpacity,
-  TouchableHighlight,
   StyleSheet,
   ScrollView,
   StatusBar,
   Picker
 } from "react-native";
 import {
-  Header,
   Card,
   ListItem,
   Divider,
-  CheckBox,
-  Button,
   Icon,
   normalize
 } from "react-native-elements";
 import firebase from "react-native-firebase";
-// import AsyncStorage from "@react-native-community/async-storage";
-//      Imports: "css-alike-ish" styling
-import styles from "../Styles/profileStyles";
 import { db } from "../Database/Database";
 import theme from "../Styles/theme";
 import { saveActiveVehicle } from "../Database/Database";
@@ -86,7 +78,6 @@ export default class ProfileScreen extends React.Component {
         .app()
         .auth()
         .signOut();
-      // this.saveSignedOutState();
       this.props.navigation.navigate("Login");
     } catch (e) {
       console.log(e);
@@ -193,11 +184,11 @@ export default class ProfileScreen extends React.Component {
           })}
         </View>
         <TouchableOpacity
-            style={localStyles.addVehicleButton}
-            onPress={() => this.props.navigation.navigate("AddVehicle")}
-          >
-            <Text style={localStyles.btnText}>Add vehicle</Text>
-          </TouchableOpacity>
+          style={localStyles.addVehicleButton}
+          onPress={() => this.props.navigation.navigate("AddVehicle")}
+        >
+          <Text style={localStyles.btnText}>Add vehicle</Text>
+        </TouchableOpacity>
       </Card>
     );
   }
@@ -243,14 +234,14 @@ const localStyles = StyleSheet.create({
   activeVehicleContainer: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "space-around",
+    justifyContent: "space-around"
   },
   activeVehicleTitleStyle: {
     fontSize: normalize(14),
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: "#43484d",
     textAlign: "center",
-    paddingBottom: 15,
+    paddingBottom: 15
   },
   activeVehicleStyle: {
     fontSize: normalize(14),
