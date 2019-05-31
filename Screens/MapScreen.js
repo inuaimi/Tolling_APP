@@ -12,7 +12,8 @@ import {
   Platform,
   DeviceEventEmitter,
   TouchableOpacity,
-  StatusBar
+  StatusBar,
+  Image
 } from "react-native";
 import { Icon } from "react-native-elements";
 import MapView, { PROVIDER_GOOGLE, Marker, Circle } from "react-native-maps";
@@ -375,9 +376,9 @@ export default class MapScreen extends React.Component {
           textStyle={{ color: "#bc8b00" }}
           containerStyle={{ backgroundColor: "white", borderColor: "#bc8b00" }}
         >
-          { (currentLatitudeDelta < 0.350) && this.renderGantryMarkers()}
-          { (currentLatitudeDelta < 0.100) && this.renderGantries() }
-          { (currentLatitudeDelta < 0.060) && this.renderTransactionGeofences() }
+          {currentLatitudeDelta < 0.35 && this.renderGantryMarkers()}
+          {currentLatitudeDelta < 0.1 && this.renderGantries()}
+          {currentLatitudeDelta < 0.06 && this.renderTransactionGeofences()}
         </MapView>
         <View style={styles.mapButtonContainer}>
           <TouchableOpacity
@@ -421,7 +422,6 @@ export default class MapScreen extends React.Component {
           key={i}
           coordinate={marker.coordinates}
           title={marker.title}
-          image={require('../Src/Images/place_32.png')}
           onPress={() => {
             this.longNames(marker.title);
             let cost;
@@ -438,7 +438,12 @@ export default class MapScreen extends React.Component {
             }
             this.setState({ gantryCost: cost });
           }}
-        />
+        >
+          <Image
+            style={{ height: 30, width: 30, resizeMode: "contain" }}
+            source={require("../Src/Images/tolling_station.png")}
+          />
+        </MapView.Marker>
       ));
     } else {
       return null;
