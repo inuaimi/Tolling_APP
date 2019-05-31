@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "671174856452",
+    "firebase_url": "https://tolling-app.firebaseio.com",
+    "project_id": "tolling-app",
+    "storage_bucket": "tolling-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:671174856452:android:f1725ab261dfcec9",
+        "android_client_info": {
+          "package_name": "com.tolling_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "671174856452-2bvm8hccuhc0ekfceqc8vb1drq69o9m9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tolling_app",
+            "certificate_hash": "5a8fa4c7f603d35e4e587f581a1487b0b8ea0eac"
+          }
+        },
+        {
+          "client_id": "671174856452-sh57kqciqepsvigv931ab2cgksnvimsr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaw-gvp3LDN3xwHNO3K1_Ld_CYs-w9KfU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "671174856452-sh57kqciqepsvigv931ab2cgksnvimsr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "671174856452-o51kc1vls20v671343smtbmo59pq5up4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.Tolling-APP"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
